@@ -1,11 +1,10 @@
 import 'dart:convert';
 
 import 'package:bootcamps/Pages/Bootcamps/BootcampsScreen.dart';
-import 'package:bootcamps/constant.dart';
+import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {

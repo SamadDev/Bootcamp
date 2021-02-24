@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
 // class SizeConfig {
@@ -45,6 +46,17 @@ class AppTheme {
 // }
 
   //Colors of the whole application
+
+  static const Color green = Colors.teal;
+  static const Color orange = Color(0xfffea41b);
+  static const Color navy = Color(0xff736ff4);
+  static const Color black1 = Color(0xff3e3e3e);
+  static const Color black2 = Color(0xffe4e8eb);
+  static const Color black3 = Color(0xffd2d2d2);
+  static const Color white = Colors.white;
+  static Color black4 = Color(0xff3e3e3e).withOpacity(0.2);
+  static Color lightBlueAccent = Colors.lightBlueAccent;
+
   static const Color button = Colors.lightBlueAccent;
   static const Color secondaryBg = Colors.lightBlueAccent;
   static const Color primary = Colors.black54;
@@ -87,7 +99,7 @@ class AppTheme {
           iconTheme: IconThemeData(color: Colors.white),
           color: Colors.white10,
           textTheme:
-              TextTheme(title: _headline2.copyWith(color: Colors.white))));
+          TextTheme(title: _headline2.copyWith(color: Colors.white))));
 
   //Dark Text theme of the application
   static final TextTheme darkTextTheme = TextTheme(
@@ -120,47 +132,56 @@ class AppTheme {
   );
 
   static final TextStyle _headline1 = TextStyle(
-    color: AppTheme.headlineTextColor,
-    fontWeight: FontWeight.w900,
-    fontFamily: "Oriya-MN",
-    fontSize: 35,
+    color: AppTheme.green,
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    fontWeight: FontWeight.w700,
+    fontSize: 30,
   );
+
   static final TextStyle _headline2 = TextStyle(
-    fontFamily: "Oriya-MN",
-    color: AppTheme.headlineTextColor,
-    fontWeight: FontWeight.w900,
-    fontSize: 20,
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: AppTheme.black1,
+    fontWeight: FontWeight.w700,
+    fontSize: 30,
   );
   static final TextStyle _headline3 = TextStyle(
-    fontFamily: "Oriya-MN",
-    color: AppTheme.headlineTextColor,
-    fontWeight: FontWeight.w900,
-    fontSize: 16,
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: AppTheme.black1,
+    fontWeight: FontWeight.w700,
+    fontSize: 20,
   );
   static final TextStyle _headline4 = TextStyle(
-    fontFamily: "Oriya-MN",
-    color: AppTheme.headlineTextColor,
-    fontSize: 16,
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: AppTheme.black1,
+    fontWeight: FontWeight.w400,
+    fontSize: 18,
   );
   static final TextStyle _headline5 = TextStyle(
-    fontFamily: "Oriya-MN",
-    color: AppTheme.subTitleTextColor,
-    fontWeight: FontWeight.w900,
-    fontSize: 14,
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: AppTheme.green,
+    fontWeight: FontWeight.w500,
+    fontSize: 15,
   );
   static final TextStyle _headline6 = TextStyle(
-    fontFamily: "Oriya-MN",
-    color: AppTheme.subTitleTextColor,
-    fontWeight: FontWeight.w900,
-    fontSize: 12,
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: AppTheme.black1.withOpacity(0.25),
+    fontWeight: FontWeight.w700,
+    fontSize: 15,
   );
 
-  static final TextStyle _button = TextStyle();
+  static final TextStyle _button = TextStyle(
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: AppTheme.white,
+    fontWeight: FontWeight.w400,
+    fontSize: 17,
+  );
 
   static final TextStyle _subtitle1 = TextStyle(
-    fontFamily: "Oriya-MN",
-    color: AppTheme.subTitleTextColor,
-    fontSize: 18,
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: AppTheme.green,
+    fontWeight: FontWeight.w400,
+    height: 0.4,
+    fontSize: 14,
   );
   static final TextStyle _subtitle2 = TextStyle(
     fontFamily: "Oriya-MN",

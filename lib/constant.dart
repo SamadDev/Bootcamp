@@ -1,60 +1,7 @@
-import 'file:///C:/Users/FENGS/AndroidStudioProjects/bootcamps/lib/Pages/Courses/CourseEnrollScreen.dart';
-import 'package:bootcamps/Providers/Bootcamp.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
-Widget textField(
-    BuildContext context, textCont, String hintText, Icon icon, keyboardInput) {
-  return Padding(
-    padding: const EdgeInsets.all(10.0),
-    child: Container(
-      width: MediaQuery.of(context).size.width / 1.2,
-      height: 55,
-      padding: EdgeInsets.only(top: 6, left: 20, right: 20, bottom: 6),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
-      child: TextField(
-        maxLines: 1,
-        keyboardType: keyboardInput,
-        controller: textCont,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          icon: icon,
-          hintText: hintText,
-        ),
-      ),
-    ),
-  );
-}
-
-//show authentication alert
-void showErrorDialog(String message, context) {
-  showDialog(
-    context: context,
-    builder: (ctx) => AlertDialog(
-      title: Text(
-        'An Error Occurred!',
-        style: Theme.of(context).textTheme.headline2,
-      ),
-      content: Text(
-        message,
-        style: Theme.of(context).textTheme.subtitle1,
-      ),
-      actions: <Widget>[
-        FlatButton(
-          child: Text('Ok'),
-          onPressed: () {
-            Provider.of<BootCamp>(context, listen: false).changeIsLoading();
-            Navigator.of(context).pop();
-          },
-        )
-      ],
-    ),
-  );
-}
+import 'file:///C:/Users/FENGS/AndroidStudioProjects/bootcamps/lib/Pages/Courses/CourseEnrollScreen.dart';
 
 Widget dropDownWidget(
     {List list, Function function, String label, String valueIni}) {
@@ -236,6 +183,7 @@ class FloatingWidget extends StatelessWidget {
   final Function onTab;
 
   FloatingWidget({this.leadingIcon, this.txt, this.onTab});
+
   @override
   Widget build(BuildContext context) {
     return Container(

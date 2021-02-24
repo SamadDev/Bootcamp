@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bootcamps/Pages/Authendication/LoginScreen.dart';
 import 'package:bootcamps/Pages/ObordScreen/PageViewWIdget.dart';
 import 'package:bootcamps/Pages/ObordScreen/SlideDoteScreen.dart';
 import 'package:bootcamps/Pages/ObordScreen/slidedata.dart';
@@ -24,12 +23,12 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
       } else {
         _currentPage = 0;
       }
-
-      _pageController.animateToPage(
-        _currentPage,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.decelerate,
-      );
+      //
+      // _pageController.animateToPage(
+      //   _currentPage,
+      //   duration: Duration(milliseconds: 300),
+      //   curve: Curves.decelerate,
+      // );
     });
   }
 
@@ -89,55 +88,55 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
               SizedBox(
                 height: 20,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                LoginScreen(userRole: 'user')));
-                      },
-                      child: Text(
-                        'User',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      padding: const EdgeInsets.all(15),
-                      color: Colors.lightBlueAccent,
-                      textColor: Colors.white,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                LoginScreen(userRole: 'publisher')));
-                      },
-                      child: Text(
-                        'Publisher',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      padding: const EdgeInsets.all(15),
-                      color: Colors.lightBlueAccent,
-                      textColor: Colors.white,
-                    ),
-                  ),
-                ],
-              )
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.stretch,
+              //   children: <Widget>[
+              //     Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: FlatButton(
+              //         onPressed: () {
+              //           Navigator.of(context).push(MaterialPageRoute(
+              //               builder: (context) =>
+              //                   LoginScreen(userRole: 'user')));
+              //         },
+              //         child: Text(
+              //           'User',
+              //           style: TextStyle(
+              //             fontSize: 18,
+              //           ),
+              //         ),
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(15),
+              //         ),
+              //         padding: const EdgeInsets.all(15),
+              //         color: Colors.lightBlueAccent,
+              //         textColor: Colors.white,
+              //       ),
+              //     ),
+              //     // Padding(
+              //     //   padding: const EdgeInsets.all(8.0),
+              //     //   child: FlatButton(
+              //     //     onPressed: () {
+              //     //       Navigator.of(context).push(MaterialPageRoute(
+              //     //           builder: (context) =>
+              //     //               LoginScreen(userRole: 'publisher')));
+              //     //     },
+              //     //     child: Text(
+              //     //       'Publisher',
+              //     //       style: TextStyle(
+              //     //         fontSize: 18,
+              //     //       ),
+              //     //     ),
+              //     //     shape: RoundedRectangleBorder(
+              //     //       borderRadius: BorderRadius.circular(15),
+              //     //     ),
+              //     //     padding: const EdgeInsets.all(15),
+              //     //     color: Colors.lightBlueAccent,
+              //     //     textColor: Colors.white,
+              //     //   ),
+              //     // ),
+              //   ],
+              // )
             ],
           ),
         ),

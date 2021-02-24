@@ -1,14 +1,11 @@
 import 'package:bootcamps/Providers/Course.dart';
+import 'package:bootcamps/Style/style.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BootcampCoursePopulate extends StatefulWidget {
-  @override
-  _BootcampCoursePopulateState createState() => _BootcampCoursePopulateState();
-}
-
-class _BootcampCoursePopulateState extends State<BootcampCoursePopulate> {
+class BootcampCoursePopulate extends StatelessWidget {
   // List states = [
   //   {"title": "most popular", 'value': 'averageView'},
   //   {"title": "recent courses", 'value': 'createdAt'},
@@ -37,29 +34,37 @@ class _BootcampCoursePopulateState extends State<BootcampCoursePopulate> {
   //                           state = value;
   //                         });
   //                       })
+  final filter;
+
+  BootcampCoursePopulate({this.filter});
 
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: FutureBuilder(
           future: Provider.of<Course>(context, listen: false)
-              .fitchAllCourse('averageView'),
+              .fitchAllCourse(filter),
           builder: (context, snap) {
             if (snap.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: AppTheme.orange,
+                  strokeWidth: 1,
+                ),
+              );
             } else
               return Consumer<Course>(
                   builder: (context, course, _) => SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: course.courseList
-                              .map<Widget>((e) => ChangeNotifierProvider.value(
-                                    child: CourseWidget(),
-                                    value: e,
-                                  ))
-                              .toList(),
-                        ),
-                      ));
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: course.courseList
+                          .map<Widget>((e) => ChangeNotifierProvider.value(
+                        child: CourseWidget(),
+                        value: e,
+                      ))
+                          .toList(),
+                    ),
+                  ));
           }),
     );
   }
@@ -70,132 +75,86 @@ class CourseWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = Provider.of<CourseData>(context, listen: false);
     return InkWell(
-      splashColor: Colors.transparent,
       onTap: () {},
-      child: SizedBox(
-        width: 280,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              child: Row(
-                children: <Widget>[
-                  const SizedBox(
-                    width: 48 + 24.0,
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xFFe8e8e8),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          const SizedBox(
-                            width: 48 + 24.0,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 5, bottom: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 16),
-                                      child: Text(
-                                        'Website development',
-                                        textAlign: TextAlign.left,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                      ),
-                                    ),
-                                    const Expanded(
-                                      child: SizedBox(),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 16, bottom: 8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text('${5} weeks',
-                                              textAlign: TextAlign.left,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2),
-                                          Container(
-                                            child: Row(
-                                              children: <Widget>[
-                                                Text(
-                                                  '${5}',
-                                                  textAlign: TextAlign.left,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle,
-                                                ),
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.blue,
-                                                  size: 20,
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 16, right: 16),
-                                      child: Text(
-                                        '\$${data.tuition}',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18,
-                                          letterSpacing: 0.27,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppTheme.black2,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 200,
+          width: 170,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    child: CachedNetworkImage(
+                      imageUrl: data.photo,
+                      fit: BoxFit.fill,
+                      placeholder: (ctx, snap) => Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: AppTheme.orange,
+                          strokeWidth: 1,
+                        ),
                       ),
                     ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 24, bottom: 24, left: 16),
-                child: Row(
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(16.0)),
-                      child: AspectRatio(
-                          aspectRatio: 3.3 / 3,
-                          child: Image.network(
-                            data.photo,
-                            fit: BoxFit.fill,
-                          )),
-                    )
-                  ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Text(
+                    data.title,
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Chip(
+                        labelStyle: Theme.of(context).textTheme.subtitle1,
+                        labelPadding: EdgeInsets.zero,
+                        backgroundColor: AppTheme.black2.withOpacity(0.4),
+                        label: Text(
+                          '\$ ${data.tuition.toString()}',
+                          maxLines: 1,
+                        ),
+                      ),
+                      Spacer(),
+                      Chip(
+                        labelStyle: Theme.of(context).textTheme.subtitle1,
+                        labelPadding: EdgeInsets.zero,
+                        backgroundColor: AppTheme.black2.withOpacity(0.4),
+                        label: Row(
+                          children: [
+                            Text(
+                              '5',
+                            ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Icon(
+                                Icons.star,
+                                color: AppTheme.green,
+                                size: 15,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

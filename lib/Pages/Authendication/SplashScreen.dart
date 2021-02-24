@@ -1,17 +1,15 @@
 import 'dart:async';
-import 'package:provider/provider.dart';
-import 'package:bootcamps/Providers/profile.dart';
-import 'package:bootcamps/Pages/Bootcamps/BootcampCoursePopulate.dart';
+
 import 'package:bootcamps/Pages/Bootcamps/BootcampsScreen.dart';
-import 'package:bootcamps/Pages/Courses/CourseScreen.dart';
 import 'package:bootcamps/Pages/ObordScreen/GettingStartedScreen.dart';
 import 'package:bootcamps/Providers/SignUp.dart';
+import 'package:bootcamps/Providers/profile.dart';
+import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:flutter/widgets.dart';
-//Ⓢⓚⓘⓛⓛ Ⓤⓟ
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -35,34 +33,28 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   route() {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Auth.token != null
-                ? GettingStartedScreen()
-                : BootcampsScreen()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (BuildContext context) =>
+            Auth.token != null ? GettingStartedScreen() : BootcampsScreen()));
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffeeeeee),
+      backgroundColor: AppTheme.bg,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              child: Image.asset("assets/images/splash.gif"),
-            ),
+                height: 200,
+                width: 200,
+                child: SvgPicture.asset('assets/images/e.svg')),
             Padding(padding: EdgeInsets.only(top: 50.0)),
-            // Text(
-            //   "🆂🅺🅸🅻🅻 🆄🅿",
-            //   style: TextStyle(fontSize: 20.0),
-            // ),
-            // Padding(padding: EdgeInsets.only(top: 20.0)),
-            // CircularProgressIndicator(
-            //   backgroundColor: Colors.amberAccent,
-            //   strokeWidth: 1,
-            // )
+            Padding(padding: EdgeInsets.only(top: 20.0)),
+            CircularProgressIndicator(
+              backgroundColor: AppTheme.orange,
+              strokeWidth: 1,
+            )
           ],
         ),
       ),

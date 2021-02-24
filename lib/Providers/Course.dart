@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:bootcamps/Pages/Courses/CourseScreen.dart';
 
+import 'package:bootcamps/Pages/Courses/CourseScreen.dart';
 import 'package:bootcamps/Providers/LogIn.dart';
-import 'package:bootcamps/constant.dart';
+import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -61,10 +61,10 @@ class Course with ChangeNotifier {
 
   // to get the whole course
   Future<void> fitchAllCourse(String state) async {
-    // if (_course.isNotEmpty) return;
+    if (_course.isNotEmpty) return;
     try {
       var res = await http.get(
-          "https://bootcamp-training-training.herokuapp.com/api/v1/courses?sort=-$state",
+          "https://bootcamp-training-training.herokuapp.com/api/v1/courses?sort=-createdAt",
           headers: {
             "Content-Type": "Application/json",
             "Authorization": "Bearer ${Auth.token}"
