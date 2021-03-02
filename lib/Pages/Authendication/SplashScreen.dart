@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:bootcamps/Pages/Bootcamps/BootcampsScreen.dart';
 import 'package:bootcamps/Pages/ObordScreen/GettingStartedScreen.dart';
 import 'package:bootcamps/Providers/SignUp.dart';
 import 'package:bootcamps/Providers/profile.dart';
 import 'package:bootcamps/Style/style.dart';
+import 'package:bootcamps/Widgets/ButtomBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
   route() {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (BuildContext context) =>
-            Auth.token != null ? GettingStartedScreen() : BootcampsScreen()));
+            Auth.token != null ? GettingStartedScreen() : HomeScreen()));
   }
 
   Widget build(BuildContext context) {

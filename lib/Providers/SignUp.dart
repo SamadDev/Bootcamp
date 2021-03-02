@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bootcamps/Pages/Bootcamps/BootcampsScreen.dart';
+import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

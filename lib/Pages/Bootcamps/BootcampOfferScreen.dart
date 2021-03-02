@@ -11,23 +11,24 @@ class BootcampOfferScreen extends StatefulWidget {
 
 class _BootcampOfferScreenState extends State<BootcampOfferScreen> {
   int _currentPage = 0;
+
   final PageController _pageController = PageController(initialPage: 0);
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 5), (Timer timer) {
-      if (_currentPage < 3) {
+    Timer.periodic(Duration(seconds: 10), (Timer timer) {
+      if (_currentPage < 2) {
         _currentPage++;
       } else {
-        _currentPage = 0;
+        _currentPage = 2;
       }
 
-      _pageController.animateToPage(
-        _currentPage,
-        duration: Duration(milliseconds: 1000),
-        curve: Curves.decelerate,
-      );
+      // _pageController.animateToPage(
+      //   _currentPage,
+      //   duration: Duration(milliseconds: 300),
+      //   curve: Curves.decelerate,
+      // );
     });
   }
 
@@ -145,19 +146,19 @@ final slideList = [
   OfferData(
       quete: 'Do what is right, not what is easy.',
       image:
-      'https://images.unsplash.com/photo-1495465798138-718f86d1a4bc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80'),
+          'https://images.unsplash.com/photo-1495465798138-718f86d1a4bc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80'),
   OfferData(
     quete: 'One day, all your hard work will pay off.',
     image:
-    'https://images.unsplash.com/photo-1488998427799-e3362cec87c3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80',
+        'https://images.unsplash.com/photo-1488998427799-e3362cec87c3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80',
   ),
   OfferData(
       quete: 'To change your life,change your day.',
       image:
-      'https://images.unsplash.com/photo-1474377207190-a7d8b3334068?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=750&q=80'),
+          'https://images.unsplash.com/photo-1474377207190-a7d8b3334068?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=750&q=80'),
   OfferData(
     quete: 'Don’t stop until you’re proud.',
     image:
-    'https://images.unsplash.com/photo-1485988412941-77a35537dae4?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=772&q=80',
+        'https://images.unsplash.com/photo-1485988412941-77a35537dae4?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=772&q=80',
   ),
 ];

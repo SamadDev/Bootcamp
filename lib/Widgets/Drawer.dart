@@ -1,6 +1,6 @@
 import 'package:bootcamps/Pages/Authendication/ProfileEdit.dart';
-import 'package:bootcamps/Pages/Bootcamps/BootcampsScreen.dart';
 import 'package:bootcamps/Pages/Bootcamps/BootcampMe.dart';
+import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
 import 'package:bootcamps/Pages/Courses/CourseMy.dart';
 import 'package:bootcamps/Pages/Courses/CourseScreen.dart';
 import 'package:bootcamps/Providers/profile.dart';

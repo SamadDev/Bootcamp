@@ -1,10 +1,10 @@
 import 'package:bootcamps/Localization/language.dart';
+import 'package:bootcamps/Pages/Bootcamps/BootcampCoursess.dart';
 import 'package:bootcamps/Pages/Bootcamps/BootcampOfferScreen.dart';
-import 'package:bootcamps/Style/style.dart';
+import 'package:bootcamps/Widgets/TopBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:provider/provider.dart';
 
 import '../Bootcamps/BootcampCoursePopulate.dart';
@@ -21,29 +21,7 @@ class BootcampsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 40.0, left: 20, right: 20, bottom: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Home',
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                  Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          color: AppTheme.black2,
-                          borderRadius: BorderRadius.circular(60)),
-                      child: LineIcon.search(
-                        size: 30,
-                        color: AppTheme.black1,
-                      ))
-                ],
-              ),
-            ),
+            topBarWidget(context: context, name: 'Home', function: () {}),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Container(
@@ -64,7 +42,7 @@ class BootcampsScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0, right: 15, left: 15),
               child: Container(
-                height: 200,
+                height: 240,
                 child: BootcampCoursePopulate(
                   filter: 'averageView',
                 ),
@@ -75,12 +53,18 @@ class BootcampsScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0, right: 15, left: 15),
               child: Container(
-                height: 200,
+                height: 240,
                 child: BootcampCoursePopulate(
                   filter: 'createdAt',
                 ),
               ),
             ),
+            captionPadding(
+                context: context, caption: 'Courses', function: () {}),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10, right: 15, left: 15),
+              child: BootcampCourses(),
+            )
           ],
         ),
       ),

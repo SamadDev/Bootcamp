@@ -1,24 +1,22 @@
-import 'package:bootcamps/Pages/Bootcamps/BootcampsScreen.dart';
+import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
+import 'package:bootcamps/Pages/Courses/CourseScreen.dart';
+import 'package:bootcamps/Pages/Detail/DetailHomeScreen.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
 
-class MyHomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   List _screen = [
     BootcampsScreen(),
-    Container(
-      color: Colors.black,
-    ),
-    Container(
-      color: Colors.red,
-    ),
+    CourseScreen(),
+    DetailHomeScreen(),
     Container(
       color: Colors.green,
     )
@@ -36,38 +34,29 @@ class _MyHomePageState extends State<MyHomePage> {
         curve: Curves.decelerate,
         onItemSelected: (index) => setState(() => _currentIndex = index),
         items: <BottomNavyBarItem>[
-          BottomNavyBarItem(
-            activeColor: AppTheme.green,
-            inactiveColor: AppTheme.green,
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: LineIcon.swatchbook(),
-            activeColor: AppTheme.green,
-            inactiveColor: AppTheme.green,
-            title: Text('courses'),
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            activeColor: AppTheme.green,
-            inactiveColor: AppTheme.green,
-            icon: Icon(Icons.home_outlined),
-            title: Text('Users'),
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            activeColor: AppTheme.green,
-            inactiveColor: AppTheme.green,
-            icon: Icon(Icons.message),
-            title: Text(
-              'Message',
-            ),
-            textAlign: TextAlign.center,
-          ),
+          bottomNavyBarItem(
+              text: "HOme", icon: Icon(Icons.home_filled), context: context),
+          bottomNavyBarItem(
+              text: "Explore", icon: Icon(Icons.explore), context: context),
+          bottomNavyBarItem(
+              text: "Search", icon: LineIcon.search(), context: context),
+          bottomNavyBarItem(
+              text: "HOme", icon: Icon(Icons.dehaze), context: context),
         ],
       ),
     );
   }
+}
+
+BottomNavyBarItem bottomNavyBarItem({text, context, icon}) {
+  return BottomNavyBarItem(
+    icon: icon,
+    activeColor: AppTheme.green,
+    inactiveColor: AppTheme.green,
+    title: Text(
+      text,
+      style: Theme.of(context).textTheme.button,
+    ),
+    textAlign: TextAlign.center,
+  );
 }

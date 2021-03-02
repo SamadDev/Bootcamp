@@ -1,19 +1,19 @@
+import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'file:///C:/Users/FENGS/AndroidStudioProjects/bootcamps/lib/Pages/Courses/CourseEnrollScreen.dart';
 
-Widget dropDownWidget(
-    {List list, Function function, String label, String valueIni}) {
+Widget dropDownWidget({List list, Function function, String label, String valueIni}) {
   return DropdownButtonFormField(
     decoration: textFormField(label, label),
     onChanged: function,
     value: valueIni,
     items: list
         .map((e) => DropdownMenuItem(
-              value: e,
-              child: Text(e),
-            ))
+      value: e,
+      child: Text(e),
+    ))
         .toList(),
   );
 }
@@ -28,9 +28,9 @@ Widget dropDownButton({List list, Function function, String select}) {
       value: select,
       items: list
           .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(e),
-              ))
+        value: e,
+        child: Text(e),
+      ))
           .toList(),
     ),
   );
@@ -85,10 +85,10 @@ Widget gestureDetectorWidget({Function function, String text, double width}) {
         ),
         child: Center(
             child: Text(
-          text,
-          style: GoogleFonts.sourceSerifPro(
-              fontWeight: FontWeight.bold, fontSize: 20),
-        )),
+              text,
+              style: GoogleFonts.sourceSerifPro(
+                  fontWeight: FontWeight.bold, fontSize: 20),
+            )),
       ),
     ),
   );
@@ -99,23 +99,23 @@ void enrollDialog(BuildContext context) {
   showDialog(
       context: context,
       builder: (context) => AlertDialog(
-            title: Center(
-                child: Text(
+        title: Center(
+            child: Text(
               "Pleas fill info",
               style: Theme.of(context).textTheme.subtitle1,
             )),
-            actions: [
-              FlatButton.icon(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: Icon(Icons.send),
-                color: Colors.lightBlueAccent,
-                label: Text("Send"),
-              )
-            ],
-            content: Container(height: 220, width: 300, child: EnrollScreen()),
-          ));
+        actions: [
+          FlatButton.icon(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.send),
+            color: Colors.lightBlueAccent,
+            label: Text("Send"),
+          )
+        ],
+        content: Container(height: 220, width: 300, child: EnrollScreen()),
+      ));
 }
 
 InputDecoration textFormField(String text, String label) {
@@ -187,8 +187,8 @@ class FloatingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55,
-      width: 150,
+      height: 45,
+      width: 135,
       child: FloatingActionButton(
         elevation: 5,
         onPressed: onTab,
@@ -198,7 +198,7 @@ class FloatingWidget extends StatelessWidget {
         heroTag: null,
         child: Ink(
           decoration: BoxDecoration(
-            color: Colors.lightBlueAccent,
+            color: AppTheme.green,
             borderRadius: BorderRadius.circular(75.0),
           ),
           child: Container(
@@ -212,7 +212,7 @@ class FloatingWidget extends StatelessWidget {
               children: [
                 Icon(
                   leadingIcon,
-                  color: Colors.white,
+                  color: AppTheme.white,
                 ),
                 SizedBox(
                   width: 80,
@@ -220,7 +220,7 @@ class FloatingWidget extends StatelessWidget {
                     txt,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white,
                       fontSize: 15,
                     ),
                   ),

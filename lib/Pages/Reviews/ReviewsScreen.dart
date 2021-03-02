@@ -18,13 +18,6 @@ class ReviewsScreen extends StatelessWidget {
     final review = Provider.of<Review>(context, listen: false);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Center(
-              child: Text(
-            "Reviews",
-            style: Theme.of(context).textTheme.headline2,
-          )),
-        ),
         body: Review.count == 0
             ? isEmptyList()
             : FutureBuilder(

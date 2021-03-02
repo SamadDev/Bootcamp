@@ -99,7 +99,7 @@ class AppTheme {
           iconTheme: IconThemeData(color: Colors.white),
           color: Colors.white10,
           textTheme:
-          TextTheme(title: _headline2.copyWith(color: Colors.white))));
+              TextTheme(title: _headline2.copyWith(color: Colors.white))));
 
   //Dark Text theme of the application
   static final TextTheme darkTextTheme = TextTheme(
@@ -124,6 +124,7 @@ class AppTheme {
     headline4: _headline4,
     headline5: _headline5,
     headline6: _headline6,
+    caption: _caption,
     button: _button,
     subtitle1: _subtitle1,
     subtitle2: _subtitle2,
@@ -163,38 +164,66 @@ class AppTheme {
     fontSize: 15,
   );
   static final TextStyle _headline6 = TextStyle(
-    fontFamily: GoogleFonts.roboto().fontFamily,
+    fontFamily: GoogleFonts
+        .roboto()
+        .fontFamily,
     color: AppTheme.black1.withOpacity(0.25),
     fontWeight: FontWeight.w700,
     fontSize: 15,
   );
 
+  static final TextStyle _caption = TextStyle(
+    fontFamily: GoogleFonts
+        .roboto()
+        .fontFamily,
+    color: AppTheme.orange,
+    fontWeight: FontWeight.w700,
+    fontSize: 20,
+  );
+
   static final TextStyle _button = TextStyle(
-    fontFamily: GoogleFonts.roboto().fontFamily,
+    fontFamily: GoogleFonts
+        .roboto()
+        .fontFamily,
     color: AppTheme.white,
     fontWeight: FontWeight.w400,
     fontSize: 17,
   );
 
   static final TextStyle _subtitle1 = TextStyle(
-    fontFamily: GoogleFonts.roboto().fontFamily,
+    fontFamily: GoogleFonts
+        .roboto()
+        .fontFamily,
     color: AppTheme.green,
     fontWeight: FontWeight.w400,
-    height: 0.4,
     fontSize: 14,
   );
   static final TextStyle _subtitle2 = TextStyle(
-    fontFamily: "Oriya-MN",
-    color: AppTheme.subTitleTextColor.withOpacity(0.5),
-    fontSize: 18,
+    fontFamily: GoogleFonts
+        .roboto()
+        .fontFamily,
+    fontWeight: FontWeight.w500,
+    color: AppTheme.black1.withOpacity(0.5),
+    fontSize: 14,
   );
 
   static final TextStyle _bodyText1 = TextStyle(
-    fontFamily: "Oriya-MN",
-    color: AppTheme.body,
-    fontWeight: FontWeight.w100,
+    fontFamily: GoogleFonts
+        .roboto()
+        .fontFamily,
+    color: AppTheme.black1,
+    fontWeight: FontWeight.w400,
     fontSize: 15,
   );
 
-  static final TextStyle _bodyText2 = TextStyle();
+  static final TextStyle _bodyText2 = TextStyle(
+    fontFamily: GoogleFonts
+        .roboto()
+        .fontFamily,
+    color: AppTheme.black1.withOpacity(0.7),
+    height: 1.3,
+    wordSpacing: 1.2,
+    fontWeight: FontWeight.w500,
+    fontSize: 15,
+  );
 }

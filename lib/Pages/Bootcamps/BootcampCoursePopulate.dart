@@ -55,16 +55,16 @@ class BootcampCoursePopulate extends StatelessWidget {
             } else
               return Consumer<Course>(
                   builder: (context, course, _) => SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: course.courseList
-                          .map<Widget>((e) => ChangeNotifierProvider.value(
-                        child: CourseWidget(),
-                        value: e,
-                      ))
-                          .toList(),
-                    ),
-                  ));
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: course.courseList
+                              .map<Widget>((e) => ChangeNotifierProvider.value(
+                                    child: CourseWidget(),
+                                    value: e,
+                                  ))
+                              .toList(),
+                        ),
+                      ));
           }),
     );
   }
@@ -83,7 +83,7 @@ class CourseWidget extends StatelessWidget {
             color: AppTheme.black2,
             borderRadius: BorderRadius.circular(10),
           ),
-          height: 200,
+          height: 240,
           width: 170,
           child: Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
@@ -91,67 +91,87 @@ class CourseWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 5,
+                  flex: 6,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)),
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(2),
+                        bottomLeft: Radius.circular(2)),
                     child: CachedNetworkImage(
                       imageUrl: data.photo,
                       fit: BoxFit.fill,
-                      placeholder: (ctx, snap) => Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: AppTheme.orange,
-                          strokeWidth: 1,
-                        ),
-                      ),
+                      placeholder: (ctx, snap) =>
+                          Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: AppTheme.orange,
+                              strokeWidth: 1,
+                            ),
+                          ),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: Text(
-                    data.title,
-                    maxLines: 1,
-                    style: Theme.of(context).textTheme.headline4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Text(
+                      data.title,
+                      maxLines: 1,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText1,
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Chip(
-                        labelStyle: Theme.of(context).textTheme.subtitle1,
-                        labelPadding: EdgeInsets.zero,
-                        backgroundColor: AppTheme.black2.withOpacity(0.4),
-                        label: Text(
-                          '\$ ${data.tuition.toString()}',
-                          maxLines: 1,
-                        ),
-                      ),
-                      Spacer(),
-                      Chip(
-                        labelStyle: Theme.of(context).textTheme.subtitle1,
-                        labelPadding: EdgeInsets.zero,
-                        backgroundColor: AppTheme.black2.withOpacity(0.4),
-                        label: Row(
-                          children: [
-                            Text(
-                              '5',
-                            ),
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Icon(
-                                Icons.star,
-                                color: AppTheme.green,
-                                size: 15,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Text(
+                      '${data.tuition.toString()} \$',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText1,
+                      maxLines: 1,
+                    ),
                   ),
                 ),
+                Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            '1.2 K',
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline6,
+                          ),
+                          Icon(
+                            Icons.visibility,
+                            color: AppTheme.black4,
+                            size: 18,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "5",
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline6,
+                          ),
+                          Icon(
+                            Icons.star,
+                            color: AppTheme.black4,
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                    ))
               ],
             ),
           ),

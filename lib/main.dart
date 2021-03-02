@@ -1,6 +1,5 @@
-import 'package:bootcamps/Pages/Authendication/SplashScreen.dart';
 import 'package:bootcamps/Pages/Authendication/UserOrPublisher.dart';
-import 'package:bootcamps/Pages/Bootcamps/BootcampCoursess.dart';
+import 'package:bootcamps/Providers/CategoryC.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +11,7 @@ import './Pages/Authendication/SignUPScreen.dart';
 import './Pages/Bootcamps/BootcampDetailScreen.dart';
 import './Pages/Bootcamps/BootcampMe.dart';
 import './Pages/Bootcamps/BootcampPostScreen.dart';
-import './Pages/Bootcamps/BootcampsScreen.dart';
+import './Pages/Bootcamps/BootcampsHomeScreen.dart';
 import './Pages/Courses/CourseDetailScreen.dart';
 import './Pages/Courses/CourseFilterScreen.dart';
 import './Pages/Courses/CourseMy.dart';
@@ -21,12 +20,13 @@ import './Pages/Courses/CourseScreen.dart';
 import './Pages/Reviews/ReviewPostScreen.dart';
 import './Pages/Reviews/ReviewsScreen.dart';
 import './Providers/Bootcamp.dart';
+import './Providers/BootcampCategory.dart';
 import './Providers/Course.dart';
 import './Providers/Reviews.dart';
 import './Providers/View&like.dart';
-import './Providers/category.dart';
 import './Providers/profile.dart';
 import './Style/style.dart';
+import 'Pages/Authendication/SplashScreen.dart';
 import 'Providers/LogIn.dart';
 
 void main() {
@@ -52,6 +52,7 @@ class ProviderWidget extends StatelessWidget {
         ChangeNotifierProvider.value(value: View()),
         ChangeNotifierProvider.value(value: Language()),
         ChangeNotifierProvider.value(value: Category()),
+        ChangeNotifierProvider.value(value: CourseC())
       ],
       child: MyApp(),
     );
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
     final language = Provider.of<Language>(context);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Color(0xffeeeeee),
-      statusBarColor: Color(0xffeeeeee), // status bar color
+      statusBarColor: Colors.transparent, // status bar color
     ));
     return MaterialApp(
       builder: (ctx, child) {
@@ -84,7 +85,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: language.words['bootcamp'],
       theme: AppTheme.lightTheme,
-      home: BootcampCourses(),
+      home: CheckScreens(),
       routes: {
         LoginScreen.route: (context) => LoginScreen(),
         SingUPScreen.route: (context) => SingUPScreen(),
