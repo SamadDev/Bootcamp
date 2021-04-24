@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
-import 'package:bootcamps/Providers/LogIn.dart';
+import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -86,5 +86,11 @@ class Profile with ChangeNotifier {
     } catch (error) {
       showErrorDialog(error, context);
     }
+  }
+
+  bool isLoading = false;
+
+  void changeState() {
+    isLoading = !isLoading;
   }
 }

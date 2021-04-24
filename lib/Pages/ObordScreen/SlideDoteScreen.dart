@@ -1,17 +1,19 @@
+import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/material.dart';
 
 class SlideDots extends StatelessWidget {
   final bool isActive;
+
   SlideDots(this.isActive);
 
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 30),
       margin: const EdgeInsets.symmetric(horizontal: 10),
-      height: isActive ? 12 : 8,
-      width: isActive ? 12 : 8,
+      height: 3,
+      width: isActive ? 20 : 8,
       decoration: BoxDecoration(
-        color: isActive ? Theme.of(context).primaryColor : Colors.grey,
+        color: isActive ? AppTheme.green : AppTheme.black4,
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     );

@@ -12,15 +12,10 @@ class ViewsScreen extends StatefulWidget {
 }
 
 class _ViewsScreenState extends State<ViewsScreen> {
-  initState() {
-    super.initState();
-    Provider.of<View>(context, listen: false)
-        .postView(context: context, newView: 1);
-  }
-
   Widget build(BuildContext context) {
-    final view =
-        Provider.of<View>(context, listen: false).fitchAllViews(context);
+    final view = Provider.of<View>(context, listen: false)
+        .fitchAllViews(context: context, userId: '5ff0cc8d54b66228f08e994c');
+
     return Scaffold(
       appBar: AppBar(
         title: Center(

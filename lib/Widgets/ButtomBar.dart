@@ -1,12 +1,15 @@
 import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
 import 'package:bootcamps/Pages/Courses/CourseScreen.dart';
-import 'package:bootcamps/Pages/Detail/DetailHomeScreen.dart';
+import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
 import 'package:bootcamps/Style/style.dart';
+import 'package:bootcamps/Widgets/Drawer.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const route = "/HomeScreen";
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -16,10 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List _screen = [
     BootcampsScreen(),
     CourseScreen(),
-    DetailHomeScreen(),
-    Container(
-      color: Colors.green,
-    )
+    CourseSearch(),
+    MainDrawer()
   ];
 
   @override
@@ -28,20 +29,20 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _screen[_currentIndex],
       bottomNavigationBar: BottomNavyBar(
         backgroundColor: AppTheme.bg,
-        containerHeight: 55,
+        containerHeight: 60,
         selectedIndex: _currentIndex,
-        itemCornerRadius: 25,
+        itemCornerRadius: 20,
         curve: Curves.decelerate,
         onItemSelected: (index) => setState(() => _currentIndex = index),
         items: <BottomNavyBarItem>[
           bottomNavyBarItem(
-              text: "HOme", icon: Icon(Icons.home_filled), context: context),
+              text: "Home", icon: Icon(Icons.home_filled), context: context),
           bottomNavyBarItem(
               text: "Explore", icon: Icon(Icons.explore), context: context),
           bottomNavyBarItem(
               text: "Search", icon: LineIcon.search(), context: context),
           bottomNavyBarItem(
-              text: "HOme", icon: Icon(Icons.dehaze), context: context),
+              text: "More", icon: Icon(Icons.dehaze), context: context),
         ],
       ),
     );
@@ -52,10 +53,10 @@ BottomNavyBarItem bottomNavyBarItem({text, context, icon}) {
   return BottomNavyBarItem(
     icon: icon,
     activeColor: AppTheme.green,
-    inactiveColor: AppTheme.green,
+    inactiveColor: AppTheme.black1,
     title: Text(
       text,
-      style: Theme.of(context).textTheme.button,
+      style: Theme.of(context).textTheme.bodyText1,
     ),
     textAlign: TextAlign.center,
   );

@@ -1,8 +1,10 @@
 import 'package:bootcamps/Pages/Authendication/SignUPScreen.dart';
-import 'package:bootcamps/Providers/Bootcamp.dart';
-import 'package:bootcamps/Providers/LogIn.dart';
+import 'package:bootcamps/Providers/Auth.dart';
+import 'package:bootcamps/Providers/state.dart';
 import 'package:bootcamps/Style/style.dart';
+import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:bootcamps/Widgets/Authendication/TextFieldAuthendication.dart';
+import 'package:bootcamps/Widgets/Authendication/UserRole.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +18,11 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final TextEditingController role = TextEditingController();
+
   Widget build(BuildContext context) {
-    var isLoading = Provider.of<BootCamp>(context);
+    var isLoading = Provider.of<StateChange>(context);
+    var isShow = Provider.of<StateChange>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -42,21 +47,36 @@ class LoginScreen extends StatelessWidget {
                   ),
                   textField(
                       context, "Email", Icons.email, TextInputType.emailAddress,
-                      textCont: email),
+                      textCont: email, isObscure: false),
                   textField(context, "password", Icons.lock, TextInputType.text,
-                      textCont: password, suffixIcon: Icons.visibility),
-                  textField(context, "role", Icons.people, TextInputType.text),
+                      textCont: password,
+                      isObscure: isShow.isShow,
+                      iconButton: IconButton(
+                        icon: isShow.isShow
+                            ? Icon(Icons.visibility_off)
+                            : Icon(Icons.visibility),
+                        onPressed: () {
+                          Provider.of<StateChange>(context, listen: false)
+                              .changeIsShow();
+                        },
+                      )),
+                  roleType(context: context, text: userRole),
                   SizedBox(
                     height: 100,
                   ),
                   isLoading.isLoading
                       ? CircularProgressIndicator()
                       : GestureDetector(
-                          onTap: () async {
-                            isLoading.changeIsLoading();
-                            await Provider.of<Auth>(context, listen: false)
-                                .logIn(email.text, password.text, context);
-                          },
+                    onTap: () async {
+                      if (email.text == '' || password.text == '') {
+                        showEmpty(context);
+                      } else {
+                        isLoading.changeIsLoading();
+                        await Provider.of<Auth>(context, listen: false)
+                            .logIn(email.text, password.text, userRole,
+                            context);
+                      }
+                    },
                           child: Wrap(
                             crossAxisAlignment: WrapCrossAlignment.center,
                             alignment: WrapAlignment.center,
@@ -88,7 +108,11 @@ class LoginScreen extends StatelessWidget {
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.of(context)
-                                          .pushNamed(SingUPScreen.route);
+                                          .push(MaterialPageRoute(
+                                          builder: (ctx) =>
+                                              SingUPScreen(
+                                                userRole: userRole,
+                                              )));
                                     },
                                     child: Text(
                                       'Sign UP',

@@ -1,134 +1,235 @@
+import 'dart:io';
 import 'package:bootcamps/Pages/Authendication/LoginScreen.dart';
-import 'package:bootcamps/Providers/Bootcamp.dart';
-import 'package:bootcamps/Providers/LogIn.dart';
+import 'package:bootcamps/Providers/Auth.dart';
+import 'package:bootcamps/Providers/state.dart';
 import 'package:bootcamps/Style/style.dart';
+import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:bootcamps/Widgets/Authendication/TextFieldAuthendication.dart';
+import 'package:bootcamps/Widgets/Authendication/UserRole.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class SingUPScreen extends StatelessWidget {
-  static const route = "/SignUPScreen";
-
+class SingUPScreen extends StatefulWidget {
+  static const route = "/SignUpScreen";
   final userRole;
 
   SingUPScreen({this.userRole});
 
+  _SingUPScreenState createState() => _SingUPScreenState();
+}
+
+class _SingUPScreenState extends State<SingUPScreen> {
+  File _storedImage;
+  String _image;
+
+  Future<void> takePicture() async {
+    File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _storedImage = imageFile;
+    });
+  }
+
+  bool disable = false;
+
+  Future _getUpload() async {
+    final StorageReference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child(DateTime.now().toString());
+    final StorageUploadTask task = firebaseStorageRef.putFile(_storedImage);
+
+    var downUrl = await (await task.onComplete).ref.getDownloadURL();
+    var url = downUrl.toString();
+    var urlConcat = (url + "jpg");
+    print(urlConcat);
+
+    setState(() {
+      _image = urlConcat;
+    });
+  }
+
   final TextEditingController name = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
-  final TextEditingController confirmPassword = TextEditingController();
+  final TextEditingController userName = TextEditingController();
 
   Widget build(BuildContext context) {
-    var isLoading = Provider.of<BootCamp>(context);
+    var isLoading = Provider.of<StateChange>(context);
+    var isShow = Provider.of<StateChange>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              CircleAvatar(
-                  radius: 60,
-                  child: Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      SvgPicture.asset("assets/images/person.svg"),
-                      Container(
-                        margin: EdgeInsets.all(7),
-                        child: Icon(
-                          Icons.add_a_photo,
-                          color: AppTheme.black1,
-                        ),
-                      )
-                    ],
-                  )),
-              Container(
-                height: MediaQuery.of(context).size.height / 1.1,
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(top: 20),
-                child: Column(
-                  children: <Widget>[
-                    textField(context, "name", Icons.person,
-                        TextInputType.emailAddress,
-                        textCont: name),
-                    textField(context, "Email", Icons.email,
-                        TextInputType.emailAddress,
-                        textCont: email),
-                    textField(
-                        context, "password", Icons.vpn_key, TextInputType.text,
-                        textCont: password, suffixIcon: Icons.visibility),
-                    textField(context, "confirm password", Icons.vpn_key,
-                        TextInputType.text,
-                        textCont: confirmPassword,
-                        suffixIcon: Icons.visibility),
-                    textField(
-                        context, "role", Icons.people, TextInputType.text),
-                    SizedBox(
-                      height: 30,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 130,
+              width: 130,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(60)),
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  _storedImage == null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(60),
+                          child: SvgPicture.asset("assets/images/person.svg"))
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(60),
+                          child: Image.file(_storedImage)),
+                  Container(
+                    child: IconButton(
+                      icon: Icon(Icons.add_a_photo),
+                      onPressed: () {
+                        takePicture();
+                      },
+                      color: AppTheme.black1,
                     ),
-                    isLoading.isLoading
-                        ? CircularProgressIndicator()
-                        : GestureDetector(
-                            onTap: () async {
+                  )
+                ],
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height / 1.1,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(top: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  textField(context, "name", Icons.person, TextInputType.text,
+                      textCont: name, isObscure: false),
+                  textField(
+                      context, "user name", Icons.person, TextInputType.text,
+                      textCont: userName, isObscure: false),
+                  textField(
+                      context, "Email", Icons.email, TextInputType.emailAddress,
+                      textCont: email, isObscure: false),
+                  textField(
+                      context, "password", Icons.vpn_key, TextInputType.text,
+                      textCont: password,
+                      isObscure: isShow.isShow,
+                      iconButton: IconButton(
+                        icon: isShow.isShow
+                            ? Icon(Icons.visibility_off)
+                            : Icon(Icons.visibility),
+                        onPressed: () {
+                          Provider.of<StateChange>(context, listen: false)
+                              .changeIsShow();
+                        },
+                      )),
+                  roleType(context: context, text: widget.userRole),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  isLoading.isLoading
+                      ? CircularProgressIndicator()
+                      : GestureDetector(
+                          onTap: () async {
+                            if (name.text == '' ||
+                                email.text == '' ||
+                                _storedImage == null ||
+                                password.text == '' ||
+                                userName.text == '') {
+                              showEmpty(context);
+                            } else {
                               isLoading.changeIsLoading();
+                              await _getUpload();
                               await Provider.of<Auth>(context, listen: false)
-                                  .logIn(email.text, password.text, context);
-                            },
-                            child: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              alignment: WrapAlignment.center,
-                              direction: Axis.vertical,
-                              spacing: 10,
-                              children: [
-                                Container(
-                                  height: 55,
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.2,
-                                  decoration: BoxDecoration(
-                                      color: AppTheme.green,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15))),
-                                  child: Center(
-                                    child: Text(
-                                      'Sign UP',
-                                      style: Theme.of(context).textTheme.button,
-                                    ),
+                                  .signUp(
+                                      name: name.text,
+                                      email: email.text,
+                                      userRole: widget.userRole,
+                                      password: password.text,
+                                      photo: _image,
+                                      userName: userName.text,
+                                      context: context);
+                            }
+                          },
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            alignment: WrapAlignment.center,
+                            direction: Axis.vertical,
+                            spacing: 10,
+                            children: [
+                              Container(
+                                height: 55,
+                                width: MediaQuery.of(context).size.width / 1.2,
+                                decoration: BoxDecoration(
+                                    color: AppTheme.green,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15))),
+                                child: Center(
+                                  child: Text(
+                                    'Sign UP',
+                                    style: Theme.of(context).textTheme.button,
                                   ),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'have an account?',
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'have an account?',
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (ctx) => LoginScreen(
+                                                    userRole: widget.userRole,
+                                                  )));
+                                    },
+                                    child: Text(
+                                      'Log In',
                                       style:
-                                          Theme.of(context).textTheme.headline6,
+                                          Theme.of(context).textTheme.headline5,
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context)
-                                            .pushNamed(LoginScreen.route);
-                                      },
-                                      child: Text(
-                                        'Log In',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          )
-                  ],
-                ),
-              )
-            ],
-          ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
   }
+}
+
+Widget profile({storedImage, takePicture}) {
+  return Container(
+    height: 130,
+    width: 130,
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(60)),
+    child: Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        storedImage == null
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(60),
+                child: SvgPicture.asset("assets/images/person.svg"))
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(60),
+                child: Image.file(storedImage)),
+        Container(
+          child: IconButton(
+            icon: Icon(Icons.add_a_photo),
+            onPressed: () {
+              takePicture();
+            },
+            color: AppTheme.black1,
+          ),
+        )
+      ],
+    ),
+  );
 }

@@ -1,9 +1,11 @@
-import 'package:bootcamps/Pages/Bootcamps/BootcamScreen.dart';
-import 'package:bootcamps/Pages/Bootcamps/BootcampCoursess.dart';
-import 'package:bootcamps/Pages/Courses/CourseCategory.dart';
+import 'package:bootcamps/Pages/Bootcamps/CoursessVertical.dart';
+import 'package:bootcamps/Pages/Bootcamps/DashbordScreen.dart';
+import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
+import 'package:bootcamps/Style/style.dart';
 import 'package:bootcamps/Widgets/TopBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icon.dart';
 
 class CourseScreen extends StatelessWidget {
   static const route = '/CourseScreen';
@@ -19,19 +21,22 @@ class CourseScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            topBarWidget(name: 'Courses', function: () {}, context: context),
-            Container(height: 150, child: BootcampScreen()),
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 25, bottom: 5, right: 5, left: 5),
-              child: Container(
-                height: 180,
-                child: CourseCategory(),
-              ),
+            topBarWidget(
+                name: 'Courses',
+                icon: LineIcon.search(
+                  size: 30,
+                  color: AppTheme.black1,
+                ),
+                function: () {
+                  Navigator.of(context).pushNamed(CourseSearch.route);
+                },
+                context: context),
+            SizedBox(
+              height: 15,
             ),
+            Container(height: 130, child: BootcampScreen()),
             Padding(
-              padding:
-                  EdgeInsets.only(left: 10, right: 10, top: 30, bottom: 10),
+              padding: EdgeInsets.only(left: 10, right: 10, top: 30, bottom: 0),
               child: Text(
                 'Explore',
                 style: Theme.of(context).textTheme.headline3,

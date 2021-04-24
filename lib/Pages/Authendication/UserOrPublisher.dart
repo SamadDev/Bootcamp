@@ -1,5 +1,4 @@
 import 'package:bootcamps/Pages/Authendication/LoginScreen.dart';
-import 'package:bootcamps/Pages/Authendication/SignUPScreen.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,7 @@ class UserOrPublisher extends StatelessWidget {
                   child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SingUPScreen(
+                      builder: (context) => LoginScreen(
                             userRole: "user",
                           )));
                 },
@@ -42,26 +41,35 @@ class UserOrPublisher extends StatelessWidget {
               )),
               Expanded(
                   child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          LoginScreen(userRole: "publisher")));
-                },
-                child: Container(
-                    color: AppTheme.green,
-                    child: RotatedBox(
-                      quarterTurns: 1,
-                      child: Center(
-                        child: Text(
-                          'Publisher',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: AppTheme.white,
-                              fontFamily: GoogleFonts.roboto().fontFamily,
-                              fontSize: 50),
-                        ),
-                      ),
-                    )),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              LoginScreen(userRole: "publisher")));
+                    },
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) =>
+                                LoginScreen(userRole: "publisher")));
+                      },
+                      child: Container(
+                          color: AppTheme.green,
+                          child: RotatedBox(
+                            quarterTurns: 1,
+                            child: Center(
+                              child: Text(
+                                'Publisher',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: AppTheme.white,
+                                    fontFamily: GoogleFonts
+                                        .roboto()
+                                        .fontFamily,
+                                    fontSize: 50),
+                              ),
+                            ),
+                          )),
+                    ),
               ))
             ],
           ),

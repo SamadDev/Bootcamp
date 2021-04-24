@@ -1,8 +1,7 @@
 import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icon.dart';
 
-Widget topBarWidget({context, name, function}) {
+Widget topBarWidget({context, name, function, icon}) {
   return Padding(
     padding: const EdgeInsets.only(top: 40.0, left: 20, right: 20, bottom: 15),
     child: Row(
@@ -20,10 +19,7 @@ Widget topBarWidget({context, name, function}) {
               decoration: BoxDecoration(
                   color: AppTheme.black2,
                   borderRadius: BorderRadius.circular(60)),
-              child: LineIcon.search(
-                size: 30,
-                color: AppTheme.black1,
-              )),
+              child: icon),
         )
       ],
     ),

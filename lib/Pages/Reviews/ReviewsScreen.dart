@@ -35,16 +35,14 @@ class ReviewsScreen extends StatelessWidget {
                                     child: ReviewWidget())));
                 },
               ),
-        floatingActionButton: userRole == 'publisher'
-            ? null
-            : FloatingWidget(
-                txt: 'Feedback',
-                leadingIcon: Icons.add,
-                onTab: () {
-                  Navigator.of(context)
-                      .pushNamed(ReviewPostScreen.route, arguments: courseId);
-                },
-              ));
+        floatingActionButton: FloatingWidget(
+          txt: 'Feedback',
+          leadingIcon: Icons.add,
+          onTab: () {
+            Navigator.of(context)
+                .pushNamed(ReviewPostScreen.route, arguments: courseId);
+          },
+        ));
   }
 }
 
@@ -115,8 +113,8 @@ Widget isEmptyList() {
     child: Align(
       alignment: Alignment.centerRight,
       child: Container(
-        height: 400,
-        width: 200,
+        height: 300,
+        width: 125,
         child: Center(
           child: SvgPicture.asset('assets/images/empty.svg'),
         ),

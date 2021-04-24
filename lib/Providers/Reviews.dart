@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bootcamps/Pages/Reviews/ReviewsScreen.dart';
-import 'package:bootcamps/Providers/LogIn.dart';
+import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;

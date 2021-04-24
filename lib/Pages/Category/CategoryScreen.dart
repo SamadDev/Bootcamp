@@ -1,5 +1,5 @@
-import 'package:bootcamps/Pages/Bootcamps/BootcampCoursePopulate.dart';
-import 'package:bootcamps/Providers/BootcampCategory.dart';
+import 'package:bootcamps/Pages/Bootcamps/CoursePopulate.dart';
+import 'package:bootcamps/Providers/Category.dart';
 import 'package:bootcamps/Providers/Course.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/material.dart';
@@ -7,21 +7,37 @@ import 'package:line_icons/line_icon.dart';
 import 'package:provider/provider.dart';
 
 class CategoryScreen extends StatefulWidget {
+  final id;
+  final title;
+
+  CategoryScreen({this.title, this.id});
+
+  static const route = "/CategoryScreen";
+
   @override
   _CategoryScreenState createState() => _CategoryScreenState();
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
-    var _value = 0;
+    final course = Provider.of<Course>(context, listen: false);
+    final category = Provider.of<Category>(context, listen: false);
+    final technology = course.findCategory("Technology");
+    final business = course.findCategory("Business");
+    final language = course.findCategory("Language");
+    final sport = course.findCategory("Sport");
+    final art = course.findCategory("Art");
+    final fitness = course.findCategory("Fitness");
 
-    final categoryList = Provider.of<Category>(context).categoryList;
+    final categoryList = category.categoryList;
     List _tabs = categoryList
         .map<Widget>((e) => Tab(
-              child: Text(e.type),
+              child: Text(e['title']),
             ))
         .toList();
+
     return DefaultTabController(
+      initialIndex: int.parse(widget.id),
       length: categoryList.length,
       child: Scaffold(
         appBar: AppBar(
@@ -35,7 +51,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     color: AppTheme.black2,
                     borderRadius: BorderRadius.circular(60)),
                 child: Icon(
-                  Icons.filter_list,
+                  Icons.tune,
                   size: 25,
                 ),
               ),
@@ -43,13 +59,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ],
           elevation: 0,
           bottom: TabBar(
-            onTap: (value) {
-              print(value);
-              setState(() {
-                _value = value;
-              });
-              print(_value);
-            },
             indicatorColor: AppTheme.green,
             unselectedLabelColor: AppTheme.black1.withOpacity(0.5),
             labelColor: AppTheme.green,
@@ -64,35 +73,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
             SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                margin: EdgeInsets.zero,
-                decoration: BoxDecoration(
-                  color: AppTheme.black2,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                height: 50,
-                child: TextField(
-                  style: Theme.of(context).textTheme.bodyText1,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      prefixIcon: RotatedBox(
-                        quarterTurns: 3,
-                        child: LineIcon.search(
-                          size: 35,
-                          color: AppTheme.black4,
-                        ),
-                      ),
-                      hintText: 'Search to ..',
-                      hintStyle: Theme.of(context).textTheme.headline6),
-                ),
-              ),
-            ),
             Expanded(
               child: FutureBuilder(
                   future: Provider.of<Course>(context, listen: false)
-                      .fitchAllCourse('createAt'),
+                      .fitchAllCourse(),
                   builder: (context, snap) {
                     if (snap.connectionState == ConnectionState.waiting) {
                       return Center(
@@ -103,18 +87,247 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       );
                     } else
                       return Consumer<Course>(
-                          builder: (context, course, _) => GridView.builder(
-                              itemCount: course.courseList.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio: 0.8,
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 5,
-                                      mainAxisSpacing: 5),
-                              itemBuilder: (ctx, i) =>
-                                  ChangeNotifierProvider.value(
-                                      value: course.courseList[i],
-                                      child: CourseWidget())));
+                          builder: (ctx, course, _) => TabBarView(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 80,
+                                        child: searchWidget(
+                                            context: context,
+                                            onChanged: (value) {
+                                              course.cateSearchCourse(
+                                                  value, technology);
+                                            }),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 800,
+                                          child: GridView.builder(
+                                              itemCount: course
+                                                      .cateSearch.isEmpty
+                                                  ? technology.length
+                                                  : course.cateSearch.length,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                      childAspectRatio: 0.8,
+                                                      crossAxisCount: 2,
+                                                      crossAxisSpacing: 5,
+                                                      mainAxisSpacing: 5),
+                                              itemBuilder: (ctx, i) =>
+                                                  course.cateSearch.isEmpty
+                                                      ? CourseWidget(
+                                                          data: technology[i],
+                                                        )
+                                                      : CourseWidget(
+                                                          data: course
+                                                              .cateSearch[i],
+                                                        )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  //______________________________
+
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 80,
+                                        child: searchWidget(
+                                            context: context,
+                                            onChanged: (value) {
+                                              course.cateSearchCourse(
+                                                  value, business);
+                                            }),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 800,
+                                          child: GridView.builder(
+                                              itemCount: course
+                                                      .cateSearch.isEmpty
+                                                  ? business.length
+                                                  : course.cateSearch.length,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                      childAspectRatio: 0.8,
+                                                      crossAxisCount: 2,
+                                                      crossAxisSpacing: 5,
+                                                      mainAxisSpacing: 5),
+                                              itemBuilder: (ctx, i) =>
+                                                  course.cateSearch.isEmpty
+                                                      ? CourseWidget(
+                                                          data: business[i],
+                                                        )
+                                                      : CourseWidget(
+                                                          data: course
+                                                              .cateSearch[i],
+                                                        )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 80,
+                                        child: searchWidget(
+                                            context: context,
+                                            onChanged: (value) {
+                                              course.cateSearchCourse(
+                                                  value, language);
+                                            }),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 800,
+                                          child: GridView.builder(
+                                              itemCount: course
+                                                      .cateSearch.isEmpty
+                                                  ? language.length
+                                                  : course.cateSearch.length,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                      childAspectRatio: 0.8,
+                                                      crossAxisCount: 2,
+                                                      crossAxisSpacing: 5,
+                                                      mainAxisSpacing: 5),
+                                              itemBuilder: (ctx, i) =>
+                                                  course.cateSearch.isEmpty
+                                                      ? CourseWidget(
+                                                          data: language[i],
+                                                        )
+                                                      : CourseWidget(
+                                                          data: course
+                                                              .cateSearch[i],
+                                                        )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  //______________________________
+
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 80,
+                                        child: searchWidget(
+                                            context: context,
+                                            onChanged: (value) {
+                                              course.cateSearchCourse(
+                                                  value, sport);
+                                            }),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 800,
+                                          child: GridView.builder(
+                                              itemCount: course
+                                                      .cateSearch.isEmpty
+                                                  ? sport.length
+                                                  : course.cateSearch.length,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                      childAspectRatio: 0.8,
+                                                      crossAxisCount: 2,
+                                                      crossAxisSpacing: 5,
+                                                      mainAxisSpacing: 5),
+                                              itemBuilder: (ctx, i) =>
+                                                  course.cateSearch.isEmpty
+                                                      ? CourseWidget(
+                                                          data: sport[i],
+                                                        )
+                                                      : CourseWidget(
+                                                          data: course
+                                                              .cateSearch[i],
+                                                        )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  //--------------
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 80,
+                                        child: searchWidget(
+                                            context: context,
+                                            onChanged: (value) {
+                                              course.cateSearchCourse(
+                                                  value, art);
+                                            }),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 800,
+                                          child: GridView.builder(
+                                              itemCount: course
+                                                      .cateSearch.isEmpty
+                                                  ? art.length
+                                                  : course.cateSearch.length,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                      childAspectRatio: 0.8,
+                                                      crossAxisCount: 2,
+                                                      crossAxisSpacing: 5,
+                                                      mainAxisSpacing: 5),
+                                              itemBuilder: (ctx, i) =>
+                                                  course.cateSearch.isEmpty
+                                                      ? CourseWidget(
+                                                          data: art[i],
+                                                        )
+                                                      : CourseWidget(
+                                                          data: course
+                                                              .cateSearch[i],
+                                                        )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  //______________________________
+
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 80,
+                                        child: searchWidget(
+                                            context: context,
+                                            onChanged: (value) {
+                                              course.cateSearchCourse(
+                                                  value, fitness);
+                                            }),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 800,
+                                          child: GridView.builder(
+                                              itemCount: course
+                                                      .cateSearch.isEmpty
+                                                  ? fitness.length
+                                                  : course.cateSearch.length,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                      childAspectRatio: 0.8,
+                                                      crossAxisCount: 2,
+                                                      crossAxisSpacing: 5,
+                                                      mainAxisSpacing: 5),
+                                              itemBuilder: (ctx, i) =>
+                                                  course.cateSearch.isEmpty
+                                                      ? CourseWidget(
+                                                          data: fitness[i],
+                                                        )
+                                                      : CourseWidget(
+                                                          data: course
+                                                              .cateSearch[i],
+                                                        )),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ));
                   }),
             )
           ],
@@ -122,4 +335,33 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
     );
   }
+}
+
+Widget searchWidget({context, onChanged}) {
+  return Padding(
+    padding: const EdgeInsets.all(15.0),
+    child: Container(
+      margin: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        color: AppTheme.black2,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      height: 50,
+      child: TextField(
+        onChanged: onChanged,
+        style: Theme.of(context).textTheme.bodyText1,
+        decoration: InputDecoration(
+            border: InputBorder.none,
+            prefixIcon: RotatedBox(
+              quarterTurns: 3,
+              child: LineIcon.search(
+                size: 35,
+                color: AppTheme.black4,
+              ),
+            ),
+            hintText: 'Search to ..',
+            hintStyle: Theme.of(context).textTheme.headline6),
+      ),
+    ),
+  );
 }

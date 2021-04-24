@@ -148,7 +148,7 @@ class AppTheme {
   static final TextStyle _headline3 = TextStyle(
     fontFamily: GoogleFonts.roboto().fontFamily,
     color: AppTheme.black1,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
     fontSize: 20,
   );
   static final TextStyle _headline4 = TextStyle(

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:bootcamps/Pages/Bootcamps/BootcampsScreen.dart';
-import 'package:bootcamps/Providers/LogIn.dart';
+import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
+import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -51,7 +51,33 @@ class BootcampData with ChangeNotifier {
 }
 
 class BootCamp with ChangeNotifier {
-  List<BootcampData> _bootcamp = [];
+  List<BootcampData> _bootcamp = [
+    BootcampData(
+        id: 1,
+        name: "CFA Institute",
+        photo:
+            'https://uxpatterns.cfainstitute.org/Content/img/2x/logos/cfa-opengraph-share-image.png?v=MLQLdttsuCfKq1aOeD0NcuSafklAymbretz8uJZ25-s1'),
+    BootcampData(
+        id: 1,
+        name: "McGovern",
+        photo:
+            'https://opusdesign.us/wp-content/uploads/2019/08/p-mcgovern-institute-Logo-01.jpg'),
+    BootcampData(
+        id: 1,
+        name: "McGovern",
+        photo:
+            'https://opusdesign.us/wp-content/uploads/2019/08/p-mcgovern-institute-Logo-01.jpg'),
+    BootcampData(
+        id: 1,
+        name: "McGovern",
+        photo:
+            'https://opusdesign.us/wp-content/uploads/2019/08/p-mcgovern-institute-Logo-01.jpg'),
+    BootcampData(
+        id: 1,
+        name: "Kurdistan Institute",
+        photo:
+            'https://uxpatterns.cfainstitute.org/Content/img/2x/logos/cfa-opengraph-share-image.png?v=MLQLdttsuCfKq1aOeD0NcuSafklAymbretz8uJZ25-s1')
+  ];
 
   List<BootcampData> get bootcampList => _bootcamp;
 
@@ -159,7 +185,6 @@ class BootCamp with ChangeNotifier {
     } catch (error) {
       showErrorDialog(error, context);
     }
-    changeIsLoading();
   }
 
   //update bootcamp
@@ -235,17 +260,25 @@ class BootCamp with ChangeNotifier {
   //find by bootcampId
   BootcampData findById(String bootcampId) {
     var bootcampIndex =
-        _bootcamp.indexWhere((element) => element.id == bootcampId);
+    _bootcamp.indexWhere((element) => element.id == bootcampId);
     return _bootcamp.elementAt(bootcampIndex);
 
     // return _bootcamp.indexWhere((element) => element.id==bootcampId);
   }
 
-  //loading state
-  bool isLoading = false;
-
-  void changeIsLoading() {
-    isLoading = !isLoading;
-    notifyListeners();
-  }
+// //loading state
+// bool isLoading = false;
+//
+// void changeIsLoading() {
+//   isLoading = !isLoading;
+//   notifyListeners();
+// }
+//
+// //show or hide password
+// bool isShow = true;
+//
+// void changeIsShow() {
+//   isShow = !isShow;
+//   notifyListeners();
+// }
 }

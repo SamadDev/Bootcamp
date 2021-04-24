@@ -1,6 +1,5 @@
 import 'package:bootcamps/Pages/ObordScreen/slidedata.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SlideItem extends StatelessWidget {
   final int index;
@@ -9,28 +8,34 @@ class SlideItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
-          width: 200,
-          height: 200,
-          child: SvgPicture.asset(slideList[index].imageUrl),
+          height: 300,
+          width: double.infinity,
+          child: Image.asset(
+            onBoardList[index].imageUrl,
+            fit: BoxFit.fill,
+          ),
         ),
         SizedBox(
-          height: 40,
+          height: 200,
         ),
         Text(
-          slideList[index].title,
-          style: Theme.of(context).textTheme.headline2,
+          onBoardList[index].title,
+          style: Theme.of(context).textTheme.headline3,
         ),
         SizedBox(
           height: 10,
         ),
         Text(
-          slideList[index].description,
+          onBoardList[index].description,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyText1,
         ),
       ],
     );

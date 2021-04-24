@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bootcamps/Providers/LogIn.dart';
+import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -8,10 +8,9 @@ import 'package:http/http.dart' as http;
 class ViewData with ChangeNotifier {
   final id;
   int view;
-  int like;
   final love;
 
-  ViewData({this.love, this.id, this.view, this.like});
+  ViewData({this.love, this.id, this.view});
 }
 
 class View with ChangeNotifier {
@@ -22,19 +21,17 @@ class View with ChangeNotifier {
   String error = '';
   bool isSuccess = false;
 
-  Future<void> fitchAllViews(BuildContext context) async {
+  Future<void> fitchAllViews({userId, BuildContext context}) async {
     try {
       var res = await http.get(
-
-          ///views
-          "https://bootcamp-training-training.herokuapp.com/api/v1/courses/5fd8631717e9f20e70aae8de/view",
+          "https://bootcamp-training-training.herokuapp.com/api/v1/view?user=$userId",
           headers: {
             "Content-Type": "Application/json",
             "Authorization": "Bearer ${Auth.token}"
           });
-      final jsonData = jsonDecode(res.body)['data'];
 
-      // print(jsonData);
+      var jsonData = jsonDecode(res.body)['data'];
+
       final List<ViewData> loadCourse = [];
       jsonData.forEach((element) {
         loadCourse.add(
@@ -42,7 +39,6 @@ class View with ChangeNotifier {
             love: element['love'],
             id: element['_id'],
             view: element['view'],
-            like: element['like'],
           ),
         );
       });
@@ -56,7 +52,7 @@ class View with ChangeNotifier {
 
 // //to post review to the to the course
   Future<void> postView(
-      {int newView, int newLike, BuildContext context, String courseId}) async {
+      {int newView, BuildContext context, String courseId}) async {
     try {
       var res = await http.post(
         'https://bootcamp-training-training.herokuapp.com/api/v1/courses/$courseId/view',
@@ -75,8 +71,24 @@ class View with ChangeNotifier {
       ));
       print(source);
     } catch (error) {
-      print(error);
+      print('view add error is =>' + error);
     }
     notifyListeners();
+  }
+
+  //to update favorite
+  Future<void> updateFavorite({newFavorite, favId}) async {
+    try {
+      await http.put(
+        'https://bootcamp-training-training.herokuapp.com/api/v1/view/$favId',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${Auth.token}"
+        },
+        body: jsonEncode({'love': newFavorite}),
+      );
+    } catch (err) {
+      print(err);
+    }
   }
 }

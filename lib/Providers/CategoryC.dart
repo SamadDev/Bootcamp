@@ -21,4 +21,8 @@ class CourseC with ChangeNotifier {
   ];
 
   List<CourseCategoryData> get categoryList => _categoryList;
+
+  CourseCategoryData findById(String id) {
+    return _categoryList.firstWhere((element) => element.id == id);
+  }
 }

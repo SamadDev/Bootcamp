@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Language with ChangeNotifier {
   // language dir
@@ -10,17 +11,17 @@ class Language with ChangeNotifier {
   void setLanguage(code, direction) async {
     languageCode = code;
     languageDirection = direction;
-    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // sharedPreferences.setString('languageCode', languageCode);
-    // sharedPreferences.setString('languageDirection', direction);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString('languageCode', languageCode);
+    sharedPreferences.setString('languageDirection', direction);
     notifyListeners();
   }
 
   Future<void> getLanguageDataInLocal() async {
-    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // languageCode = sharedPreferences.getString('languageCode') ?? 'en';
-    // languageDirection =
-    //     sharedPreferences.getString('languageDirection') ?? 'ltr';
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    languageCode = sharedPreferences.getString('languageCode') ?? 'en';
+    languageDirection =
+        sharedPreferences.getString('languageDirection') ?? 'ltr';
     notifyListeners();
   }
 
@@ -29,6 +30,6 @@ class Language with ChangeNotifier {
 // language words
   Map _words = {
     'kr': {'bootcamp': 'بۆۆتکامپ'},
-    'en': {'bootcamp': 'bootcamp'}
+    'en': {'bootcamp': 'bootcamp'},
   };
 }

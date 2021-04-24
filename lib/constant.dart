@@ -1,19 +1,19 @@
+import 'package:bootcamps/Pages/Courses/CourseEnrollScreen.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'file:///C:/Users/FENGS/AndroidStudioProjects/bootcamps/lib/Pages/Courses/CourseEnrollScreen.dart';
-
-Widget dropDownWidget({List list, Function function, String label, String valueIni}) {
+Widget dropDownWidget(
+    {List list, Function function, String label, String valueIni}) {
   return DropdownButtonFormField(
     decoration: textFormField(label, label),
     onChanged: function,
     value: valueIni,
     items: list
         .map((e) => DropdownMenuItem(
-      value: e,
-      child: Text(e),
-    ))
+              value: e,
+              child: Text(e),
+            ))
         .toList(),
   );
 }
@@ -27,10 +27,11 @@ Widget dropDownButton({List list, Function function, String select}) {
       onChanged: function,
       value: select,
       items: list
-          .map((e) => DropdownMenuItem(
-        value: e,
-        child: Text(e),
-      ))
+          .map((e) =>
+          DropdownMenuItem(
+            value: e,
+            child: Text(e),
+          ))
           .toList(),
     ),
   );
@@ -98,24 +99,28 @@ Widget gestureDetectorWidget({Function function, String text, double width}) {
 void enrollDialog(BuildContext context) {
   showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Center(
-            child: Text(
-              "Pleas fill info",
-              style: Theme.of(context).textTheme.subtitle1,
-            )),
-        actions: [
-          FlatButton.icon(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.send),
-            color: Colors.lightBlueAccent,
-            label: Text("Send"),
-          )
-        ],
-        content: Container(height: 220, width: 300, child: EnrollScreen()),
-      ));
+      builder: (context) =>
+          AlertDialog(
+            title: Center(
+                child: Text(
+                  "Pleas fill info",
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subtitle1,
+                )),
+            actions: [
+              FlatButton.icon(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.send),
+                color: Colors.lightBlueAccent,
+                label: Text("Send"),
+              )
+            ],
+            content: Container(height: 220, width: 300, child: EnrollScreen()),
+          ));
 }
 
 InputDecoration textFormField(String text, String label) {

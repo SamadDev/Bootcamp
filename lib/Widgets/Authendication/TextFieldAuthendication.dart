@@ -37,7 +37,7 @@ Widget textAuthendication({text, context}) {
 // }
 
 Widget textField(context, hintText, icon, keyboardInput,
-    {suffixIcon, textCont}) {
+    {textCont, iconButton, isObscure}) {
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: Container(
@@ -49,15 +49,20 @@ Widget textField(context, hintText, icon, keyboardInput,
           color: AppTheme.black2,
           boxShadow: [BoxShadow(color: AppTheme.black3, blurRadius: 1)]),
       child: TextField(
-        maxLines: 2,
+        obscureText: isObscure,
+        style: Theme
+            .of(context)
+            .textTheme
+            .headline4,
+        maxLines: 1,
         keyboardType: keyboardInput,
         controller: textCont,
         decoration: InputDecoration(
-          hintStyle: Theme.of(context).textTheme.headline6,
-          suffixIcon: Icon(
-            suffixIcon,
-            size: 20,
-          ),
+          hintStyle: Theme
+              .of(context)
+              .textTheme
+              .headline6,
+          suffixIcon: iconButton,
           border: InputBorder.none,
           icon: Icon(
             icon,
