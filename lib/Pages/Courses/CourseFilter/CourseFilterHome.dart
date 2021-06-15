@@ -1,7 +1,6 @@
 import 'package:bootcamps/Pages/Courses/Detail/DetailHomeScreen.dart';
 import 'package:bootcamps/Providers/Course.dart';
 import 'package:bootcamps/Style/style.dart';
-import 'package:bootcamps/modul/Test.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,10 +35,14 @@ class CourseFilterHome extends StatelessWidget {
     final course = Provider.of<Course>(context, listen: false);
     print(selectedCategory +
         selectedSort +
+        "certificate  " +
         selectedCertificate +
+        "min  " +
         selectedMax +
+        "max" +
         selectedMin +
         selectedLanguage +
+        "state  " +
         selectedState +
         selectedSkill);
 
@@ -67,12 +70,15 @@ class CourseFilterHome extends StatelessWidget {
             Expanded(
               child: FutureBuilder(
                   future: course.fetchFilter(
-                      sort: selectedSort,
                       category: selectedCategory,
+                      language: selectedLanguage,
+                      state: selectedState,
+                      skill: selectedSkill,
                       pMin: selectedMin,
                       pMax: selectedMax,
+                      sort: selectedSort,
                       certificate: selectedCertificate,
-                      state: selectedState),
+                      rating: selectedRating),
                   builder: (context, snap) {
                     if (snap.connectionState == ConnectionState.waiting) {
                       return Center(
@@ -143,7 +149,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 }
 
 class FilterWidget extends StatelessWidget {
-  final Test data;
+  final CourseData data;
 
   FilterWidget({this.data});
 
@@ -201,7 +207,7 @@ class FilterWidget extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(3.0),
                     child: Text(
-                      '${data.tuition.toString()} \$',
+                      '${data.tuition.toStringAsFixed(2)} \$',
                       style: Theme.of(context).textTheme.bodyText2,
                       maxLines: 1,
                     ),
@@ -227,7 +233,7 @@ class FilterWidget extends StatelessWidget {
                       Text(
                         data.averageRating == null
                             ? "0"
-                            : "${data.averageRating}",
+                            : "${data.averageRating.toStringAsFixed(1)}",
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       Icon(

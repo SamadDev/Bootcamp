@@ -63,25 +63,77 @@ class Course with ChangeNotifier {
 
   static String error;
   static bool isSuccess;
-  List filterProList = [];
 
-  // to get the whole course
-  Future<void> fetchFilter(
-      {category, pMin, pMax, sort, rating, state, certificate}) async {
+  // List<Test> filterProList = [];
+
+  //test
+  List<CourseData> _filterProList = [];
+
+  List<CourseData> get filterProList => _filterProList;
+
+  // Future<void> fetchFilter() async {
+  //   try {
+  //     var res = await http.get(url, headers: {
+  //       "Content-Type": "application/json",
+  //     });
+  //     Map jsonMap = jsonDecode(res.body);
+  //     List jsonData = jsonMap['data'];
+  //     print(jsonData);
+  //     List decodeData = jsonData.map((e) => Test.fromJson(e)).toList();
+  //     _filterProList = decodeData;
+  //     notifyListeners();
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
+
+
+  Future<void> fetchFilter({
+    category,
+    language,
+    skill,
+    state,
+    pMin,
+    pMax,
+    sort,
+    rating,
+    certificate,
+  }) async {
     try {
+      print(sort);
       var res = await http.get(
-          "$url?sort=-$sort&tuition[gte]=$pMin&tuition[lte]=$pMax&typeSkill=$category&certificate=${certificate ==
-              false ? '' : certificate}&state=$state",
+          "$url?sort=$sort&tuition[gte]=$pMin&tuition[lte]=$pMax&minimumSkill=$skill&typeSkill=$category&certificate=$certificate&state=$state&language=$language",
           headers: {
             "Content-Type": "Application/json",
-            "Authorization": "Bearer ${Auth.token}"
           });
       final jsonData = jsonDecode(res.body)['data'];
-      List jsonList = jsonData.map((e) => Test.fromJson(e)).toList();
-      filterProList = jsonList;
+      final List<CourseData> loadCourse = [];
+      jsonData.forEach((element) {
+        loadCourse.add(
+          CourseData(
+              id: element['_id'],
+              user: element['user'],
+              photo: element['photo'],
+              description: element['description'],
+              title: element['title'],
+              minimumSkill: element['minimumSkill'],
+              tuition: element['tuition'],
+              weeks: element['weeks'].toString(),
+              view: element['averageView'],
+              averageRating: element['averageRating'],
+              housing: element['housing'],
+              certificate: element['certificate'],
+              state: element['state'],
+              typeSkill: element['typeSkill'],
+              language: element['language'],
+              videoPath: element['videoPath'],
+              videos: element['cVideos']),
+        );
+      });
+      _filterProList = loadCourse;
       notifyListeners();
     } catch (error) {
-      print("get filter courses error is $error");
+      print("get filter course is  $error");
     }
   }
 
@@ -126,23 +178,24 @@ class Course with ChangeNotifier {
     }
   }
 
-  Future<void> postCourse({CourseData course,
-    userId,
-    title,
-    photo,
-    weeks,
-    tuition,
-    minimumSkill,
-    housing,
-    certificate,
-    link,
-    state,
-    category,
-    description,
-    videoPath,
-    language,
-    videos,
-    BuildContext context}) async {
+  Future<void> postCourse(
+      {CourseData course,
+      userId,
+      title,
+      photo,
+      weeks,
+      tuition,
+      minimumSkill,
+      housing,
+      certificate,
+      link,
+      state,
+      category,
+      description,
+      videoPath,
+      language,
+      videos,
+      BuildContext context}) async {
     print(description);
     print(videos);
     try {
@@ -205,7 +258,8 @@ class Course with ChangeNotifier {
   }
 
   //update Course
-  Future<void> updateCourse(String courseId, CourseData newCourse, BuildContext context) async {
+  Future<void> updateCourse(
+      String courseId, CourseData newCourse, BuildContext context) async {
     try {
       await http.put("$url/$courseId",
           headers: {
@@ -227,7 +281,7 @@ class Course with ChangeNotifier {
             'typeSkill': newCourse.typeSkill
           }));
       final bootcampIndex =
-      _course.indexWhere((element) => element.id == courseId);
+          _course.indexWhere((element) => element.id == courseId);
       _course[bootcampIndex] = newCourse;
 
       if (isSuccess) {

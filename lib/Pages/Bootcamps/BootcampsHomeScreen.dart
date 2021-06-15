@@ -3,6 +3,7 @@ import 'package:bootcamps/Pages/Bootcamps/CourseOferScreen.dart';
 import 'package:bootcamps/Pages/Bootcamps/CoursessVertical.dart';
 import 'package:bootcamps/Pages/Courses/CourseFilter/CourseFilterScreen.dart';
 import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
+import 'package:bootcamps/Pages/Enroll/EnrollScree.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:bootcamps/Widgets/TopBarWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +21,14 @@ class BootcampsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final language = Provider.of<Language>(context).words;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(EnrollMenScreen.route);
+        },
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,11 +52,11 @@ class BootcampsScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 25,
+                      height: 30,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          right: 15, left: 15, top: 10, bottom: 10),
+                          right: 13, left: 15, top: 10, bottom: 20),
                       child: Container(
                         height: 100,
                         child: CategoryList(),
@@ -56,20 +64,20 @@ class BootcampsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                Positioned(
-                    top: 180,
-                    left: 15,
-                    child: Container(
-                      height: 75,
-                      width: 320,
-                      child: _searchWidget(context),
-                    ))
+                // Positioned(
+                //     top: 180,
+                //     left: 18,
+                //     child: Container(
+                //       height: height * 0.105,
+                //       width: width * 0.9,
+                //       child: searchWidget(context),
+                //     ))
               ],
             ),
             captionPadding(
                 context: context, caption: 'Most Populate', function: () {}),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10.0, right: 15, left: 15),
+              padding: const EdgeInsets.only(bottom: 5.0, right: 15, left: 15),
               child: Container(
                 height: 240,
                 child: BootcampCoursePopulate(),
@@ -99,25 +107,19 @@ class BootcampsScreen extends StatelessWidget {
 
 Widget captionPadding({context, caption, function}) {
   return Padding(
-    padding: const EdgeInsets.only(left: 20, right: 10, top: 20, bottom: 10),
+    padding: const EdgeInsets.only(left: 20, right: 10, top: 10),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           caption,
-          style: Theme
-              .of(context)
-              .textTheme
-              .headline3,
+          style: Theme.of(context).textTheme.headline4,
         ),
         GestureDetector(
           onTap: function,
           child: Text(
             'See All',
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline6,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
       ],
@@ -125,7 +127,7 @@ Widget captionPadding({context, caption, function}) {
   );
 }
 
-Widget _searchWidget(context) {
+Widget searchWidget(context) {
   return GestureDetector(
     onTap: () {
       Navigator.of(context).pushNamed(CourseSearch.route);
@@ -141,10 +143,7 @@ Widget _searchWidget(context) {
         height: 60,
         child: TextField(
           enabled: false,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText1,
+          style: Theme.of(context).textTheme.bodyText1,
           decoration: InputDecoration(
               border: InputBorder.none,
               prefixIcon: RotatedBox(
@@ -155,10 +154,7 @@ Widget _searchWidget(context) {
                 ),
               ),
               hintText: 'Search to ..',
-              hintStyle: Theme
-                  .of(context)
-                  .textTheme
-                  .headline6),
+              hintStyle: Theme.of(context).textTheme.headline6),
         ),
       ),
     ),
