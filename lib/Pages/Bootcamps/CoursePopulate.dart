@@ -80,8 +80,8 @@ class CourseWidget extends StatelessWidget {
             color: AppTheme.black2,
             borderRadius: BorderRadius.circular(10),
           ),
-          height: 240,
-          width: 170,
+          height: 250,
+          width: 180,
           child: Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
             child: Column(
@@ -98,13 +98,12 @@ class CourseWidget extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: data.photo,
                       fit: BoxFit.fill,
-                      placeholder: (ctx, snap) =>
-                          Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: AppTheme.orange,
-                              strokeWidth: 1,
-                            ),
-                          ),
+                      placeholder: (ctx, snap) => Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: AppTheme.orange,
+                          strokeWidth: 1,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -114,10 +113,7 @@ class CourseWidget extends StatelessWidget {
                     child: Text(
                       data.title,
                       maxLines: 1,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyText1,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
                 ),
@@ -126,51 +122,42 @@ class CourseWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(3.0),
                     child: Text(
                       '${data.tuition.toString()} \$',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyText2,
+                      style: Theme.of(context).textTheme.bodyText2,
                       maxLines: 1,
                     ),
                   ),
                 ),
                 Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            data.view == null ? "0" : "${data.view}",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline6,
-                          ),
-                          Icon(
-                            Icons.visibility,
-                            color: AppTheme.black4,
-                            size: 18,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            data.averageRating == null
-                                ? "0"
-                                : "${data.averageRating}",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline6,
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: AppTheme.black4,
-                            size: 18,
-                          ),
-                        ],
+                  padding: const EdgeInsets.all(3.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        data.view == null ? "0" : "${data.view}",
+                        style: Theme.of(context).textTheme.headline6,
                       ),
-                    ))
+                      Icon(
+                        Icons.visibility,
+                        color: AppTheme.black4,
+                        size: 18,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        data.averageRating == null
+                            ? "0"
+                            : "${data.averageRating.toStringAsFixed(1)}",
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      Icon(
+                        Icons.star,
+                        color: AppTheme.black4,
+                        size: 18,
+                      ),
+                    ],
+                  ),
+                ))
               ],
             ),
           ),

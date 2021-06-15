@@ -5,14 +5,17 @@ import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
 import 'package:bootcamps/Pages/Courses/Detail/DetailHomeScreen.dart';
 import 'package:bootcamps/Pages/Courses/Detail/VideoPlayer.dart';
 import 'package:bootcamps/Pages/Courses/love.dart';
+import 'package:bootcamps/Pages/Enroll/EnrollScree.dart';
+import 'package:bootcamps/Pages/Enroll/ErnollMenPost.dart';
 import 'package:bootcamps/Providers/CategoryC.dart';
 import 'package:bootcamps/Providers/Follow.dart';
+import 'package:bootcamps/Providers/enroll%20message.dart';
+import 'package:bootcamps/Providers/enrollment.dart';
 import 'package:bootcamps/Providers/love.dart';
 import 'package:bootcamps/Providers/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import './Localization/language.dart';
 import './Pages/Authendication/LoginScreen.dart';
 import './Pages/Authendication/ProfileEdit.dart';
@@ -61,7 +64,10 @@ class ProviderWidget extends StatelessWidget {
         ChangeNotifierProvider.value(value: CourseC()),
         ChangeNotifierProvider.value(value: SLocalStorage()),
         ChangeNotifierProvider.value(value: StateChange()),
-        ChangeNotifierProvider.value(value: Follow())
+        ChangeNotifierProvider.value(value: Follow()),
+        ChangeNotifierProvider.value(value: Enroll()),
+        ChangeNotifierProvider.value(value: EnrollData()),
+        ChangeNotifierProvider.value(value: MessageEnroll())
       ],
       child: MyApp(),
     );
@@ -114,7 +120,9 @@ class MyApp extends StatelessWidget {
         CourseFilterHome.router: (context) => CourseFilterHome(),
         MyCourse.route: (context) => MyCourse(),
         VideoPlayerScreen.route: (context) => VideoPlayerScreen(),
-        LoveScreen.route: (context) => LoveScreen()
+        LoveScreen.route: (context) => LoveScreen(),
+        EnrollMenScreen.route: (context) => EnrollMenScreen(),
+        EnrollPostScreen.route: (context) => EnrollPostScreen()
       },
     );
   }

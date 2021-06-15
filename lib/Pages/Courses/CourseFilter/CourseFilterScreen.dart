@@ -18,7 +18,7 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
   List selectedSkill = List();
   List selectedCategory = List();
   String selectedSort = '';
-  bool isCertificate = false;
+  bool isCertificate = true;
   String state = 'online';
   double selectedRating = 0;
   RangeValues currentRangeValues = RangeValues(0, 100);
@@ -192,7 +192,7 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
                       color: AppTheme.black2,
                       onTab: () {
                         Navigator.of(context)
-                            .pushNamed(CourseFilterScreen.route);
+                            .popAndPushNamed(CourseFilterScreen.route);
                       })
                 ],
               ),
