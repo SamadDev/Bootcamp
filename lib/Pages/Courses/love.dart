@@ -35,7 +35,7 @@ class LoveScreen extends StatelessWidget {
                               fit: StackFit.loose,
                               children: [
                                 Container(
-                                  color: Colors.red,
+                                  color: AppTheme.black2,
                                   width: 200,
                                   height: 300,
                                   child: Image.network(

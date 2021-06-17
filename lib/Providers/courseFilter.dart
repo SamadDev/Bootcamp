@@ -6,7 +6,7 @@ class FilterList {
   ];
 
   List minimumSkills = [
-    {'title': "not require", "value": "not require"},
+    // {'title': "not require", "value": "not require"},
     {'title': "beginner", "value": "beginner"},
     {'title': "intermediate", "value": "intermediate"},
     {'title': "expert", "value": "expert"},
@@ -24,7 +24,7 @@ class FilterList {
     {'title': "not", "value": "false"},
   ];
   List state = [
-    {'title': "all", "value": "both"},
+    // {'title': "all", "value": "both"},
     {'title': "inCampus", "value": "in bootcamp"},
     {'title': "online", "value": "online"},
   ];

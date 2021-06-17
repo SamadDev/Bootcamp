@@ -213,8 +213,7 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
                                           context: context,
                                           userId: Profile.userId,
                                           newFollow: true)
-                                      : await follow.deleteFollow(context);
-                                  follow.changeState();
+                                      : await follow.deleteFollow(context: context,id:data.id);
                                 },
                                 child: Container(
                                   height: 30,

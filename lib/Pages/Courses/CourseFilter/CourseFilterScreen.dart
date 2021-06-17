@@ -17,7 +17,7 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
   List selectedLanguage = List();
   List selectedSkill = List();
   List selectedCategory = List();
-  String selectedSort = '';
+  String selectedSort = 'averageView';
   bool isCertificate = true;
   String state = 'online';
   double selectedRating = 0;
@@ -156,7 +156,6 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
                               ),
                             )))
                         .toList())),
-            Text(selectedSort),
             Padding(
               padding: const EdgeInsets.only(
                   top: 12, bottom: 12, right: 10, left: 10),

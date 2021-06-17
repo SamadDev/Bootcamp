@@ -1,13 +1,30 @@
 import 'package:bootcamps/Providers/enroll%20message.dart';
 import 'package:bootcamps/Providers/enrollment.dart';
 import 'package:bootcamps/Style/style.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bootcamps/Providers/profile.dart';
 
-class EnrollMenScreen extends StatelessWidget {
+
+class EnrollMenScreen extends StatefulWidget {
   static const String route = 'enrollScreen';
 
+  @override
+  _EnrollMenScreenState createState() => _EnrollMenScreenState();
+}
+
+class _EnrollMenScreenState extends State<EnrollMenScreen> {
+
+  initState(){
+    super.initState();
+    getEnroll();
+    print(Provider.of<Enroll>(context,listen: false).enrollDemand.length);
+  }
+
+  void getEnroll()async{
+   await Provider.of<Enroll>(context,listen: false).fitchEnroll(context: context);
+    Provider.of<Enroll>(context,listen: false).enrollFilter(Profile.userId);
+  }
   Widget build(BuildContext context) {
     final enroll = Provider.of<Enroll>(context, listen: false);
     return Scaffold(
@@ -20,12 +37,10 @@ class EnrollMenScreen extends StatelessWidget {
           } else
             return Consumer<Enroll>(
                 builder: (context, enroll, _) => ListView.builder(
-                    itemCount: enroll.enrollList.length,
-                    itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-                        value: enroll.enrollList[index],
-                        child: EnrollWidget(
-                          data: enroll.enrollList[index],
-                        ))));
+                    itemCount: enroll.enrollDemand.length,
+                    itemBuilder: (ctx, index) => EnrollWidget(
+                      data: enroll.enrollDemand[index],
+                    )));
         },
       ),
     );
@@ -34,7 +49,6 @@ class EnrollMenScreen extends StatelessWidget {
 
 class EnrollWidget extends StatelessWidget {
   final EnrollData data;
-
   EnrollWidget({this.data});
 
   Widget build(BuildContext context) {
@@ -50,86 +64,86 @@ class EnrollWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
           subtitle: Text(
-            '${data.name} enroll to ${data.courseTitle} can you accepted',
+            '${data.name} enroll to ${data.course.title} can you accepted',
             style: Theme.of(context).textTheme.subtitle2,
           ),
-          trailing: data.isVerify
+          trailing: data.isVeryfiy
               ? Container(
-                  height: 28,
-                  width: 95,
-                  decoration: BoxDecoration(
-                      color: AppTheme.black2,
-                      borderRadius: BorderRadius.circular(25)),
-                  child: Center(
-                    child: Text(
-                      'accepted ✔',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ),
-                )
+            height: 28,
+            width: 95,
+            decoration: BoxDecoration(
+                color: AppTheme.black2,
+                borderRadius: BorderRadius.circular(25)),
+            child: Center(
+              child: Text(
+                'accepted ✔',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+            ),
+          )
               : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          _showDialog(
-                              text: 'accept',
-                              context: context,
-                              title: "are you sure",
-                              child: Text(
-                                'Are you sure you want to let ${data.name} to enroll ${data.courseTitle}',
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                              onPress: () {
-                                message.postMessageEnroll(
-                                    context: context,
-                                    enrollId: data.id,
-                                    message:
-                                        'congratulation,you enrolled to ${data.courseTitle}');
-                                update.updateEnroll(
-                                    newIsVerify: true, enrollId: data.id);
-                                Navigator.of(context).pop();
-                              });
-                        },
-                        child: Icon(
-                          Icons.check,
-                          color: AppTheme.green,
-                          size: 30,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: GestureDetector(
+                  onTap: () {
+                    _showDialog(
+                        text: 'accept',
+                        context: context,
+                        title: "are you sure",
+                        child: Text(
+                          'Are you sure you want to let ${data.name} to enroll ${data.course.title}',
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          _showDialog(
-                              text: "send",
+                        onPress: () {
+                          message.postMessageEnroll(
                               context: context,
-                              title:
-                                  "kindly let ${data.name} know why didn\'n accept",
-                              child: TextField(
-                                controller: messageController,
-                              ),
-                              onPress: () {
-                                update.deleteEnroll(data.id, context);
-                                message.postMessageEnroll(
-                                    context: context,
-                                    enrollId: data.id,
-                                    message: messageController.text);
-                                Navigator.of(context).pop();
-                              });
-                        },
-                        child: Icon(
-                          Icons.delete_outline,
-                          color: AppTheme.deleteButton,
-                          size: 30,
-                        ),
-                      ),
-                    )
-                  ],
+                              enrollId: data.sId,
+                              message:
+                              'congratulation,you enrolled to ${data.course.title}');
+                          update.updateEnroll(
+                              newIsVerify: true, enrollId: data.sId);
+                          Navigator.of(context).pop();
+                        });
+                  },
+                  child: Icon(
+                    Icons.check,
+                    color: AppTheme.green,
+                    size: 30,
+                  ),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: GestureDetector(
+                  onTap: () {
+                    _showDialog(
+                        text: "send",
+                        context: context,
+                        title:
+                        "kindly let ${data.name} know why didn\'n accept",
+                        child: TextField(
+                          controller: messageController,
+                        ),
+                        onPress: () {
+                          update.deleteEnroll(data.sId, context);
+                          message.postMessageEnroll(
+                              context: context,
+                              enrollId: data.sId,
+                              message: messageController.text);
+                          Navigator.of(context).pop();
+                        });
+                  },
+                  child: Icon(
+                    Icons.delete_outline,
+                    color: AppTheme.deleteButton,
+                    size: 30,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -177,11 +191,11 @@ class _ChipButtonWidget extends StatelessWidget {
 
   const _ChipButtonWidget(
       {this.onPress1,
-      this.onPress2,
-      this.text1,
-      this.text2,
-      this.color1,
-      this.color2});
+        this.onPress2,
+        this.text1,
+        this.text2,
+        this.color1,
+        this.color2});
 
   Widget build(BuildContext context) {
     return Padding(

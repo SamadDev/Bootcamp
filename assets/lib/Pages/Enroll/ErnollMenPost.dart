@@ -27,7 +27,7 @@ class EnrollPostScreen extends StatelessWidget {
             textFieldWidget("Full Name", context, name, 1),
             textFieldWidget("Full address", context, address, 1),
             textFieldWidget("Phone Number", context, phone, 1),
-            textFieldWidget("Phone Number", context, phone, 10, enable: false),
+            textFieldWidget("Way of payment", context, phone, 10, enable: false),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: enroll.enrollState

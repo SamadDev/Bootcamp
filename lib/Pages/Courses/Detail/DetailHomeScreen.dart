@@ -25,15 +25,14 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
   void initState() {
     super.initState();
     getView();
+    print(Provider.of<SLocalStorage>(context, listen: false).courseList.length);
   }
 
   getView() {
     Provider.of<SLocalStorage>(context, listen: false).fetchLoveList();
-
     print(Provider.of<SLocalStorage>(context, listen: false).fetchLoveList());
     Provider.of<Follow>(context, listen: false)
         .fitchAllFollows(context: context, userId: Profile.userId);
-
     Provider.of<View>(context, listen: false)
         .postView(context: context, newView: 1, courseId: widget.id);
   }
@@ -94,36 +93,34 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
                           style: Theme.of(context).textTheme.headline4,
                         ),
                       ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        child: Center(
-                          child: Consumer<SLocalStorage>(
-                              builder: (ctx, love, _) => GestureDetector(
-                                  onTap: () async {
-                                    if (love.courseList.contains(data.photo)) {
-                                      love.removeCourse(data.photo);
-                                    } else {
-                                      love.addToLoveList(data.photo);
-                                    }
-                                  },
-                                  child:love.courseList==null ? Icon(
-                                          Icons.favorite_border,
-                                          color: AppTheme.black1,
-                                          size: 30,
-                                        )
-                                      : love.courseList.contains(data.photo)
-                                      ? Icon(
-                                          Icons.favorite,
-                                          color: AppTheme.green,
-                                          size: 30,
-                                        )
-                                      : Icon(
-                                          Icons.favorite_border,
-                                          color: AppTheme.black1,
-                                          size: 30,
-                                        ))),
-                        ),
+                      Container(height: 50,width: 50,
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(60),color: AppTheme.black2),
+                        child: Consumer<SLocalStorage>(
+                            builder: (ctx, love, _) => GestureDetector(
+                                onTap: () async {
+                                  if (love.courseList.contains(data.photo)) {
+                                    love.removeCourse(data.photo);
+                                  } else {
+                                    love.addToLoveList(data.photo);
+                                  }
+                                },
+                                child: love.courseList == null
+                                    ? Icon(
+                                        Icons.favorite_border,
+                                        color: AppTheme.black1,
+                                        size: 30,
+                                      )
+                                    : love.courseList.contains(data.photo)
+                                        ? Icon(
+                                            Icons.favorite,
+                                            color: AppTheme.green,
+                                            size: 30,
+                                          )
+                                        : Icon(
+                                            Icons.favorite_border,
+                                            color: AppTheme.black1,
+                                            size: 30,
+                                          ))),
                       )
                     ],
                   ),
@@ -206,16 +203,15 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
                         follow.follow
                             ? Center(child: circleProgress())
                             : GestureDetector(
-                                onTap: () async {
-                                  follow.changeIcon();
-                                  follow.icon
-                                      ? await follow.postFollow(
-                                          context: context,
-                                          userId: Profile.userId,
-                                          newFollow: true)
-                                      : await follow.deleteFollow(context);
-                                  follow.changeState();
-                                },
+                                // onTap: () async {
+                                //   follow.changeIcon();
+                                //   follow.icon
+                                //       ? await follow.postFollow(
+                                //           context: context,
+                                //           userId: Profile.userId,
+                                //           newFollow: true)
+                                //       : await follow.followList.removeLast();
+                                // },
                                 child: Container(
                                   height: 30,
                                   width: 75,
@@ -226,18 +222,18 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      follow.icon
-                                          ? Icon(
-                                              Icons.check,
-                                              color: AppTheme.green,
-                                            )
-                                          : Icon(
-                                              Icons.add,
-                                              size: 15,
-                                              color: AppTheme.green,
-                                            ),
+                                      // follow.icon
+                                      //     ? Icon(
+                                      //         Icons.check,
+                                      //         color: AppTheme.green,
+                                      //       )
+                                      //     : Icon(
+                                      //         Icons.add,
+                                      //         size: 15,
+                                      //         color: AppTheme.green,
+                                      //       ),
                                       Text(
-                                        'Follow',
+                                        'Profile',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5,
