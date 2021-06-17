@@ -102,7 +102,7 @@ class Course with ChangeNotifier {
     try {
       print(sort);
       var res = await http.get(
-          "$url?sort=$sort&tuition[gte]=$pMin&tuition[lte]=$pMax&minimumSkill=$skill&typeSkill=$category&certificate=$certificate&state=$state&language=$language",
+          "$url?sort=-$sort&tuition[gte]=$pMin&tuition[lte]=$pMax&minimumSkill=$skill&typeSkill=$category&certificate=$certificate&state=$state&language=$language",
           headers: {
             "Content-Type": "Application/json",
           });

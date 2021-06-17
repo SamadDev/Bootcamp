@@ -20,7 +20,9 @@ class SLocalStorage with ChangeNotifier {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setStringList('course', courseList);
       notifyListeners();
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+    }
   }
 
   removeCourse(url) async {

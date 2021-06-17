@@ -50,10 +50,10 @@ class EnrollWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
           subtitle: Text(
-            '${data.name} enroll to ${data.courseTitle} can you accepted',
+            '${data.name} enroll to ${data.course.title} can you accepted',
             style: Theme.of(context).textTheme.subtitle2,
           ),
-          trailing: data.isVerify
+          trailing: data.isVeryfiy
               ? Container(
                   height: 28,
                   width: 95,
@@ -79,17 +79,17 @@ class EnrollWidget extends StatelessWidget {
                               context: context,
                               title: "are you sure",
                               child: Text(
-                                'Are you sure you want to let ${data.name} to enroll ${data.courseTitle}',
+                                'Are you sure you want to let ${data.name} to enroll ${data.course.title}',
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                               onPress: () {
                                 message.postMessageEnroll(
                                     context: context,
-                                    enrollId: data.id,
+                                    enrollId: data.sId,
                                     message:
-                                        'congratulation,you enrolled to ${data.courseTitle}');
+                                        'congratulation,you enrolled to ${data.course.title}');
                                 update.updateEnroll(
-                                    newIsVerify: true, enrollId: data.id);
+                                    newIsVerify: true, enrollId: data.sId);
                                 Navigator.of(context).pop();
                               });
                         },
@@ -113,10 +113,10 @@ class EnrollWidget extends StatelessWidget {
                                 controller: messageController,
                               ),
                               onPress: () {
-                                update.deleteEnroll(data.id, context);
+                                update.deleteEnroll(data.sId, context);
                                 message.postMessageEnroll(
                                     context: context,
-                                    enrollId: data.id,
+                                    enrollId: data.sId,
                                     message: messageController.text);
                                 Navigator.of(context).pop();
                               });

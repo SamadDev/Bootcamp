@@ -57,14 +57,15 @@ class Follow with ChangeNotifier {
         follow: source['follow'],
       ));
       print(source);
+      notifyListeners();
     } catch (error) {
       print(error);
     }
-    notifyListeners();
+
   }
 
   //delete Course
-  Future<void> deleteFollow(BuildContext context) async {
+  Future<void> deleteFollow({BuildContext context,id}) async {
     try {
       await http.delete(
         '$url/follow',
@@ -73,7 +74,7 @@ class Follow with ChangeNotifier {
         },
       );
 
-      _follow.removeLast();
+      _follow.removeAt(_follow.indexOf(id));
 
       print('delete');
       if (isSuccess) {
@@ -86,10 +87,6 @@ class Follow with ChangeNotifier {
     }
   }
 
-  changeState() {
-    follow = !follow;
-    notifyListeners();
-  }
 
   changeIcon() {
     icon = !icon;

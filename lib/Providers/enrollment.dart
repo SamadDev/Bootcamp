@@ -5,25 +5,66 @@ import 'package:bootcamps/Widgets/ButtomBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
+// class EnrollData with ChangeNotifier {
+//   final id;
+//   final name;
+//   int phone;
+//   final address;
+//   final userCId;
+//   final courseId;
+//   bool isVerify;
+//   final courseTitle;
+//
+//   EnrollData(
+//       {this.id,
+//       this.name,
+//       this.phone,
+//       this.address,
+//       this.userCId,
+//       this.courseId,
+//       this.courseTitle,
+//       this.isVerify});
+// }
+
 class EnrollData with ChangeNotifier {
-  final id;
-  final name;
+  bool isVeryfiy;
+  String sId;
+  String name;
   int phone;
-  final address;
-  final userCId;
-  final courseId;
-  bool isVerify;
-  final courseTitle;
+  String address;
+  EnrollCourse course;
 
   EnrollData(
-      {this.id,
+      {this.isVeryfiy,
+      this.sId,
       this.name,
       this.phone,
       this.address,
-      this.userCId,
-      this.courseId,
-      this.courseTitle,
-      this.isVerify});
+      this.course});
+
+  EnrollData.fromJson(Map<String, dynamic> json) {
+    isVeryfiy = json['isVeryfiy'];
+    sId = json['_id'];
+    name = json['name'];
+    phone = json['phone'];
+    address = json['address'];
+    course = EnrollCourse.fromJson(json['course']);
+  }
+}
+
+class EnrollCourse {
+  String sId;
+  String title;
+  String photo;
+  String user;
+
+  EnrollCourse({this.sId, this.title, this.photo, this.user});
+
+  EnrollCourse.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    photo = json['photo'];
+    user = json['user'];
+  }
 }
 
 class Enroll with ChangeNotifier {
@@ -40,28 +81,15 @@ class Enroll with ChangeNotifier {
           "https://bootcamp-training-training.herokuapp.com/api/v1/enroll",
           headers: {
             "Content-Type": "Application/json",
-            "Authorization": "Bearer ${Auth.token}"
           });
       List jsonData = jsonDecode(res.body)['data'];
-      List<EnrollData> loadCourse = [];
-      jsonData.forEach((element) {
-        loadCourse.add(
-          EnrollData(
-            id: element['_id'],
-            name: element['name'],
-            address: element['address'],
-            phone: element['phone'],
-            isVerify: element['isVeryfiy'],
-            // courseTitle: element["course"]['title'],
-            // courseId: element['course']['_id'],
-            // userCId: element['course']['user']
-          ),
-        );
-      });
-      _enroll = loadCourse;
+
+      List decodeList = jsonData.map((e) => EnrollData.fromJson(e)).toList();
+
+      _enroll = decodeList;
       notifyListeners();
     } catch (error) {
-      print("enroll");
+      print(error);
     }
   }
 
@@ -127,7 +155,7 @@ class Enroll with ChangeNotifier {
         },
       );
       final enrollIndex = _enroll
-          .indexWhere((element) => element.id == enrollId); //to find index
+          .indexWhere((element) => element.sId == enrollId); //to find index
       _enroll.removeAt(enrollIndex);
 
       notifyListeners();
@@ -136,7 +164,14 @@ class Enroll with ChangeNotifier {
     }
   }
 
+  List<EnrollData> enrollDemand=[];
+  List<EnrollData> enrollFilter(String userId) {
+    enrollDemand = _enroll.where((element) => element.course.user == userId).toList();
+    return enrollDemand;
+  }
+
   bool enrollState = false;
+
   void changeState() {
     enrollState = !enrollState;
     notifyListeners();

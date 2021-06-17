@@ -64,7 +64,7 @@ class Follow with ChangeNotifier {
   }
 
   //delete Course
-  Future<void> deleteFollow(BuildContext context) async {
+  Future<void> deleteFollow({BuildContext context, id}) async {
     try {
       await http.delete(
         '$url/follow',
@@ -73,7 +73,7 @@ class Follow with ChangeNotifier {
         },
       );
 
-      _follow.removeLast();
+      _follow.removeAt(_follow.indexOf(id));
 
       print('delete');
       if (isSuccess) {
