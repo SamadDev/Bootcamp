@@ -1,5 +1,6 @@
 import 'package:bootcamps/Providers/love.dart';
 import 'package:bootcamps/Style/style.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,9 +39,10 @@ class LoveScreen extends StatelessWidget {
                                   color: AppTheme.black2,
                                   width: 200,
                                   height: 300,
-                                  child: Image.network(
-                                    love.courseList[index],
+                                  child: CachedNetworkImage(
+                                 imageUrl: love.courseList[index],
                                     fit: BoxFit.fill,
+                                    placeholder: (ctx,snap)=>Image.asset('assets/images/'),
                                   ),
                                 ),
                                 GestureDetector(

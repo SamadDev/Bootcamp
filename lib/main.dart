@@ -37,6 +37,7 @@ import 'Pages/Courses/CourseFilter/CourseFilterHome.dart';
 import 'Pages/Courses/CourseFilter/CourseFilterScreen.dart';
 import 'Providers/Auth.dart';
 import 'Widgets/ButtomBar.dart';
+import 'package:bootcamps/Pages/Enroll/EnrollmessageScreen.dart';
 
 void main() {
   runApp(ProviderWidget());
@@ -122,7 +123,8 @@ class MyApp extends StatelessWidget {
         VideoPlayerScreen.route: (context) => VideoPlayerScreen(),
         LoveScreen.route: (context) => LoveScreen(),
         EnrollMenScreen.route: (context) => EnrollMenScreen(),
-        EnrollPostScreen.route: (context) => EnrollPostScreen()
+        EnrollPostScreen.route: (context) => EnrollPostScreen(),
+        EnrollMessageScreen.route:(context)=>EnrollMessageScreen()
       },
     );
   }

@@ -1,7 +1,6 @@
 import 'package:bootcamps/Providers/Course.dart';
 import 'package:bootcamps/Providers/Follow.dart';
 import 'package:bootcamps/Providers/View&like.dart';
-import 'package:bootcamps/constant.dart';
 import 'package:bootcamps/Pages/Enroll/ErnollMenPost.dart';
 import 'package:bootcamps/Providers/love.dart';
 import 'package:bootcamps/Providers/profile.dart';
@@ -14,8 +13,9 @@ import 'DetailTab/DetailTabScree.dart';
 class DetailHomeScreen extends StatefulWidget {
   static const route = "/DetailHomeScreen";
   final id;
+  final url;
 
-  DetailHomeScreen({this.id});
+  DetailHomeScreen({this.id,this.url});
 
   @override
   _DetailHomeScreenState createState() => _DetailHomeScreenState();
@@ -25,7 +25,6 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
   void initState() {
     super.initState();
     getView();
-    print(Provider.of<SLocalStorage>(context, listen: false).courseList.length);
   }
 
   getView() {
@@ -93,13 +92,13 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
                           style: Theme.of(context).textTheme.headline4,
                         ),
                       ),
-                      Container(height: 50,width: 50,
+                      Container(height: 45,width: 45,
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(60),color: AppTheme.black2),
                         child: Consumer<SLocalStorage>(
                             builder: (ctx, love, _) => GestureDetector(
                                 onTap: () async {
                                   if (love.courseList.contains(data.photo)) {
-                                    love.removeCourse(data.photo);
+                                   await love.removeCourse(data.photo);
                                   } else {
                                     love.addToLoveList(data.photo);
                                   }

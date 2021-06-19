@@ -6,6 +6,8 @@ import 'package:bootcamps/Widgets/Drawer.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
+import 'package:bootcamps/Pages/Enroll/EnrollmessageScreen.dart';
+import 'package:bootcamps/Providers/profile.dart';
 
 class HomeScreen extends StatefulWidget {
   static const route = "/HomeScreen";
@@ -19,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List _screen = [
     BootcampsScreen(),
     CourseSearch(),
-    EnrollMenScreen(),
+   Profile.userRole=='publisher'?EnrollMenScreen(): EnrollMessageScreen(),
     MainDrawer(),
   ];
 
@@ -36,15 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
         onItemSelected: (index) => setState(() => _currentIndex = index),
         items: <BottomNavyBarItem>[
           bottomNavyBarItem(
-              text: "Home", icon: Icon(Icons.home_filled), context: context),
+              text: "Home", icon:Image.asset("assets/images/home.png",width: 23,height: 23,) , context: context),
           bottomNavyBarItem(
-              text: "Search", icon: LineIcon.search(), context: context),
+              text: "Search", icon: Image.asset('assets/images/search.png',width: 23,height: 23,), context: context),
           bottomNavyBarItem(
               text: "notification",
-              icon: Icon(Icons.notifications),
+              icon: Image.asset("assets/images/bell1.png",width: 23,height: 23,),
               context: context),
           bottomNavyBarItem(
-              text: "More", icon: Icon(Icons.dehaze), context: context),
+              text: "More", icon: Image.asset("assets/images/menu.png",width: 23,height: 23,), context: context),
         ],
       ),
     );
