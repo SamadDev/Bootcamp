@@ -27,13 +27,12 @@ class ReviewsScreen extends StatelessWidget {
             } else
               return review.reviewList.isEmpty
                   ? Center(
-                      child: Container(
-                          height: 100,
-                          width: 100,
-                          child: Image.asset(
-                            'assets/images/search.png',
-                            fit: BoxFit.fill,
-                          )),
+                      child: Image.asset(
+                        'assets/images/search.png',
+                        fit: BoxFit.fill,
+                        height: 100,
+                        width: 100,
+                      ),
                     )
                   : Consumer<Review>(
                       builder: (context, review, _) => ListView.builder(
@@ -59,8 +58,7 @@ class ReviewsScreen extends StatelessWidget {
 
 class ReviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
-    final data = Provider.of<ReviewData>(context, listen: false);
-
+    final data = Provider.of<ReviewData>(context);
     return Card(
         color: AppTheme.black2,
         elevation: 0,

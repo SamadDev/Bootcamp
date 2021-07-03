@@ -22,22 +22,7 @@ class CourseSearch extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 15.0, left: 15, right: 15),
-                  child: Container(
-                    height: 45,
-                    width: 45,
-                    decoration: BoxDecoration(
-                        color: AppTheme.black2,
-                        borderRadius: BorderRadius.circular(60)),
-                    child: IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        }),
-                  ),
-                ),
+                SizedBox(),
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 15.0, left: 15, right: 15),

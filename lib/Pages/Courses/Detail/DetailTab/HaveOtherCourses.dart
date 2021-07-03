@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OtherCoursesRelate extends StatefulWidget {
-  @override
+ final id;
+ OtherCoursesRelate({this.id});
   _OtherCoursesRelateState createState() => _OtherCoursesRelateState();
 }
 
 class _OtherCoursesRelateState extends State<OtherCoursesRelate> {
   initState() {
     super.initState();
-    print(Profile.userId);
     getUserCourse();
   }
 
   getUserCourse() {
     Provider.of<Course>(context, listen: false)
-        .courseWithUserId(Profile.userId);
+        .courseWithUserId(widget.id);
   }
 
   Widget build(BuildContext context) {

@@ -1,17 +1,38 @@
 import 'dart:convert';
 import 'package:bootcamps/Providers/Auth.dart';
-import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
-import 'package:bootcamps/Widgets/ButtomBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class MessageEnrollData {
-  final id;
-  final message;
-  final enrollId;
-  final user;
+  String sId;
+  String message;
+  AccessEnroll enroll;
 
-  MessageEnrollData({this.id, this.message, this.enrollId, this.user});
+  MessageEnrollData({this.sId, this.message, this.enroll});
+
+  MessageEnrollData.fromJson( json) {
+    sId = json['_id'];
+    message = json['message'];
+    enroll = AccessEnroll.fromJson(json['enroll']);
+  }
+}
+
+class AccessEnroll {
+  String isVeryfiy;
+  String course;
+  String user;
+
+  AccessEnroll({
+    this.isVeryfiy,
+    this.course,
+    this.user,
+  });
+
+  AccessEnroll.fromJson(json) {
+    isVeryfiy = json['isVeryfiy'];
+    course = json['course'];
+    user = json['user'];
+  }
 }
 
 class MessageEnroll with ChangeNotifier {
@@ -29,18 +50,12 @@ class MessageEnroll with ChangeNotifier {
           headers: {
             "Content-Type": "Application/json",
           });
-      var jsonData = jsonDecode(res.body)['data'];
-      List<MessageEnrollData> loadCourse = [];
-      jsonData.forEach((element) {
-        loadCourse.add(
-          MessageEnrollData(
-              id: element['_id'],
-              message: element['message'],
-              enrollId: element['enroll'],
-              user: element['user']),
-        );
-      });
-      _message = loadCourse;
+      print(jsonDecode(res.body));
+      List jsonData = jsonDecode(res.body);
+
+      List decodeList =
+          jsonData.map((e) => MessageEnrollData.fromJson(e)).toList();
+      _message = decodeList;
       notifyListeners();
     } catch (error) {
       print(error);
@@ -67,5 +82,13 @@ class MessageEnroll with ChangeNotifier {
       print(error);
     }
     notifyListeners();
+  }
+
+  List<MessageEnrollData> enrollMessageFilter = [];
+
+  List<MessageEnrollData> messageFilter(String userId) {
+    enrollMessageFilter =
+        _message.where((element) => element.enroll.user == userId).toList();
+    return enrollMessageFilter;
   }
 }

@@ -328,6 +328,12 @@ class Course with ChangeNotifier {
     return userCourse;
   }
 
+  //find course with user id
+  List<CourseData> courseWithUserUrl(String url) {
+    userCourse = _course.where((element) => element.photo == url).toList();
+    return userCourse;
+  }
+
   //find course by the course Id
   CourseData findCourseById(String courseId) {
     return _course.firstWhere((element) => element.id == courseId);

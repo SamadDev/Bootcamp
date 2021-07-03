@@ -2,7 +2,6 @@ import 'package:bootcamps/Providers/Reviews.dart';
 import 'package:bootcamps/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:bootcamps/Style/style.dart';
@@ -10,6 +9,7 @@ import 'package:bootcamps/Style/style.dart';
 class ReviewPostScreen extends StatefulWidget {
   static const route = '/PostReviewScreen';
   final courseId;
+
   ReviewPostScreen({this.courseId});
 
   @override
@@ -19,7 +19,7 @@ class ReviewPostScreen extends StatefulWidget {
 class _ReviewPostScreenState extends State<ReviewPostScreen> {
   final _form = GlobalKey<FormState>();
   var _review = ReviewData(
-    title: '',
+    title: 'good',
     text: '',
     rating: 2.5,
   );
@@ -33,7 +33,6 @@ class _ReviewPostScreenState extends State<ReviewPostScreen> {
 
     await Provider.of<Review>(context, listen: false).postReview(
         newReview: _review, context: context, courseId: widget.courseId);
-
     setState(() {
       _isLoading = false;
     });
@@ -119,18 +118,17 @@ class _ReviewPostScreenState extends State<ReviewPostScreen> {
                               hintText: ' What make you say that pleas?',
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Colors.lightBlueAccent,
-                                      width: 1.0),
-                                  borderRadius: BorderRadius.circular(20)),
+                                      color: AppTheme.green, width: 1.0),
+                                  borderRadius: BorderRadius.circular(5)),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: AppTheme.green, width: 2.0),
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(5),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: AppTheme.green, width: 1.0),
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(5),
                               ),
                             ),
                             keyboardType: TextInputType.text,

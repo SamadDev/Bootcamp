@@ -17,13 +17,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
-    getUser();
     startTime();
   }
 
-  void getUser() async {
-    await Provider.of<Profile>(context, listen: false).getUser(context);
-  }
 
   startTime() {
     var duration = Duration(seconds: 2);

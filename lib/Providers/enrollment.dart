@@ -27,7 +27,7 @@ import 'package:http/http.dart' as http;
 // }
 
 class EnrollData with ChangeNotifier {
-  bool isVeryfiy;
+  String isVeryfiy;
   String sId;
   String name;
   int phone;

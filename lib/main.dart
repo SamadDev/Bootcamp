@@ -8,6 +8,7 @@ import 'package:bootcamps/Pages/Courses/love.dart';
 import 'package:bootcamps/Pages/Enroll/EnrollScree.dart';
 import 'package:bootcamps/Pages/Enroll/ErnollMenPost.dart';
 import 'package:bootcamps/Providers/CategoryC.dart';
+import 'package:bootcamps/Providers/DarkMode.dart';
 import 'package:bootcamps/Providers/Follow.dart';
 import 'package:bootcamps/Providers/enroll%20message.dart';
 import 'package:bootcamps/Providers/enrollment.dart';
@@ -35,8 +36,10 @@ import './Style/style.dart';
 import 'Pages/Authendication/SplashScreen.dart';
 import 'Pages/Courses/CourseFilter/CourseFilterHome.dart';
 import 'Pages/Courses/CourseFilter/CourseFilterScreen.dart';
+import 'Pages/drewer1.dart';
 import 'Providers/Auth.dart';
 import 'Widgets/ButtomBar.dart';
+import 'package:bootcamps/Pages/Enroll/EnrollmessageScreen.dart';
 
 void main() {
   runApp(ProviderWidget());
@@ -67,22 +70,31 @@ class ProviderWidget extends StatelessWidget {
         ChangeNotifierProvider.value(value: Follow()),
         ChangeNotifierProvider.value(value: Enroll()),
         ChangeNotifierProvider.value(value: EnrollData()),
-        ChangeNotifierProvider.value(value: MessageEnroll())
+        ChangeNotifierProvider.value(value: MessageEnroll()),
+        ChangeNotifierProvider<DarkThemePreference>(
+          create: (_) => DarkThemePreference(),
+        ),
+        ChangeNotifierProvider<Language>(
+          create: (_) => Language(),
+        )
       ],
       child: MyApp(),
     );
   }
 }
 
-class MyApp extends StatelessWidget {
-  Future<void> loadingData(BuildContext context) async {
-    Provider.of<Profile>(context, listen: false);
-    await Provider.of<Language>(context, listen: false)
-        .getLanguageDataInLocal();
-  }
-
+class MyApp extends StatefulWidget {
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  initState() {
+    super.initState();
+    Provider.of<Language>(context,listen: false).getLanguageDataInLocal();
+  }
   Widget build(BuildContext context) {
+
     final language = Provider.of<Language>(context);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Color(0xffeeeeee),
@@ -90,41 +102,46 @@ class MyApp extends StatelessWidget {
       statusBarColor: Colors.transparent, // status bar color
     ));
 
-    return MaterialApp(
-      builder: (ctx, child) {
-        return Directionality(
-          textDirection: language.languageCode == 'en'
-              ? TextDirection.ltr
-              : TextDirection.rtl,
-          child: child,
-        );
-      },
-      debugShowCheckedModeBanner: false,
-      title: language.words['bootcamp'],
-      theme: AppTheme.lightTheme,
-      home: CheckScreens(),
-      routes: {
-        LoginScreen.route: (context) => LoginScreen(),
-        SingUPScreen.route: (context) => SingUPScreen(),
-        ProfileEdit.route: (context) => ProfileEdit(),
-        BootcampsScreen.route: (context) => BootcampsScreen(),
-        CourseScreen.route: (context) => CourseScreen(),
-        CourseFilterScreen.route: (context) => CourseFilterScreen(),
-        CoursePostScreen.route: (context) => CoursePostScreen(),
-        ReviewsScreen.route: (context) => ReviewsScreen(),
-        ReviewPostScreen.route: (context) => ReviewPostScreen(),
-        CategoryScreen.route: (context) => CategoryScreen(),
-        DetailHomeScreen.route: (context) => DetailHomeScreen(),
-        CourseSearch.route: (context) => CourseSearch(),
-        HomeScreen.route: (context) => HomeScreen(),
-        CourseFilterHome.router: (context) => CourseFilterHome(),
-        MyCourse.route: (context) => MyCourse(),
-        VideoPlayerScreen.route: (context) => VideoPlayerScreen(),
-        LoveScreen.route: (context) => LoveScreen(),
-        EnrollMenScreen.route: (context) => EnrollMenScreen(),
-        EnrollPostScreen.route: (context) => EnrollPostScreen()
-      },
-    );
+    return Consumer<DarkThemePreference>(builder: (context, theme, state) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        builder: (ctx, child) {
+          return Directionality(
+            textDirection:
+            // language.languageCode == 'en'
+            //     ?
+            TextDirection.ltr,
+                // : TextDirection.rtl,
+            child: child,
+          );
+        },
+        theme:
+            theme.darkTheme == true ? AppTheme.darkTheme : AppTheme.lightTheme,
+        home: CheckScreens(),
+        routes: {
+          LoginScreen.route: (context) => LoginScreen(),
+          SingUPScreen.route: (context) => SingUPScreen(),
+          ProfileEdit.route: (context) => ProfileEdit(),
+          BootcampsScreen.route: (context) => BootcampsScreen(),
+          CourseScreen.route: (context) => CourseScreen(),
+          CourseFilterScreen.route: (context) => CourseFilterScreen(),
+          CoursePostScreen.route: (context) => CoursePostScreen(),
+          ReviewsScreen.route: (context) => ReviewsScreen(),
+          ReviewPostScreen.route: (context) => ReviewPostScreen(),
+          CategoryScreen.route: (context) => CategoryScreen(),
+          DetailHomeScreen.route: (context) => DetailHomeScreen(),
+          CourseSearch.route: (context) => CourseSearch(),
+          HomeScreen.route: (context) => HomeScreen(),
+          CourseFilterHome.router: (context) => CourseFilterHome(),
+          MyCourse.route: (context) => MyCourse(),
+          VideoPlayerScreen.route: (context) => VideoPlayerScreen(),
+          LoveScreen.route: (context) => LoveScreen(),
+          EnrollMenScreen.route: (context) => EnrollMenScreen(),
+          EnrollPostScreen.route: (context) => EnrollPostScreen(),
+          EnrollMessageScreen.route: (context) => EnrollMessageScreen()
+        },
+      );
+    });
   }
 }
 

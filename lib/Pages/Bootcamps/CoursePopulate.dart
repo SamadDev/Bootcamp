@@ -99,10 +99,7 @@ class CourseWidget extends StatelessWidget {
                       imageUrl: data.photo,
                       fit: BoxFit.fill,
                       placeholder: (ctx, snap) => Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: AppTheme.orange,
-                          strokeWidth: 1,
-                        ),
+                        child: Image.asset('assets/images/load.gif'),
                       ),
                     ),
                   ),

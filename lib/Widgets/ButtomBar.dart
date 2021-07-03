@@ -1,11 +1,16 @@
 import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
 import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
 import 'package:bootcamps/Pages/Enroll/EnrollScree.dart';
+import 'package:bootcamps/Pages/Enroll/EnrollmessageScreen.dart';
+import 'package:bootcamps/Providers/profile.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:bootcamps/Widgets/Drawer.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:connectivity_widget/connectivity_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icon.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const route = "/HomeScreen";
@@ -19,35 +24,90 @@ class _HomeScreenState extends State<HomeScreen> {
   List _screen = [
     BootcampsScreen(),
     CourseSearch(),
-    EnrollMenScreen(),
+    Profile.userRole == 'publisher' ? EnrollMenScreen() : EnrollMessageScreen(),
     MainDrawer(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screen[_currentIndex],
-      bottomNavigationBar: BottomNavyBar(
-        backgroundColor: AppTheme.bg,
-        containerHeight: 60,
-        selectedIndex: _currentIndex,
-        itemCornerRadius: 20,
-        curve: Curves.decelerate,
-        onItemSelected: (index) => setState(() => _currentIndex = index),
-        items: <BottomNavyBarItem>[
-          bottomNavyBarItem(
-              text: "Home", icon: Icon(Icons.home_filled), context: context),
-          bottomNavyBarItem(
-              text: "Search", icon: LineIcon.search(), context: context),
-          bottomNavyBarItem(
-              text: "notification",
-              icon: Icon(Icons.notifications),
-              context: context),
-          bottomNavyBarItem(
-              text: "More", icon: Icon(Icons.dehaze), context: context),
-        ],
-      ),
-    );
+    return ConnectivityWidget(
+        showOfflineBanner: false,
+        builder: (ctx, isOnline) => isOnline
+            ? Scaffold(
+                body: FutureBuilder(
+                  future: Provider.of<Profile>(context, listen: false)
+                      .getUser(context),
+                  builder: (ctx, snap) =>
+                      snap.connectionState == ConnectionState.waiting
+                          ? Center(child: CircularProgressIndicator())
+                          : _screen[_currentIndex],
+                ),
+                bottomNavigationBar: BottomNavyBar(
+                  backgroundColor: AppTheme.bg,
+                  containerHeight: 60,
+                  selectedIndex: _currentIndex,
+                  itemCornerRadius: 20,
+                  curve: Curves.decelerate,
+                  onItemSelected: (index) =>
+                      setState(() => _currentIndex = index),
+                  items: <BottomNavyBarItem>[
+                    bottomNavyBarItem(
+                        text: "Home",
+                        icon: Image.asset(
+                          "assets/images/home.png",
+                          width: 23,
+                          height: 23,
+                        ),
+                        context: context),
+                    bottomNavyBarItem(
+                        text: "Search",
+                        icon: Image.asset(
+                          'assets/images/search.png',
+                          width: 23,
+                          height: 23,
+                        ),
+                        context: context),
+                    bottomNavyBarItem(
+                        text: "notification",
+                        icon: Image.asset(
+                          "assets/images/bell1.png",
+                          width: 23,
+                          height: 23,
+                        ),
+                        context: context),
+                    bottomNavyBarItem(
+                        text: "More",
+                        icon: Image.asset(
+                          "assets/images/menu.png",
+                          width: 23,
+                          height: 23,
+                        ),
+                        context: context),
+                  ],
+                ),
+              )
+            : Scaffold(
+          backgroundColor: AppTheme.white,
+                body: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/wifi.gif',
+                        width: 400,height: 400,
+                        fit: BoxFit.fill,
+                      ),
+
+                      FlatButton(
+                        child: Text("retry",style: Theme.of(context).textTheme.bodyText1,),
+                        color: AppTheme.green,
+                        onPressed: () {},
+                      )
+                    ],
+                  ),
+                ),
+              ));
   }
 }
 

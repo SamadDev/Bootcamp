@@ -5,6 +5,77 @@ import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+// class Data {
+//   String sId;
+//   String title;
+//   String text;
+//   double rating;
+//   String course;
+//   User user;
+//   String createdAt;
+//   int iV;
+//
+//   Data(
+//       {this.sId,
+//         this.title,
+//         this.text,
+//         this.rating,
+//         this.course,
+//         this.user,
+//         this.createdAt,
+//         this.iV});
+//
+//   Data.fromJson(Map<String, dynamic> json) {
+//     sId = json['_id'];
+//     title = json['title'];
+//     text = json['text'];
+//     rating = json['rating'];
+//     course = json['course'];
+//     user = json['user'] != null ? new User.fromJson(json['user']) : null;
+//     createdAt = json['createdAt'];
+//     iV = json['__v'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['_id'] = this.sId;
+//     data['title'] = this.title;
+//     data['text'] = this.text;
+//     data['rating'] = this.rating;
+//     data['course'] = this.course;
+//     if (this.user != null) {
+//       data['user'] = this.user.toJson();
+//     }
+//     data['createdAt'] = this.createdAt;
+//     data['__v'] = this.iV;
+//     return data;
+//   }
+// }
+//
+// class User {
+//   String sId;
+//   String name;
+//   String photo;
+//
+//   User({this.sId, this.name, this.photo});
+//
+//   User.fromJson(Map<String, dynamic> json) {
+//     sId = json['_id'];
+//     name = json['name'];
+//     photo = json['photo'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['_id'] = this.sId;
+//     data['name'] = this.name;
+//     data['photo'] = this.photo;
+//     return data;
+//   }
+// }
+
 
 class ReviewData with ChangeNotifier {
   final id;
@@ -31,14 +102,12 @@ class Review with ChangeNotifier {
   List<ReviewData> _review = [];
 
   List<ReviewData> get reviewList => _review;
-  static int count = 0;
   String error = '';
   bool isSuccess = false;
 
   //to get the review refer to the course
-  Future<void> fitchReviewsReferCourse(courseId, {bool reload = false}) async {
+  Future<void> fitchReviewsReferCourse(courseId) async {
     // if (_review.isEmpty)
-    //   if(reload==false)
     try {
       var res = await http.get(
           "https://bootcamp-training-training.herokuapp.com/api/v1/courses/$courseId/reviews",
@@ -47,12 +116,10 @@ class Review with ChangeNotifier {
             "Authorization": "Bearer ${Auth.token}"
           });
       final jsonData = jsonDecode(res.body)['data'];
-      int countReview = jsonDecode(res.body)['count'];
-      count = countReview;
-      print(countReview);
-      final List<ReviewData> loadCourse = [];
+
+      final List<ReviewData> loadReview = [];
       jsonData.forEach((element) {
-        loadCourse.add(
+        loadReview.add(
           ReviewData(
               title: element['title'],
               text: element['text'],
@@ -62,7 +129,7 @@ class Review with ChangeNotifier {
               userName: element['user']['name']),
         );
       });
-      _review = loadCourse;
+      _review = loadReview;
       notifyListeners();
     } catch (error) {
       print("review get error is $error");
@@ -88,22 +155,25 @@ class Review with ChangeNotifier {
       final source = jsonDecode(res.body);
       error = source['error'];
       isSuccess = source['success'];
-
       _review.add(ReviewData(
         title: source['title'],
         text: source['text'],
         rating: source['rating'],
       ));
 
-      if (isSuccess) {
-        Navigator.of(context).pop();
-      } else {
-        print(error);
+      if (isSuccess != true) {
         showErrorDialog(error, context);
       }
+      else {
+        notifyListeners();
+      await Provider.of<Review>(context,listen: false).fitchReviewsReferCourse(courseId);
+        Navigator.of(context).pop();
+
+
+      }
+
     } catch (error) {
       showErrorDialog("post review error is $error", context);
     }
-    notifyListeners();
   }
 }
