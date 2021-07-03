@@ -60,7 +60,7 @@ class Profile with ChangeNotifier {
       userRole = role;
       userId = id;
       userData = User.fromJson(jsonData);
-      print(userData);
+      print(userData.name);
     } catch (error) {
       print('profile error is $error');
     }

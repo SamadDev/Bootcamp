@@ -75,7 +75,9 @@ class _BootcampOfferScreenState extends State<BootcampOfferScreen> {
                   subtitle: Row(
                     children: [
                       RatingBarIndicator(
-                        rating: slideList.courseList[i].averageRating ?? 0,
+                        rating: slideList.courseList[i].averageRating == null
+                            ? 0.0
+                            : slideList.courseList[i].averageRating.toDouble(),
                         itemSize: 22,
                         direction: Axis.horizontal,
                         itemCount: 5,

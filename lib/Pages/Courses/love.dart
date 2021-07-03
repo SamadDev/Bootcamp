@@ -23,7 +23,11 @@ class LoveScreen extends StatelessWidget {
                 .fetchLoveList(),
             builder: (ctx, i) => Consumer<SLocalStorage>(
                   builder: (ctx, love, _) => GridView.builder(
-                      itemCount: love.courseList.length,
+                      itemCount: love.courseList.length == null
+                          ? Center(
+                              child: Text('slaw'),
+                            )
+                          : love.courseList.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           mainAxisSpacing: 10,
                           crossAxisSpacing: 10,
@@ -40,9 +44,10 @@ class LoveScreen extends StatelessWidget {
                                   width: 200,
                                   height: 300,
                                   child: CachedNetworkImage(
-                                 imageUrl: love.courseList[index],
+                                    imageUrl: love.courseList[index],
                                     fit: BoxFit.fill,
-                                    placeholder: (ctx,snap)=>Image.asset('assets/images/'),
+                                    placeholder: (ctx, snap) =>
+                                        Image.asset('assets/images/'),
                                   ),
                                 ),
                                 GestureDetector(

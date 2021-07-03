@@ -10,8 +10,9 @@ class DetailTabScree extends StatefulWidget {
   final videos;
   final videoPath;
   final courseId;
+  final user;
 
-  DetailTabScree({this.videos, this.videoPath, this.courseId});
+  DetailTabScree({this.videos, this.videoPath, this.courseId,this.user});
 
   _DetailTabScreeState createState() => _DetailTabScreeState();
 }
@@ -68,7 +69,7 @@ class _DetailTabScreeState extends State<DetailTabScree> {
               videos: widget.videos,
             ),
             ReviewsScreen(courseId: widget.courseId),
-            OtherCoursesRelate()
+            OtherCoursesRelate(id: widget.user,)
           ],
         ),
       ),

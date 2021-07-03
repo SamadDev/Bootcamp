@@ -18,7 +18,7 @@ class MessageEnrollData {
 }
 
 class AccessEnroll {
-  bool isVeryfiy;
+  String isVeryfiy;
   String course;
   String user;
 

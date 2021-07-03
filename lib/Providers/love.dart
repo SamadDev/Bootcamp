@@ -6,17 +6,14 @@ class SLocalStorage with ChangeNotifier {
 
   Future<void> fetchLoveList() async {
     try {
-      if(courseList.isEmpty){addToLoveList('url'); courseList.removeAt(0);}
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      courseList = preferences.getStringList('course');
-      print(courseList.length);
+      courseList = preferences.getStringList('course')??[];
       notifyListeners();
     } catch (error) {
       print(error);
     }
   }
-
-  addToLoveList(photo) async {
+  addToLoveList(String photo) async {
     try {
       courseList.add(photo);
       SharedPreferences preferences = await SharedPreferences.getInstance();

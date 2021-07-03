@@ -96,9 +96,9 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(60),color: AppTheme.black2),
                         child: Consumer<SLocalStorage>(
                             builder: (ctx, love, _) => GestureDetector(
-                                onTap: () async {
+                                onTap: () {
                                   if (love.courseList.contains(data.photo)) {
-                                   await love.removeCourse(data.photo);
+                                   love.removeCourse(data.photo);
                                   } else {
                                     love.addToLoveList(data.photo);
                                   }
@@ -252,7 +252,8 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
                 child: DetailTabScree(
                   videos: data.videos,
                   videoPath: data.videoPath,
-                  courseId: data.id,
+                  courseId: widget.id,
+                  user: data.user,
                 )),
           ],
         ),

@@ -70,7 +70,8 @@ class EnrollWidget extends StatelessWidget {
         '${data.name} enroll to ${data.course.title} can you accepted',
         style: Theme.of(context).textTheme.subtitle2,
       ),
-      trailing: data.isVeryfiy
+     trailing:
+      data.isVeryfiy=='true'
           ? Container(
         height: 28,
         width: 95,
@@ -80,6 +81,18 @@ class EnrollWidget extends StatelessWidget {
         child: Center(
           child: Text(
             'accepted ✔',
+            style: Theme.of(context).textTheme.headline5,
+          ),
+        ),
+      ):data.isVeryfiy=='pending'?Container(
+        height: 28,
+        width: 95,
+        decoration: BoxDecoration(
+            color: AppTheme.orange,
+            borderRadius: BorderRadius.circular(25)),
+        child: Center(
+          child: Text(
+            'pending',
             style: Theme.of(context).textTheme.headline5,
           ),
         ),
@@ -106,7 +119,7 @@ class EnrollWidget extends StatelessWidget {
                           message:
                           'congratulation,you enrolled to ${data.course.title}');
                       update.updateEnroll(
-                          newIsVerify: true, enrollId: data.sId);
+                          newIsVerify: 'true', enrollId: data.sId);
                       Navigator.of(context).pop();
                     });
               },
@@ -117,6 +130,7 @@ class EnrollWidget extends StatelessWidget {
               ),
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: GestureDetector(
@@ -125,12 +139,12 @@ class EnrollWidget extends StatelessWidget {
                     text: "send",
                     context: context,
                     title:
-                    "kindly let ${data.name} know why didn\'n accept",
+                    "kindly let ${data.name} know why did not accept",
                     child: TextField(
                       controller: messageController,
                     ),
                     onPress: () {
-                      update.deleteEnroll(data.sId, context);
+                      update.updateEnroll(enrollId: data.sId,newIsVerify: "pending");
                       message.postMessageEnroll(
                           context: context,
                           enrollId: data.sId,

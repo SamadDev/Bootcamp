@@ -87,4 +87,9 @@ class Auth with ChangeNotifier {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     token = preferences.getString('token');
   }
+  removeToken()async{
+    SharedPreferences preferences=await SharedPreferences.getInstance();
+    preferences.remove('token');
+    print(token);
+  }
 }

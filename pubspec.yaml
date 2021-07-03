@@ -27,6 +27,7 @@ dependencies:
   chewie:
   file_picker: ^1.1.1
   fluttertoast: ^5.0.1
+  connectivity_widget:
 
 
 
