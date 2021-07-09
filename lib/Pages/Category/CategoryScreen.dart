@@ -1,4 +1,5 @@
 import 'package:bootcamps/Pages/Bootcamps/CoursePopulate.dart';
+import 'package:bootcamps/Pages/Courses/CourseFilter/CourseFilterScreen.dart';
 import 'package:bootcamps/Providers/Category.dart';
 import 'package:bootcamps/Providers/Course.dart';
 import 'package:bootcamps/Style/style.dart';
@@ -42,17 +43,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
-              child: Container(
-                height: 45,
-                width: 45,
-                decoration: BoxDecoration(
-                    color: AppTheme.black2,
-                    borderRadius: BorderRadius.circular(60)),
-                child: Icon(
-                  Icons.tune,
-                  size: 25,
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).pushNamed(CourseFilterScreen.route);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15.0, left: 15, right: 15),
+                child: Container(
+                  height: 45,
+                  width: 45,
+                  decoration: BoxDecoration(
+                      color: AppTheme.black2,
+                      borderRadius: BorderRadius.circular(60)),
+                  child: Icon(
+                    Icons.tune,
+                    size: 25,
+                  ),
                 ),
               ),
             )

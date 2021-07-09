@@ -4,49 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-// class SizeConfig {
-//   static double _blockWidth = 0;
-//   static double _blockHeight = 0;
-//
-//   static double textMultiplier;
-//   static double imageSizeMultiplier;
-//   static double heightMultiplier;
-//   static double widthMultiplier;
-//   static bool isPortrait = true;
-//   static bool isMobilePortrait = false;
-//   static double screenWidth;
-//   static double screenHeight;
-//
-//   void init(BoxConstraints constraints, Orientation orientation) {
-//     if (orientation == Orientation.portrait) {
-//       screenWidth = constraints.maxWidth;
-//       screenHeight = constraints.maxHeight;
-//       isPortrait = true;
-//       if (screenWidth < 450) {
-//         isMobilePortrait = true;
-//       }
-//     } else {
-//       screenWidth = constraints.maxHeight;
-//       screenHeight = constraints.maxWidth;
-//       isPortrait = false;
-//       isMobilePortrait = false;
-//     }
-//
-//     _blockWidth = screenWidth / 100;
-//     _blockHeight = screenHeight / 100;
-//
-//     textMultiplier = _blockHeight;
-//     imageSizeMultiplier = _blockWidth;
-//
-//     heightMultiplier = _blockHeight;
-//     widthMultiplier = _blockWidth;
-//
-//     print(screenWidth);
-//   }
-// }
-
-  //Colors of the whole application
-
   static const Color green = Colors.teal;
   static const Color orange = Color(0xfffea41b);
   static const Color navy = Color(0xff736ff4);
@@ -88,12 +45,12 @@ class AppTheme {
 
   //dark theme of the whole application
   static final ThemeData darkTheme = ThemeData(
-      scaffoldBackgroundColor: Colors.black12,
+      scaffoldBackgroundColor: Color(0xff232b2b),
       shadowColor: Colors.black,
-      brightness: Brightness.dark,
-      primaryColor: AppTheme.bg,
+      brightness: Brightness.light,
+      primaryColor: AppTheme.white,
       textTheme: darkTextTheme,
-      accentColorBrightness: Brightness.dark,
+      // accentColorBrightness: Brightness.dark,
       appBarTheme: AppBarTheme(
           elevation: 1,
           iconTheme: IconThemeData(color: Colors.white),

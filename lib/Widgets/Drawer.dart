@@ -1,8 +1,8 @@
 import 'package:bootcamps/Pages/Courses/CourseMy.dart';
 import 'package:bootcamps/Pages/Courses/love.dart';
+import 'package:bootcamps/Pages/SettingScreen.dart';
 import 'package:bootcamps/Providers/profile.dart';
 import 'package:bootcamps/Style/style.dart';
-import 'package:bootcamps/Widgets/ButtomBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bootcamps/Providers/Auth.dart';
@@ -15,93 +15,92 @@ class MainDrawer extends StatelessWidget {
         body: FutureBuilder(
             future:
                 Provider.of<Profile>(context, listen: false).getUser(context),
-            builder: (ctx, snap) =>
-                snap.connectionState == ConnectionState.waiting
-                    ? Center(child: CircularProgressIndicator())
-                    : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Consumer<Profile>(
-                              builder: (context, profile, _) => Container(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(top: 50.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 50.0,
-                                            backgroundImage: NetworkImage(
-                                                profile.userData.photo !=
-                                                        null
-                                                    ? profile.userData.photo
-                                                    : "https://i.ibb.co/mbB2wdY/undraw-profile-pic-ic5t.png"),
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Text(profile.userData.name,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline3),
-                                        ],
+            builder: (ctx, snap) => snap.connectionState ==
+                    ConnectionState.waiting
+                ? Center(child: CircularProgressIndicator())
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Consumer<Profile>(
+                          builder: (context, profile, _) => Container(
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 50.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 50.0,
+                                        backgroundImage: NetworkImage(profile
+                                                    .userData.photo !=
+                                                null
+                                            ? profile.userData.photo
+                                            : "https://i.ibb.co/mbB2wdY/undraw-profile-pic-ic5t.png"),
                                       ),
-                                    ),
-                                  )),
-                          Container(
-                            child: Column(children: [
-                              SizedBox(
-                                height: 20.0,
-                              ),
-                              listTile(
-                                  context: context,
-                                  text: "My Enrolled course",
-                                  icon: Icons.book),
-                              role == 'publisher'
-                                  ? listTile(
-                                      context: context,
-                                      text: 'My course',
-                                      icon: Icons.book,
-                                      screenRoute: MyCourse.route)
-                                  : SizedBox.shrink(),
-                              listTile(
-                                  context: context,
-                                  text: 'Favorite',
-                                  icon: Icons.favorite,
-                                  screenRoute: LoveScreen.route),
-                              listTile(
-                                  context: context,
-                                  text: 'setting',
-                                  icon: Icons.settings,
-                                  screenRoute: HomeScreen.route),
-                            ]),
-                          ),
-                          Container(
-                            width: 230,
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(60),
-                                border: Border.all(color: AppTheme.black4)),
-                            child: GestureDetector(
-                              onTap: () {
-                                Provider.of<Auth>(context, listen: false)
-                                    .removeToken();
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (ctx) => UserOrPublisher()));
-                              },
-                              child: Center(
-                                  child: Text(
-                                'Log Out',
-                                style: Theme.of(context).textTheme.headline4,
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      Text(profile.userData.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline3),
+                                    ],
+                                  ),
+                                ),
                               )),
-                            ),
-                          )
-                        ],
-                      )));
+                      Container(
+                        child: Column(children: [
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          listTile(
+                              context: context,
+                              text: "My Enrolled course",
+                              icon: Icons.book),
+                          role == 'publisher'
+                              ? listTile(
+                                  context: context,
+                                  text: 'My course',
+                                  icon: Icons.book,
+                                  screenRoute: MyCourse.route)
+                              : SizedBox.shrink(),
+                          listTile(
+                              context: context,
+                              text: 'Favorite',
+                              icon: Icons.favorite,
+                              screenRoute: LoveScreen.route),
+                          listTile(
+                              context: context,
+                              text: 'setting',
+                              icon: Icons.settings,
+                              screenRoute: SettingScreen.route),
+                        ]),
+                      ),
+                      Container(
+                        width: 230,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(60),
+                            border: Border.all(color: AppTheme.black4)),
+                        child: GestureDetector(
+                          onTap: () {
+                            Provider.of<Auth>(context, listen: false)
+                                .removeToken();
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (ctx) => UserOrPublisher()));
+                          },
+                          child: Center(
+                              child: Text(
+                            'Log Out',
+                            style: Theme.of(context).textTheme.headline4,
+                          )),
+                        ),
+                      )
+                    ],
+                  )));
   }
 }
 

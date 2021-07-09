@@ -4,7 +4,8 @@ import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DrawerRa extends StatelessWidget {
+class SettingScreen extends StatelessWidget {
+  static const route='/setting';
   Widget build(BuildContext context) {
     final language = Provider.of<Language>(context);
     return Scaffold(
@@ -79,12 +80,10 @@ class _ListTile extends StatelessWidget {
   final Function onTap;
 
   const _ListTile(
-      {Key key,
-      this.title,
+      {this.title,
       this.icon,
       this.color = const Color(0xff9E9E9E),
-      this.onTap})
-      : super(key: key);
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -108,11 +107,7 @@ class _LanguageButton extends StatelessWidget {
   final String direction;
 
   const _LanguageButton(
-      {Key key,
-      @required this.label,
-      @required this.code,
-      @required this.direction})
-      : super(key: key);
+      {@required this.label, @required this.code, @required this.direction});
 
   @override
   Widget build(BuildContext context) {
