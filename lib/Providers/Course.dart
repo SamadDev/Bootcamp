@@ -57,35 +57,44 @@ class Course with ChangeNotifier {
 
   List<CourseData> get courseList => _course;
 
-  List<CourseData> _bootcampCourse = [];
-
-  List<CourseData> get bootcampCourse => _bootcampCourse;
-
   static String error;
   static bool isSuccess;
-
-  // List<Test> filterProList = [];
-
-  //test
+  List<CourseModule> mosPopulateList = [];
+  List<CourseModule> recentList = [];
   List<CourseData> _filterProList = [];
-
   List<CourseData> get filterProList => _filterProList;
 
-  // Future<void> fetchFilter() async {
-  //   try {
-  //     var res = await http.get(url, headers: {
-  //       "Content-Type": "application/json",
-  //     });
-  //     Map jsonMap = jsonDecode(res.body);
-  //     List jsonData = jsonMap['data'];
-  //     print(jsonData);
-  //     List decodeData = jsonData.map((e) => Test.fromJson(e)).toList();
-  //     _filterProList = decodeData;
-  //     notifyListeners();
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
+  Future<void>mostPopulate(filter) async {
+    try {
+      var res = await http.get("$url?sort=$filter", headers: {
+        "Content-Type": "application/json",
+      });
+      List jsonData = jsonDecode(res.body)['data'];
+      print(jsonData);
+      List decodeData = jsonData.map((e) => CourseModule.fromJson(e)).toList();
+      mosPopulateList = decodeData;
+      print(mosPopulateList.length);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void>mostRecent(filter) async {
+    try {
+      var res = await http.get("$url?sort=$filter", headers: {
+        "Content-Type": "application/json",
+      });
+      List jsonData = jsonDecode(res.body)['data'];
+      print(jsonData);
+      List decodeData = jsonData.map((e) => CourseModule.fromJson(e)).toList();
+      recentList = decodeData;
+      print(recentList.length);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+    }
+  }
 
 
   Future<void> fetchFilter({
@@ -100,7 +109,6 @@ class Course with ChangeNotifier {
     certificate,
   }) async {
     try {
-      print(sort);
       var res = await http.get(
           "$url?sort=-$sort&tuition[gte]=$pMin&tuition[lte]=$pMax&minimumSkill=$skill&typeSkill=$category&certificate=$certificate&state=$state&language=$language",
           headers: {

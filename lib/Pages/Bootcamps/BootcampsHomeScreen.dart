@@ -1,9 +1,11 @@
 import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Bootcamps/CourseOferScreen.dart';
+import 'package:bootcamps/Pages/Bootcamps/CourseRecent.dart';
 import 'package:bootcamps/Pages/Bootcamps/CoursessVertical.dart';
 import 'package:bootcamps/Pages/Courses/CourseFilter/CourseFilterScreen.dart';
 import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
 import 'package:bootcamps/Pages/Enroll/EnrollScree.dart';
+import 'package:bootcamps/Providers/Course.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:bootcamps/Widgets/TopBarWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +26,9 @@ class BootcampsScreen extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Provider.of<Course>(context,listen: false).mostPopulate("");
+      },),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +89,7 @@ class BootcampsScreen extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10.0, right: 15, left: 15),
               child: Container(
                 height: 240,
-                child: BootcampCoursePopulate(),
+                child: CourseRecent(),
               ),
             ),
             captionPadding(

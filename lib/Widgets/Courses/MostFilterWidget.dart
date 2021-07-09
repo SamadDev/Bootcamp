@@ -1,44 +1,12 @@
 import 'package:bootcamps/Pages/Courses/Detail/DetailHomeScreen.dart';
-import 'package:bootcamps/Providers/Course.dart';
 import 'package:bootcamps/Style/style.dart';
-import 'package:bootcamps/Widgets/Courses/MostFilterWidget.dart';
-import 'package:bootcamps/Widgets/circleProgress.dart';
+import 'package:bootcamps/modul/Test.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-class BootcampCoursePopulate extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
-      child: FutureBuilder(
-          future:
-              Provider.of<Course>(context, listen: false).mostPopulate('-averageView'),
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
-              return Center(child: circleProgress());
-            } else
-              return Consumer<Course>(
-                  builder: (context, course, _) => SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: course.mosPopulateList
-                              .map<Widget>((e) => MostFilterWidget(
-                                    data: e,
-                                  ))
-                              .toList(),
-                        ),
-                      ));
-          }),
-    );
-  }
-}
+class MostFilterWidget extends StatelessWidget {
+  final CourseModule data;
 
-
-class CourseWidget extends StatelessWidget {
-  final CourseData data;
-
-  CourseWidget({this.data});
+  MostFilterWidget({this.data});
 
   Widget build(BuildContext context) {
     return InkWell(
@@ -99,35 +67,35 @@ class CourseWidget extends StatelessWidget {
                 ),
                 Expanded(
                     child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        data.view == null ? "0" : "${data.view}",
-                        style: Theme.of(context).textTheme.headline6,
+                      padding: const EdgeInsets.all(3.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            data.view == null ? "0" : "${data.view}",
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          Icon(
+                            Icons.visibility,
+                            color: AppTheme.black4,
+                            size: 18,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            data.averageRating == null
+                                ? "0"
+                                : "${data.averageRating.toStringAsFixed(1)}",
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          Icon(
+                            Icons.star,
+                            color: AppTheme.black4,
+                            size: 18,
+                          ),
+                        ],
                       ),
-                      Icon(
-                        Icons.visibility,
-                        color: AppTheme.black4,
-                        size: 18,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        data.averageRating == null
-                            ? "0"
-                            : "${data.averageRating.toStringAsFixed(1)}",
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: AppTheme.black4,
-                        size: 18,
-                      ),
-                    ],
-                  ),
-                ))
+                    ))
               ],
             ),
           ),

@@ -36,7 +36,7 @@ import './Style/style.dart';
 import 'Pages/Authendication/SplashScreen.dart';
 import 'Pages/Courses/CourseFilter/CourseFilterHome.dart';
 import 'Pages/Courses/CourseFilter/CourseFilterScreen.dart';
-import 'Pages/drewer1.dart';
+import 'Pages/SettingScreen.dart';
 import 'Providers/Auth.dart';
 import 'Widgets/ButtomBar.dart';
 import 'package:bootcamps/Pages/Enroll/EnrollmessageScreen.dart';
@@ -108,10 +108,10 @@ class _MyAppState extends State<MyApp> {
         builder: (ctx, child) {
           return Directionality(
             textDirection:
-            // language.languageCode == 'en'
-            //     ?
-            TextDirection.ltr,
-                // : TextDirection.rtl,
+            language.languageCode == 'en'
+                ?
+            TextDirection.ltr
+                : TextDirection.rtl,
             child: child,
           );
         },
@@ -138,7 +138,8 @@ class _MyAppState extends State<MyApp> {
           LoveScreen.route: (context) => LoveScreen(),
           EnrollMenScreen.route: (context) => EnrollMenScreen(),
           EnrollPostScreen.route: (context) => EnrollPostScreen(),
-          EnrollMessageScreen.route: (context) => EnrollMessageScreen()
+          EnrollMessageScreen.route: (context) => EnrollMessageScreen(),
+          SettingScreen.route:(context)=>SettingScreen()
         },
       );
     });
@@ -148,8 +149,13 @@ class _MyAppState extends State<MyApp> {
 class CheckScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+   Future<void> load()async{
+      Provider.of<Auth>(context,listen: false).fetchTokenInLocal();
+    await  Provider.of<DarkThemePreference>(context,listen: false).getTheme();
+   print(Provider.of<DarkThemePreference>(context,listen: false).darkTheme);
+    }
     return FutureBuilder(
-        future: Provider.of<Auth>(context).fetchTokenInLocal(),
+        future:load(),
         builder: (context, snapshot) =>
             snapshot.connectionState == ConnectionState.waiting
                 ? Container(
