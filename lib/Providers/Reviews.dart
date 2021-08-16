@@ -7,76 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-// class Data {
-//   String sId;
-//   String title;
-//   String text;
-//   double rating;
-//   String course;
-//   User user;
-//   String createdAt;
-//   int iV;
-//
-//   Data(
-//       {this.sId,
-//         this.title,
-//         this.text,
-//         this.rating,
-//         this.course,
-//         this.user,
-//         this.createdAt,
-//         this.iV});
-//
-//   Data.fromJson(Map<String, dynamic> json) {
-//     sId = json['_id'];
-//     title = json['title'];
-//     text = json['text'];
-//     rating = json['rating'];
-//     course = json['course'];
-//     user = json['user'] != null ? new User.fromJson(json['user']) : null;
-//     createdAt = json['createdAt'];
-//     iV = json['__v'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['_id'] = this.sId;
-//     data['title'] = this.title;
-//     data['text'] = this.text;
-//     data['rating'] = this.rating;
-//     data['course'] = this.course;
-//     if (this.user != null) {
-//       data['user'] = this.user.toJson();
-//     }
-//     data['createdAt'] = this.createdAt;
-//     data['__v'] = this.iV;
-//     return data;
-//   }
-// }
-//
-// class User {
-//   String sId;
-//   String name;
-//   String photo;
-//
-//   User({this.sId, this.name, this.photo});
-//
-//   User.fromJson(Map<String, dynamic> json) {
-//     sId = json['_id'];
-//     name = json['name'];
-//     photo = json['photo'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['_id'] = this.sId;
-//     data['name'] = this.name;
-//     data['photo'] = this.photo;
-//     return data;
-//   }
-// }
-
-
 class ReviewData with ChangeNotifier {
   final id;
   final title;
@@ -106,26 +36,27 @@ class Review with ChangeNotifier {
   bool isSuccess = false;
 
   //to get the review refer to the course
-  Future<void> fitchReviewsReferCourse(courseId) async {
+  Future<void> fitchReviewsReferCourse({filter}) async {
     // if (_review.isEmpty)
     try {
       var res = await http.get(
-          "https://bootcamp-training-training.herokuapp.com/api/v1/courses/$courseId/reviews",
+          "https://bootcamp-training-training.herokuapp.com/api/v1/reviews?sort=$filter",
           headers: {
             "Content-Type": "Application/json",
             "Authorization": "Bearer ${Auth.token}"
           });
       final jsonData = jsonDecode(res.body)['data'];
-
       final List<ReviewData> loadReview = [];
       jsonData.forEach((element) {
         loadReview.add(
           ReviewData(
+              id: element['_id'],
               title: element['title'],
               text: element['text'],
               rating: element['rating'].toDouble(),
               courseId: element['course'],
               photo: element['user']['photo'],
+              userId: element['user']['_id'],
               userName: element['user']['name']),
         );
       });
@@ -134,6 +65,11 @@ class Review with ChangeNotifier {
     } catch (error) {
       print("review get error is $error");
     }
+  }
+
+  List<ReviewData> filterReviewList=[];
+  List<void> getReview(courseId){
+   return filterReviewList=_review.where((element) => element.courseId==courseId).toList();
   }
 
   //to post review to the to the course
@@ -147,7 +83,7 @@ class Review with ChangeNotifier {
           "Authorization": "Bearer ${Auth.token}"
         },
         body: jsonEncode({
-          'title': newReview.title,
+          'title': 'good',
           'text': newReview.text,
           'rating': newReview.rating,
         }),
@@ -163,17 +99,68 @@ class Review with ChangeNotifier {
 
       if (isSuccess != true) {
         showErrorDialog(error, context);
-      }
-      else {
+      } else {
         notifyListeners();
-      await Provider.of<Review>(context,listen: false).fitchReviewsReferCourse(courseId);
+        await Provider.of<Review>(context, listen: false)
+            .fitchReviewsReferCourse();
         Navigator.of(context).pop();
-
-
       }
-
     } catch (error) {
       showErrorDialog("post review error is $error", context);
     }
+  }
+
+  Future<void> updateReview(
+      {reviewId, ReviewData review, context, courseId}) async {
+    try {
+      final index = _review.indexWhere((element) => element.id == reviewId);
+      if (index >= 0) {
+        final res = await http.put(
+            'https://bootcamp-training-training.herokuapp.com/api/v1/reviews/$reviewId',
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer ${Auth.token}"
+            },
+            body: json.encode({
+              'title': "goode",
+              "text": review.text,
+              "rating": review.rating.toString()
+            }));
+        _review[index].rating = review.rating;
+        notifyListeners();
+      }
+    } catch (error) {
+      showErrorDialog("post review error is $error", context);
+    }
+  }
+
+  Future<void> deleteReview({reviewId}) async {
+    try {
+      changeState();
+      await http.delete(
+        'https://bootcamp-training-training.herokuapp.com/api/v1/reviews/$reviewId',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${Auth.token}"
+        },
+      );
+      final index = _review.indexWhere((element) => element.id == reviewId);
+      _review.removeAt(index);
+      notifyListeners();
+      changeState();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  ReviewData findById(reviewId) {
+    return _review.firstWhere((element) => element.id == reviewId);
+  }
+
+  bool isLoading = false;
+
+  void changeState() {
+    isLoading = !isLoading;
+    notifyListeners();
   }
 }

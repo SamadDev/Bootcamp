@@ -13,6 +13,7 @@ class AppTheme {
   static const Color white = Colors.white;
   static Color black4 = Color(0xff3e3e3e).withOpacity(0.2);
   static Color lightBlueAccent = Colors.lightBlueAccent;
+  static Color transparent=Colors.transparent;
 
   static const Color button = Colors.lightBlueAccent;
   static const Color secondaryBg = Colors.lightBlueAccent;
@@ -29,8 +30,10 @@ class AppTheme {
 
   //light theme of the application
   static final ThemeData lightTheme = ThemeData(
-      scaffoldBackgroundColor: AppTheme.bg,
-      backgroundColor: AppTheme.bg,
+    buttonColor: AppTheme.black2,
+      cardColor:AppTheme.black2 ,
+      scaffoldBackgroundColor: Color(0xffeeeeee),
+      backgroundColor: AppTheme.black2,
       brightness: Brightness.light,
       primaryColor: AppTheme.headlineTextColor,
       textTheme: lightTextTheme,
@@ -43,14 +46,19 @@ class AppTheme {
         iconTheme: IconThemeData(color: Colors.black),
       ));
 
-  //dark theme of the whole application
+  //dark theme of the whole application  Color(0xff001f24),
   static final ThemeData darkTheme = ThemeData(
-      scaffoldBackgroundColor: Color(0xff232b2b),
+    cardColor:Color(0xff3b444b) ,
+    buttonColor: AppTheme.white,
+    backgroundColor: Color(0xff001f24),
+      scaffoldBackgroundColor: Color(0xff141414),
       shadowColor: Colors.black,
       brightness: Brightness.light,
       primaryColor: AppTheme.white,
       textTheme: darkTextTheme,
-      // accentColorBrightness: Brightness.dark,
+      primaryTextTheme: darkTextTheme,
+      accentTextTheme: darkTextTheme,
+      accentColorBrightness: Brightness.dark,
       appBarTheme: AppBarTheme(
           elevation: 1,
           iconTheme: IconThemeData(color: Colors.white),
@@ -63,14 +71,15 @@ class AppTheme {
     headline1: _headline1.copyWith(color: Colors.white),
     headline2: _headline2.copyWith(color: Colors.white),
     headline3: _headline3.copyWith(color: Colors.white),
-    headline4: _headline4.copyWith(color: Colors.white),
+    headline4: _headline4.copyWith(color: AppTheme.white,),
     headline5: _headline5.copyWith(color: Colors.white),
     headline6: _headline6.copyWith(color: Colors.white),
-    button: _button.copyWith(color: AppTheme.headlineTextColor),
+    button: _button.copyWith(color: AppTheme.white),
     subtitle1: _subtitle1.copyWith(color: Colors.white),
     subtitle2: _subtitle2.copyWith(color: Colors.white),
-    bodyText1: _bodyText1.copyWith(color: AppTheme.primary),
-    bodyText2: _bodyText2.copyWith(color: AppTheme.secondaryBg),
+    bodyText1: _bodyText1.copyWith(color: AppTheme.white),
+    caption: _caption,
+    bodyText2: _bodyText2.copyWith(color: AppTheme.white),
   );
 
   //Light dark theme of the application

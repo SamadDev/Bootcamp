@@ -1,9 +1,16 @@
+import 'package:bootcamps/Localization/language.dart';
+import 'package:bootcamps/Providers/Course.dart';
+import 'package:bootcamps/Providers/CourseModule.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class InfoScree extends StatelessWidget {
+  final CourseData data;
+  InfoScree({this.data});
   @override
   Widget build(BuildContext context) {
+    final language=Provider.of<Language>(context,listen:false);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -12,20 +19,30 @@ class InfoScree extends StatelessWidget {
             height: 15,
           ),
           _caption(
-              text: 'about',
+              text: language.words['about'],
               icon: Icons.error_outline_outlined,
               context: context),
           _textBody(
               text:
-                  "Welcome to the Complete Flutter App Development Bootcamp with Dart - created in collaboration with the Google Flutter team.Covering all the fundamental concepts for Flutter development,We built this course over months,",
+              language.languageCode == 'en'
+                  ? data.description
+                  : language.languageCode == 'ar'
+                  ? data.descriptionAr
+                  : data.descriptionKr,
               context: context),
           _caption(
-              text: 'duration',
+              text: language.words['duration'],
               icon: Icons.access_time_rounded,
               context: context),
-          _textBody(text: '10 Hoarse', context: context),
-          _caption(text: 'Language', icon: Icons.language, context: context),
-          _textBody(text: 'English', context: context),
+          _textBody(text: '${data.weeks} ${language.words['hours']}', context: context),
+          _caption(text: language.words['language'], icon: Icons.language, context: context),
+          _textBody(text: data.language, context: context),
+
+          _caption(text: language.words['create at'], icon: Icons.access_time_outlined, context: context),
+          _textBody(text: "2020-22-2", context: context),
+          _caption(text: language.words['update at'], icon: Icons.access_time_outlined, context: context),
+          _textBody(text: '2021-12-12', context: context),
+
         ],
       ),
     );
@@ -34,7 +51,7 @@ class InfoScree extends StatelessWidget {
 
 Widget _caption({icon, text, context}) {
   return Padding(
-    padding: const EdgeInsets.only(left: 5, right: 5.0, top: 15),
+    padding: const EdgeInsets.only(left: 7, right: 7.0, top: 15),
     child: Wrap(
       spacing: 5,
       direction: Axis.horizontal,
@@ -42,7 +59,7 @@ Widget _caption({icon, text, context}) {
         Icon(
           icon,
           size: 20,
-          color: AppTheme.black1.withOpacity(0.5),
+          color:Theme.of(context).buttonColor.withOpacity(0.5),
         ),
         Text(
           text,
@@ -58,7 +75,8 @@ Widget _textBody({text, context}) {
     padding: EdgeInsets.only(
       top: 5,
       left: 37,
-      right: 10,
+      right: 15,
+      bottom: 5
     ),
     child: Text(
       text,

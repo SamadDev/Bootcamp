@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
+import 'package:bootcamps/Pages/Bootcamps/HomeScreen.dart';
 import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +58,6 @@ class Profile with ChangeNotifier {
       userRole = role;
       userId = id;
       userData = User.fromJson(jsonData);
-      print(userData.name);
     } catch (error) {
       print('profile error is $error');
     }

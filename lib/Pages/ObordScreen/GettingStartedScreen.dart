@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
+import 'package:bootcamps/Pages/Bootcamps/HomeScreen.dart';
 import 'package:bootcamps/Pages/ObordScreen/PageViewWIdget.dart';
 import 'package:bootcamps/Pages/ObordScreen/SlideDoteScreen.dart';
 import 'package:bootcamps/Pages/ObordScreen/slidedata.dart';

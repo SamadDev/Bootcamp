@@ -1,3 +1,4 @@
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Courses/CourseFilter/CourseFilterHome.dart';
 import 'package:bootcamps/Providers/courseFilter.dart';
 import 'package:bootcamps/Style/style.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class CourseFilterScreen extends StatefulWidget {
   static const route = "/CourseFilterScreen";
@@ -25,10 +27,12 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language=Provider.of<Language>(context,listen:false);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor:Theme.of(context).cardColor,
         title: Text(
-          'Filter',
+          language.words['filter'],
           style: Theme.of(context).textTheme.headline3,
         ),
         elevation: 0,
@@ -41,9 +45,9 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
               height: 150,
               child: _chipSelect(
                   context: context,
-                  title: "Language",
+                  title: language.words["language"],
                   child: MultiSelectChip(
-                    reportList: FilterList().language,
+                    reportList: FilterList().language(context),
                     onSelectionChanged: (selectedList) {
                       setState(() {
                         selectedLanguage = selectedList;
@@ -63,7 +67,7 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
                   }),
             ),
             _chipSelect(
-                title: "Rating greater than",
+                title: language.words["rating"],
                 context: context,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,9 +90,9 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
               height: 200,
               child: _chipSelect(
                   context: context,
-                  title: "Category",
+                  title: language.words["category"],
                   child: MultiSelectChip(
-                    reportList: FilterList().category,
+                    reportList: FilterList().category(context),
                     onSelectionChanged: (selectedList) {
                       setState(() {
                         selectedCategory = selectedList;
@@ -121,9 +125,9 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
             ),
             _chipSelect(
                 context: context,
-                title: "Skill Required",
+                title: language.words["skill"],
                 child: MultiSelectChip(
-                  reportList: FilterList().minimumSkills,
+                  reportList: FilterList().minimumSkills(context),
                   onSelectionChanged: (selectedList) {
                     setState(() {
                       selectedSkill = selectedList;
@@ -133,10 +137,10 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
                 )),
             _chipSelect(
                 context: context,
-                title: "Sort by",
+                title:language.words["sort"] ,
                 child: Wrap(
                     children: FilterList()
-                        .sort
+                        .sort(context)
                         .map((item) => (Container(
                               padding: const EdgeInsets.only(right: 5.0),
                               child: ChoiceChip(
@@ -163,7 +167,7 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
                 children: [
                   _applyWidget(
                       context: context,
-                      text: "Apply Filter",
+                      text: language.words["apply"],
                       style: Theme.of(context).textTheme.button,
                       color: AppTheme.green,
                       onTab: () {
@@ -186,9 +190,9 @@ class _CourseFilterScreenState extends State<CourseFilterScreen> {
                       }),
                   _applyWidget(
                       context: context,
-                      text: "Clear all",
+                      text: language.words['clear'],
                       style: Theme.of(context).textTheme.headline3,
-                      color: AppTheme.black2,
+                      color: Theme.of(context).cardColor,
                       onTab: () {
                         Navigator.of(context)
                             .popAndPushNamed(CourseFilterScreen.route);
@@ -211,7 +215,7 @@ Widget _chipSelect({context, title, child}) {
     child: Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          color: AppTheme.black2, borderRadius: BorderRadius.circular(15)),
+          color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(15)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -240,11 +244,12 @@ Widget _chipSelect({context, title, child}) {
 //________________________________________________
 
 Widget _stateCourse({context, onChanged, value}) {
+  final language=Provider.of<Language>(context,listen: false);
   return Container(
     width: double.infinity,
     height: 50,
     decoration: BoxDecoration(
-        color: AppTheme.black2, borderRadius: BorderRadius.circular(15)),
+        color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(15)),
     child: Padding(
       padding: const EdgeInsets.all(12.0),
       child: Row(
@@ -252,16 +257,16 @@ Widget _stateCourse({context, onChanged, value}) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Course State',
+            language.words['course state'],
             style: Theme.of(context).textTheme.headline4,
           ),
           DropdownButton(
             elevation: 0,
-            dropdownColor: AppTheme.black2,
+            dropdownColor:Theme.of(context).cardColor,
             underline: SizedBox.shrink(),
             value: value,
             items: FilterList()
-                .state
+                .state(context)
                 .map((e) => DropdownMenuItem(
                       child: Text(e['title']),
                       value: e['value'],
@@ -278,11 +283,12 @@ Widget _stateCourse({context, onChanged, value}) {
 //__________________________________________________
 
 Widget _isCertificate({context, onChanged, value}) {
+  final language=Provider.of<Language>(context,listen: false);
   return Container(
     width: double.infinity,
     height: 50,
     decoration: BoxDecoration(
-        color: AppTheme.black2, borderRadius: BorderRadius.circular(15)),
+        color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(15)),
     child: Padding(
       padding: const EdgeInsets.all(12.0),
       child: Row(
@@ -290,7 +296,7 @@ Widget _isCertificate({context, onChanged, value}) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'certificate in the end',
+           language.words['certificate'],
             style: Theme.of(context).textTheme.headline4,
           ),
           Checkbox(
@@ -304,6 +310,7 @@ Widget _isCertificate({context, onChanged, value}) {
 //____________________________________
 
 Widget _applyWidget({context, onTab, text, color, style}) {
+
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: [
@@ -328,9 +335,10 @@ Widget _applyWidget({context, onTab, text, color, style}) {
 //_________________________________________
 
 Widget _rangeSlider({context, currentRangeValues, onChanged}) {
+  final language=Provider.of<Language>(context,listen: false);
   return Container(
     decoration: BoxDecoration(
-        color: AppTheme.black2, borderRadius: BorderRadius.circular(15)),
+        color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(15)),
     height: 150,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,13 +347,13 @@ Widget _rangeSlider({context, currentRangeValues, onChanged}) {
           padding:
               const EdgeInsets.only(left: 15.0, right: 15, top: 20, bottom: 10),
           child: Text(
-            "Prise",
+            language.words['price'],
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
         Divider(
           thickness: 0.5,
-          color: AppTheme.black4,
+          color: Theme.of(context).buttonColor,
         ),
         Padding(
           padding:
@@ -386,6 +394,7 @@ Widget _rangeSlider({context, currentRangeValues, onChanged}) {
 //_____________________________________
 
 Widget _ratingWidget(onChange) {
+
   return RatingBar.builder(
       itemSize: 35,
       initialRating: 0,
@@ -394,10 +403,11 @@ Widget _ratingWidget(onChange) {
       direction: Axis.horizontal,
       allowHalfRating: true,
       itemCount: 5,
+      unratedColor: AppTheme.black3,
+      glowColor:AppTheme.green ,
       itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
       itemBuilder: (context, _) => SvgPicture.asset(
             'assets/images/icons/Asset 12.svg',
-            color: AppTheme.green,
           ),
       onRatingUpdate: onChange);
 }

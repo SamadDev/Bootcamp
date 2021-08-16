@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:bootcamps/Providers/profile.dart';
+import 'package:bootcamps/Style/style.dart';
 import 'package:bootcamps/constant.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,6 +23,11 @@ class _ProfileEditState extends State<ProfileEdit> {
     photo: '',
   );
 
+  final name = TextEditingController();
+  final email = TextEditingController();
+  var _uploadImage;
+  File _storedImage;
+
   var _isLoading = false;
 
   Future<void> _saveForm() async {
@@ -39,9 +44,16 @@ class _ProfileEditState extends State<ProfileEdit> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    final data = Provider.of<Profile>(context, listen: false).userData;
+    name.text = data.name;
+    email.text = data.email;
+    _uploadImage = data.photo;
+    super.didChangeDependencies();
+  }
+
   //take picture and uploaded
-  var _uploadImage;
-  File _storedImage;
 
   Future<void> takePicture() async {
     File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -59,8 +71,6 @@ class _ProfileEditState extends State<ProfileEdit> {
       var downUrl = await (await task.onComplete).ref.getDownloadURL();
       var url = downUrl.toString();
       var urlConcat = (url + "jpg");
-      print(urlConcat);
-      print(_getUpload);
 
       setState(() {
         _uploadImage = urlConcat;
@@ -89,6 +99,11 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print('$name ___ $email ____ $_uploadImage');
+        },
+      ),
       backgroundColor: Colors.white,
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -98,34 +113,38 @@ class _ProfileEditState extends State<ProfileEdit> {
                 key: _form,
                 child: SingleChildScrollView(
                   child: Column(
+                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            takePicture();
-                          },
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: ClipOval(
-                              clipper: MyClip(),
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              takePicture();
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: AppTheme.transparent,
                               child: _storedImage != null
-                                  ? Container(
-                                      width: 130,
-                                      height: 130,
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(60),
                                       child: Image.file(
                                         _storedImage,
+                                        width: 150,
+                                        height: 150,
                                         fit: BoxFit.cover,
                                       ),
                                     )
-                                  : SizedBox.shrink(),
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(60),
+                                      child: Image.network(
+                                        _uploadImage,
+                                        width: 150,
+                                        height: 150,
+                                        fit: BoxFit.fill,
+                                      )),
+                              radius: 75,
                             ),
-                            backgroundImage: _storedImage != null
-                                ? null
-                                : NetworkImage(
-                                    'https://i.ibb.co/mbB2wdY/undraw-profile-pic-ic5t.png'),
-                            radius: 80,
                           ),
                         ),
                       ),
@@ -150,6 +169,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                       Padding(
                         padding: const EdgeInsets.all(15),
                         child: TextFormField(
+                          controller: name,
                           decoration: textFormField('name', 'name'),
                           onSaved: (value) {
                             _user = User(
@@ -162,6 +182,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                       Padding(
                         padding: const EdgeInsets.all(15),
                         child: TextFormField(
+                            controller: email,
                             decoration: textFormField('email', 'email'),
                             onSaved: (value) {
                               _user = User(

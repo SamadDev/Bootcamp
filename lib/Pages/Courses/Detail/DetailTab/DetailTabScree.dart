@@ -1,6 +1,10 @@
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Reviews/ReviewsScreen.dart';
+import 'package:bootcamps/Providers/Course.dart';
+import 'package:bootcamps/Providers/CourseModule.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'HaveOtherCourses.dart';
 import 'Info.dart';
@@ -11,60 +15,65 @@ class DetailTabScree extends StatefulWidget {
   final videoPath;
   final courseId;
   final user;
+  final CourseData data;
 
-  DetailTabScree({this.videos, this.videoPath, this.courseId,this.user});
+  DetailTabScree({this.videos, this.videoPath, this.courseId,this.user,this.data});
 
   _DetailTabScreeState createState() => _DetailTabScreeState();
 }
 
 class _DetailTabScreeState extends State<DetailTabScree> {
-  List _tab = <Tab>[
+
+  List _tab (context){
+    final language=Provider.of<Language>(context,listen:false).words;
+    return <Tab>[
     Tab(
       child: Text(
-        'Info',
+       language['info'],
       ),
     ),
     Tab(
       child: Text(
-        'Catalog',
+       language['video'],
       ),
     ),
     Tab(
       child: Text(
-        'Reviews',
-      ),
+        language['review']
+      )
     ),
     Tab(
-      child: Text('Have Other'),
+      child: Text(language['have other course']),
     )
-  ];
+  ];}
 
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _tab.length,
+      length: _tab(context).length,
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: AppBar(
-            backgroundColor: AppTheme.black2,
+            backgroundColor: Theme.of(context).cardColor,
             elevation: 0,
             bottom: TabBar(
               indicator: UnderlineTabIndicator(
                   borderSide: BorderSide(color: AppTheme.green, width: 2),
                   insets: EdgeInsets.symmetric(horizontal: 16.0)),
               indicatorColor: AppTheme.green,
-              unselectedLabelColor: AppTheme.black1.withOpacity(0.5),
+              unselectedLabelColor:Theme.of(context).buttonColor.withOpacity(0.5),
               unselectedLabelStyle: Theme.of(context).textTheme.bodyText1,
               isScrollable: true,
-              tabs: _tab,
+              tabs: _tab(context),
               labelColor: AppTheme.green,
             ),
           ),
         ),
         body: TabBarView(
           children: [
-            InfoScree(),
+            InfoScree(data: widget.data,),
             CatalogScreen(
+              courseId: widget.courseId,
               videoPath: widget.videoPath,
               videos: widget.videos,
             ),

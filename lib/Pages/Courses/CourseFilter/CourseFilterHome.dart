@@ -1,11 +1,14 @@
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Courses/Detail/DetailHomeScreen.dart';
 import 'package:bootcamps/Providers/Course.dart';
+import 'package:bootcamps/Providers/View.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CourseFilterHome extends StatelessWidget {
   static const router = '/CourseFilterHome';
@@ -33,19 +36,6 @@ class CourseFilterHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final course = Provider.of<Course>(context, listen: false);
-    print(selectedCategory +
-        selectedSort +
-        "certificate  " +
-        selectedCertificate +
-        "min  " +
-        selectedMax +
-        "max" +
-        selectedMin +
-        selectedLanguage +
-        "state  " +
-        selectedState +
-        selectedSkill);
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -90,22 +80,24 @@ class CourseFilterHome extends StatelessWidget {
                     } else
                       return Consumer<Course>(
                           builder: (context, filter, _) => GridView.builder(
-                              itemCount:course.filterSearch.isEmpty
-                                  ? filter.filterProList.length
-                                  : course.filterSearch.length,
-                              itemBuilder: (ctx, i) =>course.filterSearch.isEmpty?
-                              FilterWidget(
-                                    data: filter.filterProList[i],
-                                  ): FilterWidget(
-                                data: filter.filterSearch[i],
-                              ),
-                            gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 0.8,
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 5,
-                                mainAxisSpacing: 5),
-                          ));
+                                itemCount: course.filterSearch.isEmpty
+                                    ? filter.filterProList.length
+                                    : course.filterSearch.length,
+                                itemBuilder: (ctx, i) =>
+                                    course.filterSearch.isEmpty
+                                        ? FilterWidget(
+                                            data: filter.filterProList[i],
+                                          )
+                                        : FilterWidget(
+                                            data: filter.filterSearch[i],
+                                          ),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        childAspectRatio: 0.72,
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 5,
+                                        mainAxisSpacing: 5),
+                              ));
                   }),
             )
           ],
@@ -121,6 +113,14 @@ class FilterWidget extends StatelessWidget {
   FilterWidget({this.data});
 
   Widget build(BuildContext context) {
+    final language = Provider.of<Language>(context, listen: false);
+    Future<void> getView() async {
+      print(data.id);
+      final view = Provider.of<View>(context, listen: false);
+      await view.getViews();
+      view.getViewCourseFront(courseId: data.id);
+    }
+
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
@@ -130,69 +130,90 @@ class FilterWidget extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         child: Container(
           decoration: BoxDecoration(
-            color: AppTheme.black2,
-            borderRadius: BorderRadius.circular(10),
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(3),
           ),
-          height: 240,
-          width: 170,
+          height: 260,
+          width: 180,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 5.0),
+            padding: const EdgeInsets.only(bottom: 2.0, right: 2, left: 2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  flex: 6,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(2),
-                        bottomLeft: Radius.circular(2)),
-                    child: CachedNetworkImage(
-                      imageUrl: data.photo,
-                      fit: BoxFit.fill,
-                      placeholder: (ctx, snap) => Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: AppTheme.orange,
-                          strokeWidth: 1,
-                        ),
-                      ),
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(5),
+                      topRight: Radius.circular(5),
+                      bottomRight: Radius.circular(2),
+                      bottomLeft: Radius.circular(2)),
+                  child: CachedNetworkImage(
+                    imageUrl: data.photo,
+                    height: 145,
+                    fit: BoxFit.fill,
+                    placeholder: (ctx, snap) => Center(
+                      child: Image.asset('assets/images/load.gif'),
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Text(
-                      data.title,
-                      maxLines: 1,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 3.0, left: 3, top: 3),
+                  child: Text(
+                    language.languageCode == 'en'
+                        ? data.title
+                        : language.languageCode == 'ar'
+                            ? data.titleAr
+                            : data.titleKr,
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Text(
-                      '${data.tuition.toStringAsFixed(2)} \$',
-                      style: Theme.of(context).textTheme.bodyText2,
-                      maxLines: 1,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 3.0,
+                    right: 5,
+                    left: 2,
+                  ),
+                  child: Text(
+                    '${data.tuition.toString()} \$',
+                    style: Theme.of(context).textTheme.bodyText2,
+                    maxLines: 1,
                   ),
                 ),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(3.0),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 3.0, right: 3, left: 3),
                   child: Row(
                     children: [
-                      Text(
-                        data.view == null ? "0" : "${data.view}",
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      Icon(
-                        Icons.visibility,
-                        color: AppTheme.black4,
-                        size: 18,
+                      FutureBuilder(
+                        future: getView(),
+                        builder: (ctx, snap) =>
+                            snap.connectionState == ConnectionState.waiting
+                                ? Shimmer.fromColors(
+                                    baseColor: AppTheme.black2,
+                                    highlightColor: AppTheme.green,
+                                    child: Center(
+                                        child: Image.asset(
+                                      'assets/images/view.png',
+                                      height: 20,
+                                      width: 20,
+                                    )),
+                                  )
+                                : Row(
+                                    children: [
+                                      Text(
+                                        data.view.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2,
+                                      ),
+                                      Image.asset(
+                                        'assets/images/view.png',
+                                        color: Theme.of(context).buttonColor,
+                                        height: 21,
+                                        width: 21,
+                                      )
+                                    ],
+                                  ),
                       ),
                       SizedBox(
                         width: 10,
@@ -205,12 +226,12 @@ class FilterWidget extends StatelessWidget {
                       ),
                       Icon(
                         Icons.star,
-                        color: AppTheme.black4,
+                        color: Theme.of(context).buttonColor,
                         size: 18,
                       ),
                     ],
                   ),
-                ))
+                )
               ],
             ),
           ),
@@ -220,7 +241,6 @@ class FilterWidget extends StatelessWidget {
   }
 }
 
-
 class SearchWidget extends StatefulWidget {
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
@@ -228,13 +248,14 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidgetState extends State<SearchWidget> {
   Widget build(BuildContext context) {
+    final language = Provider.of<Language>(context, listen: false);
     final course = Provider.of<Course>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Container(
         margin: EdgeInsets.zero,
         decoration: BoxDecoration(
-          color: AppTheme.black2,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(10),
         ),
         height: 50,
@@ -242,7 +263,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           textCapitalization: TextCapitalization.characters,
           onChanged: (value) {
             setState(() {
-              course.filterSearchFunction(value);
+              course.filterSearchFunction(value, course);
             });
           },
           style: Theme.of(context).textTheme.bodyText1,
@@ -250,9 +271,9 @@ class _SearchWidgetState extends State<SearchWidget> {
               border: InputBorder.none,
               prefixIcon: LineIcon.search(
                 size: 30,
-                color: AppTheme.black4,
+                color: Theme.of(context).buttonColor,
               ),
-              hintText: 'Search to ..',
+              hintText: language.words['search to'],
               hintStyle: Theme.of(context).textTheme.headline6),
         ),
       ),

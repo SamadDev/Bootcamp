@@ -7,7 +7,7 @@ import 'package:bootcamps/Widgets/circleProgress.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -33,7 +33,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.bg,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

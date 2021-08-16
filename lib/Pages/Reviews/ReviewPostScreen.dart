@@ -1,5 +1,5 @@
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Providers/Reviews.dart';
-import 'package:bootcamps/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +9,9 @@ import 'package:bootcamps/Style/style.dart';
 class ReviewPostScreen extends StatefulWidget {
   static const route = '/PostReviewScreen';
   final courseId;
+  final reviewId;
 
-  ReviewPostScreen({this.courseId});
+  ReviewPostScreen({this.courseId, this.reviewId});
 
   @override
   _ReviewPostScreenState createState() => _ReviewPostScreenState();
@@ -19,10 +20,13 @@ class ReviewPostScreen extends StatefulWidget {
 class _ReviewPostScreenState extends State<ReviewPostScreen> {
   final _form = GlobalKey<FormState>();
   var _review = ReviewData(
-    title: 'good',
     text: '',
     rating: 2.5,
   );
+
+  final text = TextEditingController();
+  double rating = 2.5;
+
   var _isLoading = false;
 
   Future<void> _saveForm() async {
@@ -30,145 +34,188 @@ class _ReviewPostScreenState extends State<ReviewPostScreen> {
     setState(() {
       _isLoading = true;
     });
-
-    await Provider.of<Review>(context, listen: false).postReview(
-        newReview: _review, context: context, courseId: widget.courseId);
+    if (widget.reviewId == null) {
+      await Provider.of<Review>(context, listen: false).postReview(
+          newReview: _review, context: context, courseId: widget.courseId);
+    } else {
+      await Provider.of<Review>(context, listen: false).updateReview(
+          courseId: widget.courseId,
+          context: context,
+          reviewId: widget.reviewId,
+          review: _review);
+      Navigator.of(context).pop();
+    }
     setState(() {
       _isLoading = false;
     });
   }
 
-  String _title = 'good';
-  List<String> titleList = [
-    'Excellent',
-    'Very good',
-    'Good',
-    'Bad',
-    'Very Bad'
-  ];
+  @override
+  void didChangeDependencies() {
+    if (widget.reviewId != null) {
+      final data =
+          Provider.of<Review>(context, listen: false).findById(widget.reviewId);
+      text.text = data.text;
+      rating = data.rating;
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-        ),
-        body: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Form(
-                key: _form,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 40, right: 30, left: 30),
-                      child: Center(
-                        child: Text(
-                            'Your nice feedback will be helping us to improve our course,',
-                            style: Theme.of(context).textTheme.headline3),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        RatingBar.builder(
-                          initialRating: 2.5,
-                          minRating: 0.5,
-                          maxRating: 5,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: AppTheme.green,
-                          ),
-                          onRatingUpdate: (newRating) {
-                            setState(() {
-                              _review.rating = newRating;
-                            });
-                          },
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(
-                                top: 25, left: 8.0, right: 8.0, bottom: 10),
-                            child: dropDownWidget(
-                                label: _title,
-                                list: titleList,
-                                function: (newValue) {
-                                  setState(() {
-                                    _title = newValue;
-                                    _review = ReviewData(
-                                        title: _title,
-                                        text: _review.text,
-                                        rating: _review.rating);
-                                  });
-                                })),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8, right: 8, bottom: 30),
-                          child: TextFormField(
-                            maxLines: 8,
-                            decoration: InputDecoration(
-                              alignLabelWithHint: true,
-                              hintText: ' What make you say that pleas?',
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: AppTheme.green, width: 1.0),
-                                  borderRadius: BorderRadius.circular(5)),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: AppTheme.green, width: 2.0),
-                                borderRadius: BorderRadius.circular(5),
+    final language = Provider.of<Language>(context, listen: false);
+    return Stack(
+      fit: StackFit.expand,
+      alignment: Alignment.topRight,
+      children: [
+        Card(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32.0))),
+          child: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Form(
+                  key: _form,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 8),
+                        child: Row(
+                          children: [
+                            RatingBar.builder(
+                              itemSize: 30,
+                              initialRating: rating,
+                              minRating: 1,
+                              maxRating: 5,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 3.0),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: AppTheme.green,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: AppTheme.green, width: 1.0),
-                                borderRadius: BorderRadius.circular(5),
+                              onRatingUpdate: (newRating) {
+                                setState(() {
+                                  _review.rating = newRating;
+                                  rating = newRating;
+                                });
+                              },
+                            ),
+                            Text(
+                              rating.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4
+                                  .copyWith(color: AppTheme.black3),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        thickness: 2,
+                      ),
+                      TextFormField(
+                        controller: text,
+                        maxLines: 10,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            alignLabelWithHint: true,
+                            hintText: language.words['you feedback'],
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .headline4
+                                .copyWith(color: AppTheme.black3)),
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return language.words['validate'];
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _review =
+                              ReviewData(text: value, rating: _review.rating);
+                        },
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            _saveForm();
+                          },
+                          child: Container(
+                            width: 280,
+                            decoration: BoxDecoration(
+                              color: AppTheme.green,
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(32.0),
+                                  bottomRight: Radius.circular(32.0)),
+                            ),
+                            child: Center(
+                              child: Text(
+                                language.words['review now'],
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4
+                                    .copyWith(color: AppTheme.white),
                               ),
                             ),
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please provide a value.';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _review = ReviewData(
-                                  title: _review.title,
-                                  text: value,
-                                  rating: _review.rating);
-                            },
                           ),
                         ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _saveForm();
-                      },
-                      child: Container(
-                        height: 60,
-                        width: MediaQuery.of(context).size.width / 1.1,
-                        decoration: BoxDecoration(
-                          color: AppTheme.green,
-                          borderRadius: BorderRadius.circular(60),
-                        ),
-                        child: Center(
-                          child: Text('Submit Review',
-                              style: Theme.of(context).textTheme.button),
-                        ),
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-      ),
+        ),
+        _isLoading
+            ? SizedBox.shrink()
+            : Align(
+                alignment: language.languageDirection == "ltr"
+                    ? Alignment(1.05, -1.15)
+                    : Alignment(-1.05, -1.15),
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.all(8),
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                            color: AppTheme.deleteButton,
+                            borderRadius: BorderRadius.circular(60)),
+                        child: Icon(
+                          Icons.clear,
+                          color: AppTheme.white,
+                          size: 20,
+                        ))),
+              )
+      ],
     );
   }
+}
+
+openAlertBox(context, courseId, {reviewId}) {
+  return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            backgroundColor: AppTheme.transparent,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            contentPadding: EdgeInsets.only(top: 10.0),
+            content: Container(
+                color: AppTheme.transparent,
+                height: 280,
+                width: 250,
+                child: ReviewPostScreen(
+                  courseId: courseId,
+                  reviewId: reviewId,
+                )));
+      });
 }

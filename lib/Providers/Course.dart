@@ -1,16 +1,18 @@
 import 'dart:convert';
-
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Courses/CourseMy.dart';
 import 'package:bootcamps/Pages/Courses/CourseScreen.dart';
 import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
-import 'package:bootcamps/modul/Test.dart';
+import 'package:bootcamps/Providers/CourseModule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class CourseData with ChangeNotifier {
   final id;
+  final user;
   final certificate;
   final housing;
   final state;
@@ -18,13 +20,18 @@ class CourseData with ChangeNotifier {
   final link;
   final title;
   final description;
+  final titleAr;
+  final descriptionAr;
+  final titleKr;
+  final descriptionKr;
   final weeks;
   final tuition;
   final minimumSkill;
   final photo;
   final averageRating;
   final view;
-  final user;
+  final userName;
+  final userPhoto;
   final videoPath;
   final language;
   final videos;
@@ -32,11 +39,17 @@ class CourseData with ChangeNotifier {
   CourseData(
       {this.certificate,
       this.housing,
+      this.user,
+      this.titleAr,
+      this.descriptionAr,
+      this.titleKr,
+      this.descriptionKr,
       this.state,
       this.typeSkill,
       this.link,
       this.id,
-      this.user,
+      this.userName,
+      this.userPhoto,
       this.view,
       this.averageRating,
       this.photo,
@@ -62,40 +75,38 @@ class Course with ChangeNotifier {
   List<CourseModule> mosPopulateList = [];
   List<CourseModule> recentList = [];
   List<CourseData> _filterProList = [];
+
   List<CourseData> get filterProList => _filterProList;
 
-  Future<void>mostPopulate(filter) async {
+  Future<void> mostPopulate(filter) async {
     try {
+      if (mosPopulateList.isNotEmpty) return;
       var res = await http.get("$url?sort=$filter", headers: {
         "Content-Type": "application/json",
       });
       List jsonData = jsonDecode(res.body)['data'];
-      print(jsonData);
       List decodeData = jsonData.map((e) => CourseModule.fromJson(e)).toList();
       mosPopulateList = decodeData;
-      print(mosPopulateList.length);
       notifyListeners();
     } catch (error) {
       print(error);
     }
   }
 
-  Future<void>mostRecent(filter) async {
+  Future<void> mostRecent(filter) async {
     try {
+      if (recentList.isNotEmpty) return;
       var res = await http.get("$url?sort=$filter", headers: {
         "Content-Type": "application/json",
       });
       List jsonData = jsonDecode(res.body)['data'];
-      print(jsonData);
       List decodeData = jsonData.map((e) => CourseModule.fromJson(e)).toList();
       recentList = decodeData;
-      print(recentList.length);
       notifyListeners();
     } catch (error) {
       print(error);
     }
   }
-
 
   Future<void> fetchFilter({
     category,
@@ -120,10 +131,16 @@ class Course with ChangeNotifier {
         loadCourse.add(
           CourseData(
               id: element['_id'],
-              user: element['user'],
+              userName: element['user']['name'],
+              userPhoto: element['user']['photo'],
+              user: element['user']['_id'],
               photo: element['photo'],
               description: element['description'],
               title: element['title'],
+              titleKr: element['titleKr'],
+              descriptionKr: element['descriptionKr'],
+              titleAr: element['titleAr'],
+              descriptionAr: element['descriptionAr'],
               minimumSkill: element['minimumSkill'],
               tuition: element['tuition'],
               weeks: element['weeks'].toString(),
@@ -161,10 +178,16 @@ class Course with ChangeNotifier {
         loadCourse.add(
           CourseData(
               id: element['_id'],
-              user: element['user'],
+              userName: element['user']['name'],
+              userPhoto: element['user']['photo'],
+              user: element['user']['_id'],
               photo: element['photo'],
               description: element['description'],
               title: element['title'],
+              titleKr: element['titleKr'],
+              descriptionKr: element['descriptionKr'],
+              titleAr: element['titleAr'],
+              descriptionAr: element['descriptionAr'],
               minimumSkill: element['minimumSkill'],
               tuition: element['tuition'],
               weeks: element['weeks'].toString(),
@@ -190,6 +213,11 @@ class Course with ChangeNotifier {
       {CourseData course,
       userId,
       title,
+      description,
+      titleKr,
+      descriptionKr,
+      titleAr,
+      descriptionAr,
       photo,
       weeks,
       tuition,
@@ -199,13 +227,10 @@ class Course with ChangeNotifier {
       link,
       state,
       category,
-      description,
       videoPath,
       language,
       videos,
       BuildContext context}) async {
-    print(description);
-    print(videos);
     try {
       var res = await http.post(
         '$url/$userId/courses',
@@ -217,6 +242,10 @@ class Course with ChangeNotifier {
           'title': title,
           'photo': photo,
           'description': description,
+          'descriptionKr': descriptionKr,
+          'titleKr': titleKr,
+          'descriptionAr': descriptionAr,
+          'titleAr': titleAr,
           'weeks': weeks,
           'tuition': tuition,
           'minimumSkill': minimumSkill,
@@ -231,14 +260,16 @@ class Course with ChangeNotifier {
         }),
       );
       final source = jsonDecode(res.body);
-      print(source);
-      print(source['data']);
       error = source['error'];
       isSuccess = source['success'];
 
       _course.add(CourseData(
           title: source['title'],
           description: source['description'],
+          titleKr: source['titleKr'],
+          descriptionKr: source['descriptionKr'],
+          titleAr: source['titleAr'],
+          descriptionAr: source['descriptionAr'],
           photo: source['photo'],
           videos: source['cVideos'],
           videoPath: source['videoPath'],
@@ -275,6 +306,10 @@ class Course with ChangeNotifier {
             "Authorization": "Bearer ${Auth.token}"
           },
           body: jsonEncode({
+            'titleKr': newCourse.titleKr,
+            'descriptionKr': newCourse.descriptionKr,
+            'titleAr': newCourse.titleAr,
+            'descriptionAr': newCourse.descriptionAr,
             'title': newCourse.title,
             'photo': newCourse.photo,
             'housing': newCourse.housing,
@@ -355,18 +390,28 @@ class Course with ChangeNotifier {
   //search to course
   List<CourseData> search = [];
 
-  void searchCourse(String value) {
+  void searchCourse(String value,context) {
+    final language = Provider.of<Language>(context, listen: false);
     search = _course.where((course) {
-      return course.title.contains(value);
+      return language.languageCode == 'en'
+          ? course.title.contains(value)
+          : language.languageCode == 'ar'
+          ? course.titleAr.contains(value)
+          : course.titleKr.contains(value);
     }).toList();
     notifyListeners();
   }
 
   List<CourseData> filterSearch = [];
 
-  void filterSearchFunction(String value) {
+  void filterSearchFunction(String value, context) {
+    final language = Provider.of<Language>(context, listen: false);
     filterSearch = filterProList.where((course) {
-      return course.title.contains(value);
+      return language.languageCode == 'en'
+          ? course.title.contains(value)
+          : language.languageCode == 'ar'
+              ? course.titleAr.contains(value)
+              : course.titleKr.contains(value);
     }).toList();
     notifyListeners();
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Courses/Detail/DetailHomeScreen.dart';
 import 'package:bootcamps/Providers/Course.dart';
 import 'package:bootcamps/Style/style.dart';
@@ -50,6 +51,7 @@ class _BootcampOfferScreenState extends State<BootcampOfferScreen> {
   @override
   Widget build(BuildContext context) {
     final slideList = Provider.of<Course>(context, listen: false);
+    final language = Provider.of<Language>(context, listen: false);
     return Scaffold(
         body: FutureBuilder(
       future: slideList.fitchAllCourse(reload: false),
@@ -81,7 +83,7 @@ class _BootcampOfferScreenState extends State<BootcampOfferScreen> {
                         itemSize: 22,
                         direction: Axis.horizontal,
                         itemCount: 5,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                        // itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                         itemBuilder: (context, _) => SvgPicture.asset(
                           'assets/images/icons/Asset 12.svg',
                           color: AppTheme.orange,
@@ -90,7 +92,7 @@ class _BootcampOfferScreenState extends State<BootcampOfferScreen> {
                       Text(" ${slideList.courseList[i].view} "),
                       Icon(
                         Icons.visibility,
-                        color: AppTheme.black2,
+                        color: Theme.of(context).buttonColor,
                         size: 18,
                       ),
                       SizedBox(
@@ -100,20 +102,20 @@ class _BootcampOfferScreenState extends State<BootcampOfferScreen> {
                         height: 20,
                         width: 65,
                         decoration: BoxDecoration(
-                            color: AppTheme.black2,
+                            color: Theme.of(context).cardColor,
                             borderRadius: BorderRadius.circular(35)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Center(
                               child: Text(
-                                "view",
+                                language.words['view'],
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
                             Icon(
                               Icons.arrow_forward_ios,
-                              color: Colors.black,
+                              color: Theme.of(context).buttonColor,
                               size: 15,
                             )
                           ],
@@ -121,10 +123,14 @@ class _BootcampOfferScreenState extends State<BootcampOfferScreen> {
                       )
                     ],
                   ),
-                  backgroundColor: AppTheme.green.withOpacity(0.4),
+                  backgroundColor: Theme.of(context).cardColor.withOpacity(0.5),
                   title: Text(
-                    slideList.courseList[i].title,
-                    style: Theme.of(context).textTheme.button,
+                    language.languageCode == 'en'
+                        ? slideList.courseList[i].title
+                        : language.languageCode == 'ar'
+                            ? slideList.courseList[i].titleAr
+                            : slideList.courseList[i].titleKr,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 ),
                 child: CachedNetworkImage(

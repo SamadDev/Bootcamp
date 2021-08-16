@@ -1,27 +1,27 @@
-import 'package:bootcamps/Providers/state.dart';
+import 'package:bootcamps/Localization/language.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 //show authentication alert
 
 void showErrorDialog(String message, context) {
+  final language=Provider.of<Language>(context,listen:false);
   showDialog(
-    barrierDismissible: false,
     context: context,
     builder: (ctx) => AlertDialog(
+      backgroundColor: Theme.of(context).cardColor,
       title: Text(
-        'An Error Occurred!',
+        language.words['error occur'],
         style: Theme.of(context).textTheme.headline3,
       ),
       content: Text(
-        message,
+       language.words['sure'],
         style: Theme.of(context).textTheme.bodyText1,
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Ok'),
+          child: Text(language.words['ok']),
           onPressed: () {
-            Provider.of<StateChange>(context, listen: false).changeIsLoading();
             Navigator.of(context).pop();
           },
         )
@@ -32,11 +32,12 @@ void showErrorDialog(String message, context) {
 
 //show if field is empty
 void showEmpty(context) {
+  final language=Provider.of<Language>(context,listen:false);
   showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-            title: Text('error occur'),
-            content: Text('all fields required pleas provider'),
+      builder: (ctx) => AlertDialog(backgroundColor: Theme.of(context).cardColor,
+            title: Text(language.words['error occur']),
+            content: Text(language.words['empty']),
             contentTextStyle: Theme.of(context).textTheme.bodyText1,
             titleTextStyle: Theme.of(context).textTheme.headline3,
             actions: [
@@ -44,7 +45,7 @@ void showEmpty(context) {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('ok'))
+                  child: Text(language.words['ok']))
             ],
           ));
 }

@@ -1,12 +1,18 @@
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Authendication/LoginScreen.dart';
+import 'package:bootcamps/Providers/state.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class UserOrPublisher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final lan=Provider.of<Language>(context,listen:false);
+    bool load=Provider.of<StateChange>(context).isLoading=false;
+    print(load);
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -28,7 +34,7 @@ class UserOrPublisher extends StatelessWidget {
                     child: RotatedBox(
                       quarterTurns: 1,
                       child: Text(
-                        'User',
+                        lan.words['user'],
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Colors.teal,
@@ -44,7 +50,7 @@ class UserOrPublisher extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
-                          LoginScreen(userRole: "publisher")));
+                          LoginScreen(userRole: "Teacher")));
                 },
                 child: GestureDetector(
                   onTap: () {
@@ -57,7 +63,7 @@ class UserOrPublisher extends StatelessWidget {
                         quarterTurns: 1,
                         child: Center(
                           child: Text(
-                            'Publisher',
+                            lan.words['teacher'],
                             style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: AppTheme.white,
@@ -73,7 +79,7 @@ class UserOrPublisher extends StatelessWidget {
           Card(
             margin: EdgeInsets.zero,
             child: Text(
-              'ARE YOU',
+              lan.words['are you'],
               style: TextStyle(
                   color: AppTheme.green,
                   fontWeight: FontWeight.w500,

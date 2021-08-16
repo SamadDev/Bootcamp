@@ -1,3 +1,4 @@
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Authendication/SignUPScreen.dart';
 import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Providers/state.dart';
@@ -7,6 +8,7 @@ import 'package:bootcamps/Widgets/Authendication/TextFieldAuthendication.dart';
 import 'package:bootcamps/Widgets/Authendication/UserRole.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -18,15 +20,20 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final TextEditingController role = TextEditingController();
-
   Widget build(BuildContext context) {
-    var isLoading = Provider.of<StateChange>(context);
-    var isShow = Provider.of<StateChange>(context, listen: false);
 
+
+    var isLoading = Provider.of<StateChange>(context);
+    final language=Provider.of<Language>(context,listen:false);
+    var isShow = Provider.of<StateChange>(context, listen: false);
+    // isLoading.isLoading=false;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-      ),
+      appBar: isLoading.isLoading
+          ? AppBar(
+              elevation: 0,
+              leading: SizedBox.shrink(),
+            )
+          : AppBar(elevation: 0),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -40,15 +47,15 @@ class LoginScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: textAuthendication(
-                        text: 'Welcome Back', context: context),
+                        text: language.words['welcome back'], context: context),
                   ),
                   SizedBox(
                     height: 50,
                   ),
                   textField(
-                      context, "Email", Icons.email, TextInputType.emailAddress,
+                      context,language.words['email'], Icons.email, TextInputType.emailAddress,
                       textCont: email, isObscure: false),
-                  textField(context, "password", Icons.lock, TextInputType.text,
+                  textField(context, language.words["password"], Icons.lock, TextInputType.text,
                       textCont: password,
                       isObscure: isShow.isShow,
                       iconButton: IconButton(
@@ -60,7 +67,9 @@ class LoginScreen extends StatelessWidget {
                               .changeIsShow();
                         },
                       )),
-                  roleType(context: context, text: userRole),
+                  roleType(context: context,  text:userRole == 'user'
+                      ? language.words['user']
+                      : language.words['teacher']),
                   SizedBox(
                     height: 100,
                   ),
@@ -92,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                                         BorderRadius.all(Radius.circular(15))),
                                 child: Center(
                                   child: Text(
-                                    'LOG IN',
+                                    language.words['log in'],
                                     style: Theme.of(context).textTheme.button,
                                   ),
                                 ),
@@ -101,7 +110,7 @@ class LoginScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Don\'n have an account?',
+                                    language.words['no account'],
                                     style:
                                         Theme.of(context).textTheme.headline6,
                                   ),
@@ -114,9 +123,9 @@ class LoginScreen extends StatelessWidget {
                                                   )));
                                     },
                                     child: Text(
-                                      'Sign UP',
+                                      language.words['sign up'],
                                       style:
-                                          Theme.of(context).textTheme.headline5,
+                                          Theme.of(context).textTheme.headline5.copyWith(decoration: TextDecoration.underline),
                                     ),
                                   )
                                 ],

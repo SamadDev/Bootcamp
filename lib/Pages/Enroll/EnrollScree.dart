@@ -19,7 +19,6 @@ class _EnrollMenScreenState extends State<EnrollMenScreen> {
   initState(){
     super.initState();
     getEnroll();
-    print(Provider.of<Enroll>(context,listen: false).enrollDemand.length);
   }
 
   void getEnroll()async{

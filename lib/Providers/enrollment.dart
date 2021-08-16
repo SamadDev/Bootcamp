@@ -1,34 +1,16 @@
 import 'dart:convert';
+import 'package:bootcamps/Pages/Courses/Detail/DetailHomeScreen.dart';
 import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:bootcamps/Widgets/ButtomBar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-// class EnrollData with ChangeNotifier {
-//   final id;
-//   final name;
-//   int phone;
-//   final address;
-//   final userCId;
-//   final courseId;
-//   bool isVerify;
-//   final courseTitle;
-//
-//   EnrollData(
-//       {this.id,
-//       this.name,
-//       this.phone,
-//       this.address,
-//       this.userCId,
-//       this.courseId,
-//       this.courseTitle,
-//       this.isVerify});
-// }
 
 class EnrollData with ChangeNotifier {
   String isVeryfiy;
   String sId;
+  String userId;
   String name;
   int phone;
   String address;
@@ -40,6 +22,7 @@ class EnrollData with ChangeNotifier {
       this.name,
       this.phone,
       this.address,
+      this.userId,
       this.course});
 
   EnrollData.fromJson(Map<String, dynamic> json) {
@@ -48,6 +31,7 @@ class EnrollData with ChangeNotifier {
     name = json['name'];
     phone = json['phone'];
     address = json['address'];
+    userId = json['user'];
     course = EnrollCourse.fromJson(json['course']);
   }
 }
@@ -61,6 +45,7 @@ class EnrollCourse {
   EnrollCourse({this.sId, this.title, this.photo, this.user});
 
   EnrollCourse.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
     title = json['title'];
     photo = json['photo'];
     user = json['user'];
@@ -83,9 +68,7 @@ class Enroll with ChangeNotifier {
             "Content-Type": "Application/json",
           });
       List jsonData = jsonDecode(res.body)['data'];
-
       List decodeList = jsonData.map((e) => EnrollData.fromJson(e)).toList();
-
       _enroll = decodeList;
       notifyListeners();
     } catch (error) {
@@ -97,6 +80,7 @@ class Enroll with ChangeNotifier {
   Future<void> postEnroll(
       {name, phone, address, BuildContext context, String courseId}) async {
     try {
+      changeState();
       var res = await http.post(
         'https://bootcamp-training-training.herokuapp.com/api/v1/courses/$courseId/enroll',
         headers: {
@@ -118,13 +102,19 @@ class Enroll with ChangeNotifier {
           name: source['name'],
           phone: source['phone'],
           address: source['address']));
+      changeState();
       if (isSuccess) {
-        Navigator.of(context).pushNamed(HomeScreen.route, arguments: courseId);
+        Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (ctx) => DetailHomeScreen(
+                      id: courseId,
+                      pending: 'pending',
+                    )),);
       } else {
         showErrorDialog(error, context);
       }
     } catch (error) {
-      print('enroll add error is =>' + error);
+      print(error);
     }
     notifyListeners();
   }
@@ -164,16 +154,32 @@ class Enroll with ChangeNotifier {
     }
   }
 
-  List<EnrollData> enrollDemand=[];
+  List<EnrollData> enrollDemand = [];
+
   List<EnrollData> enrollFilter(String userId) {
-    enrollDemand = _enroll.where((element) => element.course.user == userId).toList();
+    enrollDemand =
+        _enroll.where((element) => element.course.user == userId).toList();
+    print(enrollDemand.length);
     return enrollDemand;
   }
 
-  bool enrollState = false;
+  List<EnrollData> myEnrollList = [];
+
+  List<EnrollData> myEnroll({userId}) {
+    myEnrollList =
+        _enroll.where((element) => element.userId == userId).toList();
+    return myEnrollList;
+  }
+
+  EnrollData singleEnroll({courseId}) {
+    return myEnrollList.firstWhere((element) => element.course.sId == courseId,
+        orElse: () => EnrollData(isVeryfiy: 'false'));
+  }
+
+  bool isLoading = false;
 
   void changeState() {
-    enrollState = !enrollState;
+    isLoading = !isLoading;
     notifyListeners();
   }
 }

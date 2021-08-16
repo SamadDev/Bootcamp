@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:bootcamps/Providers/state.dart';
 import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:bootcamps/Widgets/ButtomBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
@@ -34,6 +36,7 @@ class Auth with ChangeNotifier {
             MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
       } else {
+        Provider.of<StateChange>(context, listen: false).changeIsLoading();
         showErrorDialog(error, context);
       }
     } catch (error) {
@@ -70,11 +73,11 @@ class Auth with ChangeNotifier {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setString('token', data['token']);
         token = data['token'];
-
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
       } else {
+        Provider.of<StateChange>(context, listen: false).changeIsLoading();
         showErrorDialog(error, context);
       }
     } catch (error) {
@@ -87,9 +90,9 @@ class Auth with ChangeNotifier {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     token = preferences.getString('token');
   }
-  removeToken()async{
-    SharedPreferences preferences=await SharedPreferences.getInstance();
+
+  removeToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove('token');
-    print(token);
   }
 }

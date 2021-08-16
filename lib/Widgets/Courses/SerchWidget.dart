@@ -25,7 +25,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           textCapitalization: TextCapitalization.characters,
           onChanged: (value) {
             setState(() {
-              course.searchCourse(value);
+              course.searchCourse(value,context);
             });
           },
           style: Theme.of(context).textTheme.bodyText1,

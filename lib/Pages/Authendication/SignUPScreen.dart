@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Authendication/LoginScreen.dart';
 import 'package:bootcamps/Providers/Auth.dart';
 import 'package:bootcamps/Providers/state.dart';
@@ -7,6 +8,7 @@ import 'package:bootcamps/Widgets/Authendication/AuthendicationAlert.dart';
 import 'package:bootcamps/Widgets/Authendication/TextFieldAuthendication.dart';
 import 'package:bootcamps/Widgets/Authendication/UserRole.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -55,12 +57,16 @@ class _SingUPScreenState extends State<SingUPScreen> {
   final TextEditingController userName = TextEditingController();
 
   Widget build(BuildContext context) {
+    final language = Provider.of<Language>(context, listen: false);
     var isLoading = Provider.of<StateChange>(context);
     var isShow = Provider.of<StateChange>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-      ),
+      appBar: isLoading.isLoading
+          ? AppBar(
+              elevation: 0,
+              leading: SizedBox.shrink(),
+            )
+          : AppBar(elevation: 0),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,8 +74,9 @@ class _SingUPScreenState extends State<SingUPScreen> {
             Container(
               height: 130,
               width: 130,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(60)),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(60)),
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
@@ -82,7 +89,10 @@ class _SingUPScreenState extends State<SingUPScreen> {
                           child: Image.file(_storedImage)),
                   Container(
                     child: IconButton(
-                      icon: Icon(Icons.add_a_photo),
+                      icon: Icon(
+                        Icons.add_a_photo,
+                        color: Theme.of(context).buttonColor,
+                      ),
                       onPressed: () {
                         takePicture();
                       },
@@ -99,16 +109,17 @@ class _SingUPScreenState extends State<SingUPScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  textField(context, "name", Icons.person, TextInputType.text,
+                  textField(context, language.words['name'], Icons.person,
+                      TextInputType.text,
                       textCont: name, isObscure: false),
-                  textField(
-                      context, "user name", Icons.person, TextInputType.text,
+                  textField(context, language.words['user name'], Icons.person,
+                      TextInputType.text,
                       textCont: userName, isObscure: false),
-                  textField(
-                      context, "Email", Icons.email, TextInputType.emailAddress,
+                  textField(context, language.words['email'], Icons.email,
+                      TextInputType.emailAddress,
                       textCont: email, isObscure: false),
-                  textField(
-                      context, "password", Icons.vpn_key, TextInputType.text,
+                  textField(context, language.words['password'], Icons.vpn_key,
+                      TextInputType.text,
                       textCont: password,
                       isObscure: isShow.isShow,
                       iconButton: IconButton(
@@ -120,7 +131,11 @@ class _SingUPScreenState extends State<SingUPScreen> {
                               .changeIsShow();
                         },
                       )),
-                  roleType(context: context, text: widget.userRole),
+                  roleType(
+                      context: context,
+                      text: widget.userRole == 'user'
+                          ? language.words['user']
+                          : language.words['teacher']),
                   SizedBox(
                     height: 30,
                   ),
@@ -163,7 +178,7 @@ class _SingUPScreenState extends State<SingUPScreen> {
                                         BorderRadius.all(Radius.circular(15))),
                                 child: Center(
                                   child: Text(
-                                    'Sign UP',
+                                    language.words['sign up'],
                                     style: Theme.of(context).textTheme.button,
                                   ),
                                 ),
@@ -172,7 +187,7 @@ class _SingUPScreenState extends State<SingUPScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'have an account?',
+                                    language.words['have account'],
                                     style:
                                         Theme.of(context).textTheme.headline6,
                                   ),
@@ -185,9 +200,9 @@ class _SingUPScreenState extends State<SingUPScreen> {
                                                   )));
                                     },
                                     child: Text(
-                                      'Log In',
+                                      language.words['log in'],
                                       style:
-                                          Theme.of(context).textTheme.headline5,
+                                          Theme.of(context).textTheme.headline5.copyWith(decoration: TextDecoration.underline),
                                     ),
                                   )
                                 ],
@@ -216,10 +231,14 @@ Widget profile({storedImage, takePicture}) {
         storedImage == null
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(60),
-                child: SvgPicture.asset("assets/images/person.svg"))
+                child: Image.network(
+                    "https://i.ibb.co/mbB2wdY/undraw-profile-pic-ic5t.png"))
             : ClipRRect(
                 borderRadius: BorderRadius.circular(60),
-                child: Image.file(storedImage)),
+                child: Image.file(
+                  storedImage,
+                  fit: BoxFit.fill,
+                )),
         Container(
           child: IconButton(
             icon: Icon(Icons.add_a_photo),

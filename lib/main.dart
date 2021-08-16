@@ -5,6 +5,7 @@ import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
 import 'package:bootcamps/Pages/Courses/Detail/DetailHomeScreen.dart';
 import 'package:bootcamps/Pages/Courses/Detail/VideoPlayer.dart';
 import 'package:bootcamps/Pages/Courses/love.dart';
+import 'package:bootcamps/Pages/Enroll/EnrollMyCourse.dart';
 import 'package:bootcamps/Pages/Enroll/EnrollScree.dart';
 import 'package:bootcamps/Pages/Enroll/ErnollMenPost.dart';
 import 'package:bootcamps/Providers/CategoryC.dart';
@@ -14,6 +15,7 @@ import 'package:bootcamps/Providers/enroll%20message.dart';
 import 'package:bootcamps/Providers/enrollment.dart';
 import 'package:bootcamps/Providers/love.dart';
 import 'package:bootcamps/Providers/state.dart';
+import 'package:bootcamps/Widgets/NotFound.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -21,16 +23,14 @@ import './Localization/language.dart';
 import './Pages/Authendication/LoginScreen.dart';
 import './Pages/Authendication/ProfileEdit.dart';
 import './Pages/Authendication/SignUPScreen.dart';
-import './Pages/Bootcamps/BootcampsHomeScreen.dart';
+import './Pages/Bootcamps/HomeScreen.dart';
 import './Pages/Courses/CoursePostScreen.dart';
 import './Pages/Courses/CourseScreen.dart';
 import './Pages/Reviews/ReviewPostScreen.dart';
 import './Pages/Reviews/ReviewsScreen.dart';
-import './Providers/Bootcamp.dart';
-import './Providers/Category.dart';
 import './Providers/Course.dart';
 import './Providers/Reviews.dart';
-import './Providers/View&like.dart';
+import './Providers/View.dart';
 import './Providers/profile.dart';
 import './Style/style.dart';
 import 'Pages/Authendication/SplashScreen.dart';
@@ -51,19 +51,16 @@ class ProviderWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: Auth()),
-        ChangeNotifierProvider.value(value: BootCamp()),
         ChangeNotifierProvider.value(value: Profile()),
         ChangeNotifierProvider.value(value: Profile()),
         ChangeNotifierProvider.value(value: User()),
-        ChangeNotifierProvider.value(value: BootcampData()),
         ChangeNotifierProvider.value(value: Course()),
         ChangeNotifierProvider.value(value: CourseData()),
-        ChangeNotifierProvider.value(value: Review()),
+        ChangeNotifierProvider(create:(_)=> Review()),
         ChangeNotifierProvider.value(value: ReviewData()),
         ChangeNotifierProvider.value(value: ViewData()),
         ChangeNotifierProvider.value(value: View()),
         ChangeNotifierProvider.value(value: Language()),
-        ChangeNotifierProvider.value(value: Category()),
         ChangeNotifierProvider.value(value: CourseC()),
         ChangeNotifierProvider.value(value: SLocalStorage()),
         ChangeNotifierProvider.value(value: StateChange()),
@@ -139,7 +136,10 @@ class _MyAppState extends State<MyApp> {
           EnrollMenScreen.route: (context) => EnrollMenScreen(),
           EnrollPostScreen.route: (context) => EnrollPostScreen(),
           EnrollMessageScreen.route: (context) => EnrollMessageScreen(),
-          SettingScreen.route:(context)=>SettingScreen()
+          SettingScreen.route:(context)=>SettingScreen(),
+          NotFoundScreen.route:(context)=>NotFoundScreen(),
+          EnrollMyCourse.route:(context)=>EnrollMyCourse(),
+          // ProfilePublisherScreen.route:(context)=>ProfilePublisherScreen()
         },
       );
     });
@@ -166,3 +166,4 @@ class CheckScreens extends StatelessWidget {
                     : SplashScreen());
   }
 }
+

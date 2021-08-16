@@ -1,5 +1,5 @@
-import 'package:bootcamps/Pages/Bootcamps/CoursePopulate.dart';
 import 'package:bootcamps/Pages/Courses/CourseFilter/CourseFilterScreen.dart';
+import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
 import 'package:bootcamps/Providers/Category.dart';
 import 'package:bootcamps/Providers/Course.dart';
 import 'package:bootcamps/Style/style.dart';
@@ -22,7 +22,7 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     final course = Provider.of<Course>(context, listen: false);
-    final category = Provider.of<Category>(context, listen: false);
+    // final category = Provider.of<Category>(context, listen: false);
     final technology = course.findCategory("Technology");
     final business = course.findCategory("Business");
     final language = course.findCategory("Language");
@@ -30,16 +30,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
     final art = course.findCategory("Art");
     final fitness = course.findCategory("Fitness");
 
-    final categoryList = category.categoryList;
-    List _tabs = categoryList
+    // final categoryList = category.categoryList;
+    List _tabs = category(context)
         .map<Widget>((e) => Tab(
               child: Text(e['title']),
             ))
         .toList();
-
     return DefaultTabController(
       initialIndex: int.parse(widget.id),
-      length: categoryList.length,
+      length: category(context).length,
       child: Scaffold(
         appBar: AppBar(
           actions: [
@@ -53,7 +52,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   height: 45,
                   width: 45,
                   decoration: BoxDecoration(
-                      color: AppTheme.black2,
+                      color:  Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(60)),
                   child: Icon(
                     Icons.tune,
@@ -66,8 +65,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
           elevation: 0,
           bottom: TabBar(
             indicatorColor: AppTheme.green,
-            unselectedLabelColor: AppTheme.black1.withOpacity(0.5),
-            labelColor: AppTheme.green,
+            unselectedLabelColor:Theme.of(context).buttonColor.withOpacity(0.5),
+            labelColor: Theme.of(context).buttonColor,
             unselectedLabelStyle: Theme.of(context).textTheme.headline5,
             labelStyle: Theme.of(context).textTheme.headline5,
             isScrollable: true,
@@ -116,7 +115,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                   : course.cateSearch.length,
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                                      childAspectRatio: 0.8,
+                                                      childAspectRatio: 0.72,
                                                       crossAxisCount: 2,
                                                       crossAxisSpacing: 5,
                                                       mainAxisSpacing: 5),
@@ -156,7 +155,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                   : course.cateSearch.length,
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                                      childAspectRatio: 0.8,
+                                                      childAspectRatio: 0.72,
                                                       crossAxisCount: 2,
                                                       crossAxisSpacing: 5,
                                                       mainAxisSpacing: 5),
@@ -195,7 +194,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                   : course.cateSearch.length,
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                                      childAspectRatio: 0.8,
+                                                      childAspectRatio: 0.72,
                                                       crossAxisCount: 2,
                                                       crossAxisSpacing: 5,
                                                       mainAxisSpacing: 5),
@@ -236,7 +235,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                   : course.cateSearch.length,
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                                      childAspectRatio: 0.8,
+                                                      childAspectRatio: 0.72,
                                                       crossAxisCount: 2,
                                                       crossAxisSpacing: 5,
                                                       mainAxisSpacing: 5),
@@ -275,7 +274,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                   : course.cateSearch.length,
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                                      childAspectRatio: 0.8,
+                                                      childAspectRatio: 0.72,
                                                       crossAxisCount: 2,
                                                       crossAxisSpacing: 5,
                                                       mainAxisSpacing: 5),
@@ -315,7 +314,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                   : course.cateSearch.length,
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                                      childAspectRatio: 0.8,
+                                                      childAspectRatio: 0.72,
                                                       crossAxisCount: 2,
                                                       crossAxisSpacing: 5,
                                                       mainAxisSpacing: 5),
@@ -349,7 +348,7 @@ Widget searchWidget({context, onChanged}) {
     child: Container(
       margin: EdgeInsets.zero,
       decoration: BoxDecoration(
-        color: AppTheme.black2,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(10),
       ),
       height: 50,
@@ -357,12 +356,13 @@ Widget searchWidget({context, onChanged}) {
         onChanged: onChanged,
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(top:15),
             border: InputBorder.none,
             prefixIcon: RotatedBox(
               quarterTurns: 3,
               child: LineIcon.search(
                 size: 35,
-                color: AppTheme.black4,
+                color: Theme.of(context).buttonColor,
               ),
             ),
             hintText: 'Search to ..',

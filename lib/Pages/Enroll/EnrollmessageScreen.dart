@@ -1,3 +1,4 @@
+import 'package:bootcamps/Widgets/NotFound.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bootcamps/Providers/profile.dart';
@@ -36,7 +37,7 @@ class _EnrollMessageScreenState extends State<EnrollMessageScreen> {
             return Center(child: CircularProgressIndicator());
           } else
             return Consumer<MessageEnroll>(
-                builder: (context, access, _) => ListView.builder(
+                builder: (context, access, _) =>access.enrollMessageFilter.isEmpty?NotFoundScreen(): ListView.builder(
                     itemCount: access.enrollMessageFilter.length,
                     itemBuilder: (ctx, index) => EnrollWidget(
                           data: access.enrollMessageFilter[index],

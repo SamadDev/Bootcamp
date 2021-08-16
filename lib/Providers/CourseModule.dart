@@ -2,21 +2,30 @@ class CourseModule {
   String id;
   bool certificate;
   bool housing;
+  String userName;
+  String userPhoto;
+  String user;
   String state;
   String typeSkill;
   String courseLink;
   String title;
   String description;
+  String titleAr;
+  String descriptionAr;
+  String titleKr;
+  String descriptionKr;
   var weeks;
   var tuition;
   String minimumSkill;
   String photo;
   var averageRating;
   var view;
-  String user;
+
 
   CourseModule({
     this.id,
+    this.userName,
+    this.userPhoto,
     this.certificate,
     this.housing,
     this.state,
@@ -24,6 +33,10 @@ class CourseModule {
     this.courseLink,
     this.title,
     this.description,
+    this.titleAr,
+    this.descriptionAr,
+    this.descriptionKr,
+    this.titleKr,
     this.weeks,
     this.tuition,
     this.minimumSkill,
@@ -35,10 +48,16 @@ class CourseModule {
 
   CourseModule.fromJson(Map<String, dynamic> element) {
     id = element['_id'];
-    user = element['user'];
+    user = element['user']['_id'];
+    userName=element['user']['name'];
+    userPhoto=element['user']['photo'];
     photo = element['photo'];
     description = element['description'];
     title = element['title'];
+    titleKr = element['titleKr'];
+    descriptionKr = element['descriptionKr'];
+    titleAr = element['titleAr'];
+    descriptionAr = element['descriptionAr'];
     minimumSkill = element['minimumSkill'];
     tuition = element['tuition'];
     weeks = element['weeks'];

@@ -1,4 +1,5 @@
 import 'package:bootcamps/Style/style.dart';
+import 'package:bootcamps/Widgets/Search.dart';
 import 'package:flutter/material.dart';
 
 Widget topBarWidget({context, name, function, icon}) {
@@ -7,10 +8,7 @@ Widget topBarWidget({context, name, function, icon}) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          name,
-          style: Theme.of(context).textTheme.headline2,
-        ),
+        SearchField(),
         GestureDetector(
           onTap: function,
           child: Container(

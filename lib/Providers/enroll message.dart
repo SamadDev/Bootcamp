@@ -50,7 +50,6 @@ class MessageEnroll with ChangeNotifier {
           headers: {
             "Content-Type": "Application/json",
           });
-      print(jsonDecode(res.body));
       List jsonData = jsonDecode(res.body);
 
       List decodeList =

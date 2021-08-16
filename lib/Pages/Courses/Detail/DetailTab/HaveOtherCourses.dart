@@ -1,6 +1,5 @@
 import 'package:bootcamps/Pages/Bootcamps/CoursessVertical.dart';
 import 'package:bootcamps/Providers/Course.dart';
-import 'package:bootcamps/Providers/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

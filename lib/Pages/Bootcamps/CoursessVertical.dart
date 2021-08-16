@@ -1,3 +1,4 @@
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Courses/Detail/DetailHomeScreen.dart';
 import 'package:bootcamps/Providers/Course.dart';
 import 'package:bootcamps/Style/style.dart';
@@ -39,6 +40,7 @@ class BootcampCourseWidget extends StatelessWidget {
   BootcampCourseWidget({this.data});
 
   Widget build(BuildContext context) {
+    final language = Provider.of<Language>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: GestureDetector(
@@ -47,7 +49,7 @@ class BootcampCourseWidget extends StatelessWidget {
               builder: (ctx) => DetailHomeScreen(id: data.id)));
         },
         child: Container(
-          height: 120,
+          height: 130,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -77,7 +79,11 @@ class BootcampCourseWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        data.title,
+                        language.languageCode == 'en'
+                            ? data.title
+                            : language.languageCode == 'ar'
+                                ? data.titleAr
+                                : data.titleKr,
                         overflow: TextOverflow.clip,
                         maxLines: 2,
                         style: Theme.of(context).textTheme.headline4,
@@ -94,7 +100,7 @@ class BootcampCourseWidget extends StatelessWidget {
                           ),
                           Icon(
                             Icons.visibility,
-                            color: AppTheme.black4,
+                            color: Theme.of(context).buttonColor,
                             size: 18,
                           ),
                           SizedBox(
@@ -108,7 +114,7 @@ class BootcampCourseWidget extends StatelessWidget {
                           ),
                           Icon(
                             Icons.star,
-                            color: AppTheme.black4,
+                            color: Theme.of(context).buttonColor,
                             size: 18,
                           ),
                         ],

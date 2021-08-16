@@ -46,7 +46,7 @@ Widget textField(context, hintText, icon, keyboardInput,
       padding: EdgeInsets.only(top: 6, left: 20, right: 10, bottom: 6),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(15)),
-          color: AppTheme.black2,
+          color: Theme.of(context).cardColor,
           boxShadow: [BoxShadow(color: AppTheme.black3, blurRadius: 1)]),
       child: TextField(
         obscureText: isObscure,
@@ -59,7 +59,7 @@ Widget textField(context, hintText, icon, keyboardInput,
           suffixIcon: iconButton,
           border: InputBorder.none,
           icon: Icon(
-            icon,
+            icon,color: Theme.of(context).buttonColor,
             size: 20,
           ),
           hintText: hintText,

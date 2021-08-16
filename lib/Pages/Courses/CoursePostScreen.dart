@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bootcamps/Providers/Course.dart';
+import 'package:bootcamps/Providers/profile.dart';
 import 'package:bootcamps/constant.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -32,6 +33,10 @@ class _CoursePostScreenState extends State<CoursePostScreen> {
   final language = TextEditingController();
   final category = TextEditingController();
   final description = TextEditingController();
+  final descriptionKr = TextEditingController();
+  final descriptionAr = TextEditingController();
+  final titleKr = TextEditingController();
+  final titleAr = TextEditingController();
   bool certificate = false;
   bool housing = false;
   String minSkill = "beginner";
@@ -102,11 +107,15 @@ class _CoursePostScreenState extends State<CoursePostScreen> {
     } else
       await Provider.of<Course>(context, listen: false).postCourse(
           context: context,
-          userId: '5ff0cc8d54b66228f08e994c',
+          userId: Profile.userId,
           language: language.text,
           state: state,
           certificate: certificate,
           title: title.text,
+          titleKr: titleKr.text,
+          descriptionKr: descriptionKr.text,
+          titleAr: titleAr.text,
+          descriptionAr: descriptionAr.text,
           category: category.text,
           description: description.text,
           housing: housing,
@@ -260,6 +269,70 @@ class _CoursePostScreenState extends State<CoursePostScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
+                              controller: titleKr,
+                              // initialValue: _initValues['category'],
+                              decoration: textFormField(
+                                  'title kurdish', 'title kurdish'),
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please provide a value.';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: descriptionKr,
+                              // initialValue: _initValues['category'],
+                              decoration: textFormField(
+                                  'description kurdish', 'description kurdish'),
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please provide a value.';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: titleAr,
+                              // initialValue: _initValues['category'],
+                              decoration:
+                                  textFormField('title arabic', 'title arabic'),
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please provide a value.';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: descriptionAr,
+                              // initialValue: _initValues['category'],
+                              decoration: textFormField(
+                                  'description arabic', 'description arabic'),
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please provide a value.';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
                               controller: weeks,
                               // initialValue: _initValues['weeks'],
                               decoration: textFormField('weeks', 'weeks'),
@@ -278,7 +351,7 @@ class _CoursePostScreenState extends State<CoursePostScreen> {
                               controller: language,
                               // initialValue: _initValues['language'],
                               decoration: textFormField('language', 'language'),
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please provide a value.';
@@ -293,7 +366,7 @@ class _CoursePostScreenState extends State<CoursePostScreen> {
                               controller: category,
                               // initialValue: _initValues['category'],
                               decoration: textFormField('category', 'category'),
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please provide a value.';
