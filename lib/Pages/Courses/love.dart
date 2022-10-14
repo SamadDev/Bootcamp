@@ -3,6 +3,7 @@ import 'package:bootcamps/Style/style.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../Courses/Detail/DetailHomeScreen.dart';
 
 class LoveScreen extends StatelessWidget {
   static const String route = "/LoveScree";
@@ -25,7 +26,7 @@ class LoveScreen extends StatelessWidget {
                   builder: (ctx, love, _) => GridView.builder(
                       itemCount: love.courseList.length == null
                           ? Center(
-                              child: Text('slaw'),
+                              child: Image.asset('assets/images/emptygif.gif'),
                             )
                           : love.courseList.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -33,47 +34,64 @@ class LoveScreen extends StatelessWidget {
                           crossAxisSpacing: 10,
                           crossAxisCount: 2,
                           childAspectRatio: 1),
-                      itemBuilder: (ctx, index) => Container(
-                            width: 200,
-                            height: 300,
-                            child: Stack(
-                              fit: StackFit.loose,
-                              children: [
-                                Container(
-                                  color: AppTheme.black2,
-                                  width: 200,
-                                  height: 300,
-                                  child: CachedNetworkImage(
-                                    imageUrl: love.courseList[index],
-                                    fit: BoxFit.fill,
-                                    placeholder: (ctx, snap) =>
-                                        Image.asset('assets/images/'),
+                      itemBuilder: (ctx, index) => GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => DetailHomeScreen(
+                                        id: love.idList[index],
+                                      )));
+                            },
+                            child: Container(
+                              width: 200,
+                              height: 300,
+                              child: Stack(
+                                fit: StackFit.loose,
+                                children: [
+                                  Container(
+                                    color: AppTheme.black2,
+                                    width: 200,
+                                    height: 300,
+                                    child: Column(
+                                      children: [
+                                        Text(love.idList[index].toString()),
+                                        CachedNetworkImage(
+                                          imageUrl: love.courseList[index],
+                                          fit: BoxFit.fill,
+                                          placeholder: (ctx, snap) =>
+                                              Image.asset('assets/images/'),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    love.removeCourse(love.courseList[index]);
-                                  },
-                                  child: Container(
-                                    width: 45,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(60),
-                                        color: AppTheme.black2),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Icon(
-                                          Icons.favorite,
-                                          color: AppTheme.green,
-                                          size: 30,
+                                  GestureDetector(
+                                    onTap: () {
+                                      love.removeCourse(
+                                          love.courseList[index],
+                                          love.idList[index],
+                                          love.titleList[index]);
+                                    },
+                                    child: Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(60),
+                                          color: AppTheme.black2),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: AppTheme.green,
+                                            size: 30,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
                           )),
                 )));

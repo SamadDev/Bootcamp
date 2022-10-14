@@ -1,18 +1,17 @@
 import 'package:bootcamps/Pages/Category/CategoryScreen.dart';
 import 'package:bootcamps/Providers/Category.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 
 class CategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final category = Provider.of<Category>(context).categoryList;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: category
+          children: category(context)
               .map<Widget>((element) => GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(

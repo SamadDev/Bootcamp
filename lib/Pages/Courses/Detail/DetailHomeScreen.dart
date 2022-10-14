@@ -98,9 +98,9 @@ class _DetailHomeScreenState extends State<DetailHomeScreen> {
                             builder: (ctx, love, _) => GestureDetector(
                                 onTap: () {
                                   if (love.courseList.contains(data.photo)) {
-                                   love.removeCourse(data.photo);
+                                   love.removeCourse(data.photo,widget.id,data.title);
                                   } else {
-                                    love.addToLoveList(data.photo);
+                                    love.addToLoveList(data.photo,widget.id,data.title);
                                   }
                                 },
                                 child: love.courseList == null

@@ -1,3 +1,4 @@
+import 'package:bootcamps/Localization/language.dart';
 import 'package:bootcamps/Pages/Bootcamps/BootcampsHomeScreen.dart';
 import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
 import 'package:bootcamps/Pages/Enroll/EnrollScree.dart';
@@ -9,7 +10,6 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:connectivity_widget/connectivity_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = Provider.of<Language>(context);
     return ConnectivityWidget(
         showOfflineBanner: false,
         builder: (ctx, isOnline) => isOnline
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       setState(() => _currentIndex = index),
                   items: <BottomNavyBarItem>[
                     bottomNavyBarItem(
-                        text: "Home",
+                        text: language.words['home'],
                         icon: Image.asset(
                           "assets/images/home.png",
                           width: 23,
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         context: context),
                     bottomNavyBarItem(
-                        text: "Search",
+                        text: language.words['search1'],
                         icon: Image.asset(
                           'assets/images/search.png',
                           width: 23,
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         context: context),
                     bottomNavyBarItem(
-                        text: "notification",
+                        text: language.words['notification'],
                         icon: Image.asset(
                           "assets/images/bell1.png",
                           width: 23,
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         context: context),
                     bottomNavyBarItem(
-                        text: "More",
+                        text: language.words['more'],
                         icon: Image.asset(
                           "assets/images/menu.png",
                           width: 23,

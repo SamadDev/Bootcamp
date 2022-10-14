@@ -33,18 +33,18 @@ class CourseFilterHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final course = Provider.of<Course>(context, listen: false);
-    print(selectedCategory +
-        selectedSort +
-        "certificate  " +
-        selectedCertificate +
-        "min  " +
-        selectedMax +
-        "max" +
-        selectedMin +
-        selectedLanguage +
-        "state  " +
-        selectedState +
-        selectedSkill);
+    //   print(selectedCategory +
+      //     selectedSort +
+       //    "certificate  " +
+       //    selectedCertificate +
+       //    "min  " +
+       //    selectedMax +
+       //    "max" +
+       //    selectedMin +
+       //    selectedLanguage +
+    //    "state  " +
+    //    selectedState +
+   //     selectedSkill);
 
     return Scaffold(
       body: SafeArea(

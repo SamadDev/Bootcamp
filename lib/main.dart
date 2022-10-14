@@ -14,6 +14,7 @@ import 'package:bootcamps/Providers/enroll%20message.dart';
 import 'package:bootcamps/Providers/enrollment.dart';
 import 'package:bootcamps/Providers/love.dart';
 import 'package:bootcamps/Providers/state.dart';
+import 'package:bootcamps/Widgets/NotFound.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -26,8 +27,6 @@ import './Pages/Courses/CoursePostScreen.dart';
 import './Pages/Courses/CourseScreen.dart';
 import './Pages/Reviews/ReviewPostScreen.dart';
 import './Pages/Reviews/ReviewsScreen.dart';
-import './Providers/Bootcamp.dart';
-import './Providers/Category.dart';
 import './Providers/Course.dart';
 import './Providers/Reviews.dart';
 import './Providers/View&like.dart';
@@ -51,11 +50,9 @@ class ProviderWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: Auth()),
-        ChangeNotifierProvider.value(value: BootCamp()),
         ChangeNotifierProvider.value(value: Profile()),
         ChangeNotifierProvider.value(value: Profile()),
         ChangeNotifierProvider.value(value: User()),
-        ChangeNotifierProvider.value(value: BootcampData()),
         ChangeNotifierProvider.value(value: Course()),
         ChangeNotifierProvider.value(value: CourseData()),
         ChangeNotifierProvider.value(value: Review()),
@@ -63,7 +60,6 @@ class ProviderWidget extends StatelessWidget {
         ChangeNotifierProvider.value(value: ViewData()),
         ChangeNotifierProvider.value(value: View()),
         ChangeNotifierProvider.value(value: Language()),
-        ChangeNotifierProvider.value(value: Category()),
         ChangeNotifierProvider.value(value: CourseC()),
         ChangeNotifierProvider.value(value: SLocalStorage()),
         ChangeNotifierProvider.value(value: StateChange()),
@@ -139,7 +135,8 @@ class _MyAppState extends State<MyApp> {
           EnrollMenScreen.route: (context) => EnrollMenScreen(),
           EnrollPostScreen.route: (context) => EnrollPostScreen(),
           EnrollMessageScreen.route: (context) => EnrollMessageScreen(),
-          SettingScreen.route:(context)=>SettingScreen()
+          SettingScreen.route:(context)=>SettingScreen(),
+          NotFoundScreen.route:(context)=>NotFoundScreen(),
         },
       );
     });

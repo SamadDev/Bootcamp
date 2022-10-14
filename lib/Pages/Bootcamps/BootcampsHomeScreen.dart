@@ -6,6 +6,8 @@ import 'package:bootcamps/Pages/Courses/CourseFilter/CourseFilterScreen.dart';
 import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
 import 'package:bootcamps/Pages/Enroll/EnrollScree.dart';
 import 'package:bootcamps/Providers/Course.dart';
+import 'package:bootcamps/Providers/enrollment.dart';
+import 'package:bootcamps/Providers/profile.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:bootcamps/Widgets/TopBarWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,20 +24,18 @@ class BootcampsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final language = Provider.of<Language>(context).words;
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    final language = Provider.of<Language>(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        Provider.of<Course>(context,listen: false).mostPopulate("");
-      },),
+floatingActionButton: FloatingActionButton(onPressed: (){
+  Provider.of<Enroll>(context,listen:false).enrollFilter(Profile.userId);
+},),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             topBarWidget(
                 context: context,
-                name: 'Home',
+                name: language.words['top'],
                 icon: Icon(Icons.tune),
                 function: () {
                   Navigator.of(context).pushNamed(CourseFilterScreen.route);
@@ -75,7 +75,7 @@ class BootcampsScreen extends StatelessWidget {
               ],
             ),
             captionPadding(
-                context: context, caption: 'Most Populate', function: () {}),
+                context: context, caption: language.words['populate'], function: () {}),
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0, right: 15, left: 15),
               child: Container(
@@ -84,7 +84,7 @@ class BootcampsScreen extends StatelessWidget {
               ),
             ),
             captionPadding(
-                context: context, caption: 'Recent Course', function: () {}),
+                context: context, caption: language.words['recent'], function: () {}),
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0, right: 15, left: 15),
               child: Container(
@@ -93,7 +93,7 @@ class BootcampsScreen extends StatelessWidget {
               ),
             ),
             captionPadding(
-                context: context, caption: 'Courses', function: () {}),
+                context: context, caption: language.words['courses'], function: () {}),
             Padding(
               padding: const EdgeInsets.only(bottom: 10, right: 15, left: 15),
               child: BootcampCourses(),
@@ -106,6 +106,7 @@ class BootcampsScreen extends StatelessWidget {
 }
 
 Widget captionPadding({context, caption, function}) {
+  final language = Provider.of<Language>(context);
   return Padding(
     padding: const EdgeInsets.only(left: 20, right: 10, top: 10),
     child: Row(
@@ -118,7 +119,7 @@ Widget captionPadding({context, caption, function}) {
         GestureDetector(
           onTap: function,
           child: Text(
-            'See All',
+            language.words['seeAll'],
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
@@ -128,6 +129,7 @@ Widget captionPadding({context, caption, function}) {
 }
 
 Widget searchWidget(context) {
+  final language = Provider.of<Language>(context);
   return GestureDetector(
     onTap: () {
       Navigator.of(context).pushNamed(CourseSearch.route);
@@ -153,7 +155,7 @@ Widget searchWidget(context) {
                   color: AppTheme.black4,
                 ),
               ),
-              hintText: 'Search to ..',
+              hintText: language.words['search'],
               hintStyle: Theme.of(context).textTheme.headline6),
         ),
       ),

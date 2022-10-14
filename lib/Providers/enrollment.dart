@@ -5,27 +5,6 @@ import 'package:bootcamps/Widgets/ButtomBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-// class EnrollData with ChangeNotifier {
-//   final id;
-//   final name;
-//   int phone;
-//   final address;
-//   final userCId;
-//   final courseId;
-//   bool isVerify;
-//   final courseTitle;
-//
-//   EnrollData(
-//       {this.id,
-//       this.name,
-//       this.phone,
-//       this.address,
-//       this.userCId,
-//       this.courseId,
-//       this.courseTitle,
-//       this.isVerify});
-// }
-
 class EnrollData with ChangeNotifier {
   String isVeryfiy;
   String sId;
@@ -167,7 +146,13 @@ class Enroll with ChangeNotifier {
   List<EnrollData> enrollDemand=[];
   List<EnrollData> enrollFilter(String userId) {
     enrollDemand = _enroll.where((element) => element.course.user == userId).toList();
+    print(enrollDemand.length);
     return enrollDemand;
+  }
+
+  EnrollData singleEnroll(courseId){
+    print(enrollDemand.firstWhere((element) => element.course.sId=='605c83a34ac9ff002477574b',orElse: () => null));
+   return _enroll.firstWhere((element) => element.course.sId=='605c83a34ac9ff002477574b',orElse: () => null);
   }
 
   bool enrollState = false;

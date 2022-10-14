@@ -1,5 +1,4 @@
 import 'package:bootcamps/Pages/Bootcamps/CoursessVertical.dart';
-import 'package:bootcamps/Pages/Bootcamps/DashbordScreen.dart';
 import 'package:bootcamps/Pages/Courses/CourseSearch.dart';
 import 'package:bootcamps/Style/style.dart';
 import 'package:bootcamps/Widgets/TopBarWidget.dart';
@@ -34,7 +33,7 @@ class CourseScreen extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            Container(height: 130, child: BootcampScreen()),
+            // Container(height: 130, child: BootcampScreen()),
             Padding(
               padding: EdgeInsets.only(left: 10, right: 10, top: 30, bottom: 0),
               child: Text(

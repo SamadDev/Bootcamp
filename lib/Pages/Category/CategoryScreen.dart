@@ -22,7 +22,7 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     final course = Provider.of<Course>(context, listen: false);
-    final category = Provider.of<Category>(context, listen: false);
+    // final category = Provider.of<Category>(context, listen: false);
     final technology = course.findCategory("Technology");
     final business = course.findCategory("Business");
     final language = course.findCategory("Language");
@@ -30,8 +30,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
     final art = course.findCategory("Art");
     final fitness = course.findCategory("Fitness");
 
-    final categoryList = category.categoryList;
-    List _tabs = categoryList
+    // final categoryList = category.categoryList;
+    List _tabs = category(context)
         .map<Widget>((e) => Tab(
               child: Text(e['title']),
             ))
@@ -39,7 +39,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     return DefaultTabController(
       initialIndex: int.parse(widget.id),
-      length: categoryList.length,
+      length: category(context).length,
       child: Scaffold(
         appBar: AppBar(
           actions: [

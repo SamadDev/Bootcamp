@@ -26,7 +26,7 @@ class _SingUPScreenState extends State<SingUPScreen> {
   String _image;
 
   Future<void> takePicture() async {
-    File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    File imageFile = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _storedImage = imageFile;
     });
@@ -219,7 +219,7 @@ Widget profile({storedImage, takePicture}) {
                 child: SvgPicture.asset("assets/images/person.svg"))
             : ClipRRect(
                 borderRadius: BorderRadius.circular(60),
-                child: Image.file(storedImage)),
+                child: Image.file(storedImage,fit: BoxFit.fill,)),
         Container(
           child: IconButton(
             icon: Icon(Icons.add_a_photo),

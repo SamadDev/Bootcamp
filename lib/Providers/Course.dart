@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bootcamps/Pages/Courses/CourseMy.dart';
 import 'package:bootcamps/Pages/Courses/CourseScreen.dart';
 import 'package:bootcamps/Providers/Auth.dart';
@@ -66,11 +65,11 @@ class Course with ChangeNotifier {
 
   Future<void>mostPopulate(filter) async {
     try {
+      if(mosPopulateList.isNotEmpty)return;
       var res = await http.get("$url?sort=$filter", headers: {
         "Content-Type": "application/json",
       });
       List jsonData = jsonDecode(res.body)['data'];
-      print(jsonData);
       List decodeData = jsonData.map((e) => CourseModule.fromJson(e)).toList();
       mosPopulateList = decodeData;
       print(mosPopulateList.length);
@@ -82,6 +81,7 @@ class Course with ChangeNotifier {
 
   Future<void>mostRecent(filter) async {
     try {
+      if(recentList.isNotEmpty)return;
       var res = await http.get("$url?sort=$filter", headers: {
         "Content-Type": "application/json",
       });
